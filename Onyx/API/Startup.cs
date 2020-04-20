@@ -1,9 +1,12 @@
 using System.Text;
+using Application.Commands;
 using Application.Interfaces.JWT;
 using Application.Interfaces.User;
 using Domain.Identity;
+using FluentValidation.AspNetCore;
 using Infrastructure.InterfaceImplementor.Security.JWT;
 using Infrastructure.InterfaceImplementor.Security.User;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -41,15 +44,12 @@ namespace API
                 });
             });
 
+            services.AddMediatR(typeof(Register.Handler).Assembly);
             services.AddControllers(opt => {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 opt.Filters.Add(new AuthorizeFilter(policy));
-            });
-
-            services.AddCors(opt => {
-                opt.AddPolicy("CorsPolicy", policy => {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
-                });
+            }).AddFluentValidation(config => {
+                config.RegisterValidatorsFromAssemblyContaining<Register>();
             });
 
             var builder = services.AddIdentityCore<AppUser>();

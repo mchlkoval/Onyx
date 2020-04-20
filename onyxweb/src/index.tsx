@@ -1,13 +1,28 @@
 import React from 'react';
+import {createBrowserHistory} from 'history';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import 'react-toastify/dist/ReactToastify.min.css';
 import * as serviceWorker from './serviceWorker';
+import { Router } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import ScrollToTop from './App/Components/General/ScrollToTop';
+import { HomePage } from './App/Components/Home/HomePage';
+import 'semantic-ui-css/semantic.min.css'
+import './App/Styles/general.css'
+import ModalContainer from './App/Components/General/Modals/ModalContainer';
+
+//To be used within our store
+export const history = createBrowserHistory();
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Router history={history}>
+    <ToastContainer position="bottom-right"/>
+    <ModalContainer />
+    <ScrollToTop>
+        <HomePage />
+    </ScrollToTop>
+  </Router>,
   document.getElementById('root')
 );
 
