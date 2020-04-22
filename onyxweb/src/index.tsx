@@ -3,13 +3,14 @@ import {createBrowserHistory} from 'history';
 import ReactDOM from 'react-dom';
 import 'react-toastify/dist/ReactToastify.min.css';
 import * as serviceWorker from './serviceWorker';
-import { Router } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import ScrollToTop from './App/Components/General/ScrollToTop';
 import { HomePage } from './App/Components/Home/HomePage';
 import 'semantic-ui-css/semantic.min.css'
 import './App/Styles/general.css'
 import ModalContainer from './App/Components/General/Modals/ModalContainer';
+import Root from './App/Components/Root/Root';
 
 //To be used within our store
 export const history = createBrowserHistory();
@@ -20,7 +21,8 @@ ReactDOM.render(
     <ToastContainer position="bottom-right"/>
     <ModalContainer />
     <ScrollToTop>
-        <HomePage />
+        <Route exact path="/" component={HomePage}/>
+        <Root />
     </ScrollToTop>
   </Router>,
   document.getElementById('root')

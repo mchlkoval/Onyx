@@ -21,7 +21,7 @@ export default class UserStore {
             this.rootStore.commonStore.setToken(user.token);
             this.rootStore.modalStore.closeModal();
             
-            console.log("User From API Is: ", user);
+            history.push('/overview')
 
         } catch(error) {
             throw error;
@@ -39,6 +39,17 @@ export default class UserStore {
 
             history.push('/activities');
         } catch(error) {
+            throw error;
+        }
+    }
+
+    @action setUser = async () => {
+        try {
+            const user = await Agent.User.current();
+            runInAction(() => {
+                this.user = user;
+            })
+        } catch (error) {
             throw error;
         }
     }

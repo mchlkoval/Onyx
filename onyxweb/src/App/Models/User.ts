@@ -1,14 +1,15 @@
+import { UserType } from "./Enums/UserType";
+
 export interface IUser {
     userName: string,
     token: string,
-    userType: number,
+    userType: UserType,
     email: string
 }
 
 export interface IUserFormValues {
     email?: string,
-    userType?: number,
+    userType?: UserType,
     password: string,
     userName: string,
-
 }
