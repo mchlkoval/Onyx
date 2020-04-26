@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from 'react'
+import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Menu } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
@@ -16,7 +16,7 @@ const MainNavBar = () => {
     return (
         
         <Menu inverted vertical fixed="left">
-            <Menu.Item header as={NavLink} to="/overview">Onyx</Menu.Item>
+            <Menu.Item header as={NavLink} exact to="/">Onyx</Menu.Item>
             {user && user.userType === UserType.Athelete && <AtheleteNavBar/>}
             {user && user.userType === UserType.Coach && <CoachNavBar />}
             {user && user.userType === UserType.Manager && <ManagerNavBar />}

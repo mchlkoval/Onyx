@@ -21,7 +21,6 @@ ReactDOM.render(
     <ToastContainer position="bottom-right"/>
     <ModalContainer />
     <ScrollToTop>
-        <Route exact path="/" component={HomePage}/>
         <Root />
     </ScrollToTop>
   </Router>,

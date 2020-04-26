@@ -6,6 +6,8 @@ import ModalContainer from '../General/Modals/ModalContainer';
 import { Grid } from 'semantic-ui-react';
 import MainNavBar from '../Navigation/MainNavBar';
 import Overview from '../Overview';
+import { LoadingComponent } from '../General/Loading/LoadingComponent';
+import { HomePage } from '../Home/HomePage';
 
 const Root : React.FC<RouteComponentProps> = () => {
 
@@ -14,26 +16,33 @@ const Root : React.FC<RouteComponentProps> = () => {
     const {setUser} = rootContext.userStore;
 
     useEffect(() => {
+        console.log('token: ', token);
         if(token) {
+            console.log("Setting user");
             setUser().finally(() => setAppLoaded())
         } else {
             setAppLoaded();
         }
     }, [setUser, setAppLoaded, token])
 
+    if(!appLoaded) {
+        return <LoadingComponent content="Loading Application..."/>
+    }
+
     return (
         <Fragment>
             <ModalContainer />
+            <Route exact path='/' component={HomePage}/>
             <Route path={'/(.+)'} render={() =>
                 <Grid>
-                    <Grid.Column width={3}>
+                    <Grid.Column width={2}>
                         <MainNavBar />
                     </Grid.Column>
+                    <Grid.Column width={13}>
                     <Switch>
-                        <Grid.Column width={13}>
                             <Route exact path="/overview" component={Overview}/>
-                        </Grid.Column>
                     </Switch>
+                    </Grid.Column>
                 </Grid>
             }/>
         </Fragment>

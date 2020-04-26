@@ -6,10 +6,12 @@ import { NavLink } from 'react-router-dom'
 const AtheleteNavBar = () => {
     return (
         <Fragment>
-            <Menu.Item name="Profile" as={NavLink} to="/profile" /> 
-            <Menu.Item name="Team" as={NavLink} to="/team" />
-            <Menu.Item name="My Performance" as={NavLink} to="/performance"/>
-            <Menu.Item name="Billing" as={NavLink} to="/billing"/>
+            <Menu.Item name="Dashboard" as={NavLink} to="/profile" /> 
+            <Menu.Item name="Scheduling" as={NavLink} to="/team" />
+            <Menu.Item name="Workout" as={NavLink} to="/workout"/>
+            <Menu.Item name="Membership" as={NavLink} to="/performance"/>
+            <Menu.Item name="My Account" as={NavLink} to="/billing"/>
+            <Menu.Item name="Shop" as={NavLink} to="/shop"/>
         </Fragment>
     )
 }

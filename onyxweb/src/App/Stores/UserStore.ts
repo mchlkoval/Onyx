@@ -1,5 +1,5 @@
 import { RootStore } from "./RootStore";
-import { runInAction, action, observable } from "mobx";
+import { runInAction, action, observable, computed } from "mobx";
 import { history } from "../..";
 import { IUserFormValues, IUser } from "../Models/User";
 import Agent from "../API/Agent";
@@ -10,6 +10,11 @@ export default class UserStore {
 
     @observable user: IUser | null = null;
 
+    @computed get isLoggedIn() {
+        console.log("User is ", this.user);
+        return !!this.user;
+    }
+
     constructor(root: RootStore) {
         this.rootStore = root;
     }
@@ -17,7 +22,10 @@ export default class UserStore {
     @action login = async (values: IUserFormValues) => {
         try {
             const user = await Agent.User.login(values);
-            runInAction('Setting user', () => { this.user = user; });  
+            console.log("user: ", user);
+            runInAction('Setting user', () => { 
+                this.user = user; 
+            });  
             this.rootStore.commonStore.setToken(user.token);
             this.rootStore.modalStore.closeModal();
             
@@ -37,7 +45,7 @@ export default class UserStore {
                 this.user = user;
             })
 
-            history.push('/activities');
+            history.push('/overview');
         } catch(error) {
             throw error;
         }
@@ -46,6 +54,7 @@ export default class UserStore {
     @action setUser = async () => {
         try {
             const user = await Agent.User.current();
+            console.log("Current user: ", user);
             runInAction(() => {
                 this.user = user;
             })
