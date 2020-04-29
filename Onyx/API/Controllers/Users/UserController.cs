@@ -30,6 +30,7 @@ namespace API.Controllers.Users
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<UserViewModel>> CurrentUser()
         {
             return await Mediator.Send(new LoggedUser.Query());

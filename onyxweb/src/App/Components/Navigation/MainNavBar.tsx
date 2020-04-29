@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
-import { Menu } from 'semantic-ui-react'
+import { Menu, Sidebar, Segment } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 import { RootStoreContext } from '../../Stores/RootStore'
 import { UserType } from '../../Models/Enums/UserType'
@@ -14,7 +14,6 @@ const MainNavBar = () => {
     const {user} = store.userStore;
     
     return (
-        
         <Menu inverted vertical fixed="left">
             <Menu.Item header as={NavLink} exact to="/">Onyx</Menu.Item>
             {user && user.userType === UserType.Athelete && <AtheleteNavBar/>}

@@ -13,7 +13,7 @@ export class MessageStore {
     @action loadMessages = async () => {
         try {
             const apiResult = await Agent.Messages.list();
-            
+
             runInAction("Setting messages map", () => {
                 this.messages = apiResult;
             })

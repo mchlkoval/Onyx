@@ -1,6 +1,12 @@
+import { Workout } from "./Workout";
+
 export interface Membership {
     id: string,
     name: string, 
     description : string
-    cost? : number,
+}
+
+export interface VerboseMembership extends Membership {
+    cost: number,
+    workouts: Workout[]
 }

@@ -1,10 +1,11 @@
-import React, { Fragment, useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import Messages from './Overview/Messages'
 import { Grid } from 'semantic-ui-react'
 import { MessageStoreContext } from '../Stores/MessageStore'
 import { MembershipShoreContext } from '../Stores/MembershipStore'
 import Memberships from './Overview/Memberships'
+import Progress from './Overview/Progress'
 
 const Overview : React.FC = () => {
 
@@ -16,6 +17,7 @@ const Overview : React.FC = () => {
     useEffect(() => {
         loadMessages();
         loadMemberships();
+        
     }, [loadMessages, loadMemberships])
 
     return (
@@ -30,7 +32,7 @@ const Overview : React.FC = () => {
             </Grid.Row>
             <Grid.Row>
                 <Grid.Column>
-                    Progress Goes Here
+                    <Progress />
                 </Grid.Column>
             </Grid.Row>
         </Grid>

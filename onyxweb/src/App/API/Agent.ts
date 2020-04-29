@@ -3,7 +3,8 @@ import { IUser, IUserFormValues } from '../Models/User';
 import { toast } from 'react-toastify';
 import { history } from '../..';
 import { Message } from '../Models/Message';
-import { Membership } from '../Models/Membership';
+import { Membership, VerboseMembership } from '../Models/Membership';
+import { ExerciseGroup } from '../Models/Workout';
 
 axios.defaults.baseURL = "http://localhost:5000/api"
 
@@ -62,11 +63,17 @@ const Messages = {
 }
 
 const Memberships = {
-    list : () : Promise<Membership[]> => requests.get("/membership/memberships")
+    list : () : Promise<Membership[]> => requests.get("/membership/memberships"),
+    verboseList : () : Promise<VerboseMembership[]> => requests.get("/membership/memberships/full")
+}
+
+const Workouts = {
+    list: () : Promise<ExerciseGroup[]> => requests.get("/workout/exercisegroups")
 }
 
 export default {
     User,
     Messages,
-    Memberships
+    Memberships,
+    Workouts
 }
