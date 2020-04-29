@@ -144,7 +144,7 @@ namespace Persistence.Migrations
                         {
                             Id = "3a0a646e-2fa8-4ab9-b2dc-3aa2518d4e78",
                             Content = "Test Message 1",
-                            DateOfMessage = new DateTime(2020, 4, 27, 20, 44, 1, 33, DateTimeKind.Local).AddTicks(8009),
+                            DateOfMessage = new DateTime(2020, 4, 27, 21, 15, 19, 531, DateTimeKind.Local).AddTicks(9845),
                             From = "Anna Runner",
                             IsDeleted = false
                         },
@@ -152,7 +152,7 @@ namespace Persistence.Migrations
                         {
                             Id = "d1940fcc-f86a-4b48-ad97-3f7ff1321647",
                             Content = "Test Message 2",
-                            DateOfMessage = new DateTime(2020, 4, 28, 20, 44, 1, 36, DateTimeKind.Local).AddTicks(1027),
+                            DateOfMessage = new DateTime(2020, 4, 28, 21, 15, 19, 534, DateTimeKind.Local).AddTicks(3457),
                             From = "Michael Kovalsky",
                             IsDeleted = false
                         },
@@ -160,7 +160,7 @@ namespace Persistence.Migrations
                         {
                             Id = "b92e0a10-33e1-4108-be76-c1ec87677330",
                             Content = "Test Message 3",
-                            DateOfMessage = new DateTime(2020, 4, 26, 20, 44, 1, 36, DateTimeKind.Local).AddTicks(1063),
+                            DateOfMessage = new DateTime(2020, 4, 26, 21, 15, 19, 534, DateTimeKind.Local).AddTicks(3495),
                             From = "Aaron Runner",
                             IsDeleted = false
                         });
@@ -190,61 +190,55 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ExerciseGroupId");
 
-                    b.ToTable("Exercises");
+                    b.ToTable("Exercise");
 
                     b.HasData(
                         new
                         {
                             Id = "fbc63f06-619a-4002-a676-849fc4e8f4fb",
+                            Description = "",
                             ExerciseGroupId = "2b60f7f4-09c5-403c-882b-eadf0bf912d0",
+                            Name = "",
                             Reps = 4
                         },
                         new
                         {
                             Id = "d46c92bf-2369-462b-9bc7-da99f788813e",
+                            Description = "",
                             ExerciseGroupId = "2b60f7f4-09c5-403c-882b-eadf0bf912d0",
+                            Name = "",
                             Reps = 4
                         },
                         new
                         {
                             Id = "77c5b70c-4c90-4ebf-a3b3-3374e913cd3e",
+                            Description = "",
                             ExerciseGroupId = "2b60f7f4-09c5-403c-882b-eadf0bf912d0",
+                            Name = "",
                             Reps = 3
                         },
                         new
                         {
                             Id = "42816968-45cc-4f49-aa90-197af1fb3b35",
+                            Description = "",
                             ExerciseGroupId = "adf78c99-8106-49df-b0dd-d0b145ddc53e",
+                            Name = "",
                             Reps = 4
                         },
                         new
                         {
                             Id = "7bbb4df8-2a92-4ea5-8ebc-0ec72cfcc9d4",
+                            Description = "",
                             ExerciseGroupId = "adf78c99-8106-49df-b0dd-d0b145ddc53e",
+                            Name = "",
                             Reps = 4
                         },
                         new
                         {
                             Id = "47e7b0de-6cd9-4895-9054-1c70c5c423ed",
+                            Description = "",
                             ExerciseGroupId = "adf78c99-8106-49df-b0dd-d0b145ddc53e",
-                            Reps = 3
-                        },
-                        new
-                        {
-                            Id = "21fee9cb-b38d-4c90-a77d-b3dee444804e",
-                            ExerciseGroupId = "ba596bca-7603-4d16-b9bc-aae93a414330",
-                            Reps = 4
-                        },
-                        new
-                        {
-                            Id = "5927295e-df92-40e7-b780-9e0ab05fd4c1",
-                            ExerciseGroupId = "ba596bca-7603-4d16-b9bc-aae93a414330",
-                            Reps = 4
-                        },
-                        new
-                        {
-                            Id = "2dd0782e-a75e-4b45-8422-d20108efab05",
-                            ExerciseGroupId = "ba596bca-7603-4d16-b9bc-aae93a414330",
+                            Name = "",
                             Reps = 3
                         });
                 });
@@ -270,7 +264,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("WorkoutId");
 
-                    b.ToTable("ExerciseGroups");
+                    b.ToTable("ExerciseGroup");
 
                     b.HasData(
                         new
@@ -320,13 +314,13 @@ namespace Persistence.Migrations
 
                     b.HasIndex("MembershipId");
 
-                    b.ToTable("Workouts");
+                    b.ToTable("Workout");
 
                     b.HasData(
                         new
                         {
                             Id = "ba596bca-7603-4d16-b9bc-aae93a414330",
-                            DateOfWorkout = new DateTime(2020, 4, 28, 20, 44, 1, 37, DateTimeKind.Local).AddTicks(6115),
+                            DateOfWorkout = new DateTime(2020, 4, 28, 21, 15, 19, 535, DateTimeKind.Local).AddTicks(8414),
                             Description = "Regular push ups",
                             MembershipId = "29ad0121-b184-461b-b2c9-518355e35123",
                             Name = "Gopnik One"
@@ -334,7 +328,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = "5f2ed3f1-a767-4803-b612-d3f04e508cc1",
-                            DateOfWorkout = new DateTime(2020, 4, 28, 20, 44, 1, 37, DateTimeKind.Local).AddTicks(8331),
+                            DateOfWorkout = new DateTime(2020, 4, 28, 21, 15, 19, 536, DateTimeKind.Local).AddTicks(630),
                             Description = "Test Description",
                             MembershipId = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
                             Name = "Squat One"
@@ -472,21 +466,21 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Workouts.Exercise", b =>
                 {
                     b.HasOne("Domain.Workouts.ExerciseGroup", "ExerciseGroup")
-                        .WithMany("Exercises")
+                        .WithMany("Exercise")
                         .HasForeignKey("ExerciseGroupId");
                 });
 
             modelBuilder.Entity("Domain.Workouts.ExerciseGroup", b =>
                 {
                     b.HasOne("Domain.Workouts.Workout", "Workout")
-                        .WithMany("ExerciseGroups")
+                        .WithMany("ExerciseGroup")
                         .HasForeignKey("WorkoutId");
                 });
 
             modelBuilder.Entity("Domain.Workouts.Workout", b =>
                 {
                     b.HasOne("Domain.Memberships.Membership", "Membership")
-                        .WithMany("Workouts")
+                        .WithMany("Workout")
                         .HasForeignKey("MembershipId");
                 });
 

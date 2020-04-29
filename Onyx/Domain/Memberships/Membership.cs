@@ -11,6 +11,6 @@ namespace Domain.Memberships
         public string Name { get; set;}
         public string Description { get; set; }
         public double Cost { get; set; }
-        public List<Workout> Workouts { get; set; }
+        public List<Workout> Workout { get; set; }
     }
 }

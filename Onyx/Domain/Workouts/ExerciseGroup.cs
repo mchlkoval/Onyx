@@ -12,6 +12,6 @@ namespace Domain.Workouts
         public string WorkoutId { get; set; }
         public Workout Workout { get; set; }
         public int Sets { get; set; }
-        public List<Exercise> Exercises { get; set; }
+        public List<Exercise> Exercise { get; set; }
     }
 }
