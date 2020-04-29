@@ -8,6 +8,8 @@ import MainNavBar from '../Navigation/MainNavBar';
 import Overview from '../Overview';
 import { LoadingComponent } from '../General/Loading/LoadingComponent';
 import { HomePage } from '../Home/HomePage';
+import Scheduling from '../Scheduling/Scheduling';
+import VerboseMembership from '../Memberships/VerboseMembership';
 
 const Root : React.FC<RouteComponentProps> = () => {
 
@@ -33,6 +35,7 @@ const Root : React.FC<RouteComponentProps> = () => {
         <Fragment>
             <ModalContainer />
             <Route exact path='/' component={HomePage}/>
+            
             <Route path={'/(.+)'} render={() =>
                 <Grid>
                     <Grid.Column width={2}>
@@ -41,6 +44,8 @@ const Root : React.FC<RouteComponentProps> = () => {
                     <Grid.Column width={13}>
                     <Switch>
                             <Route exact path="/overview" component={Overview}/>
+                            <Route path="/scheduling" component={Scheduling}/>
+                            <Route path="/membership" component={VerboseMembership} />
                     </Switch>
                     </Grid.Column>
                 </Grid>

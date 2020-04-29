@@ -6,7 +6,7 @@ namespace Shared.Enumerations
 {
     public enum UserType
     {
-        Athelete = 0,
+        Athlete = 0,
         Coach = 1,
         Manager = 2,
     }

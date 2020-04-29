@@ -15,6 +15,7 @@ using Persistence.Seed;
 
 namespace API
 {
+    //dotnet ef database drop -p Persistence\ -s API\
     public class Program
     {
         public static void Main(string[] args)

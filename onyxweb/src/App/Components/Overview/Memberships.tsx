@@ -1,7 +1,8 @@
 import React, { useContext, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 import { MembershipShoreContext } from '../../Stores/MembershipStore';
-import { Container, Segment, Header,  Table, } from 'semantic-ui-react';
+import { Container, Segment, Header,  Table, Label, Icon, } from 'semantic-ui-react';
+import { Membership } from '../../Models/Membership';
 
 const Memberships : React.FC = () => {
 
@@ -11,7 +12,7 @@ const Memberships : React.FC = () => {
     return (
         <Fragment>
             <Container>
-                <Segment>
+                <Segment clearing>
                     <Header>Memberships</Header>
                     <Table striped>
                         <Table.Header>
@@ -22,11 +23,18 @@ const Memberships : React.FC = () => {
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
-                            {memberships.map(m => (
+                            {memberships.map(m  => (
                                 <Table.Row key={m.id}>
                                     <Table.Cell>{m.name}</Table.Cell>
                                     <Table.Cell>{m.description}</Table.Cell>
-                                    <Table.Cell>To Be Added</Table.Cell>
+                                    <Table.Cell>
+                                        <Label>
+                                            <Icon name='pencil'/>
+                                        </Label>
+                                        <Label>
+                                            <Icon name='trash'/>
+                                        </Label>
+                                    </Table.Cell>
                                 </Table.Row>                
                             ))}
                             
