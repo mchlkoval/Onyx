@@ -19,28 +19,28 @@ namespace Persistence.Context
 
         }
 
+        public DbSet<Organization> Organization { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Membership> Memberships { get; set; }
         public DbSet<Workout> Workout { get; set; }
-        public DbSet<ExerciseGroup> ExerciseGroup { get; set; }
         public DbSet<Exercise> Exercise { get; set; }
 
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-                
+            
+            builder.Entity<Organization>()
+                .HasMany(x => x.Members)
+                .WithOne(x => x.Organization);
+
             builder.Entity<Membership>()
                 .HasMany(x => x.Workout)
                 .WithOne(y => y.Membership);
 
             builder.Entity<Workout>()
-                    .HasMany(x => x.ExerciseGroup)
+                    .HasMany(x => x.Exercises)
                     .WithOne(y => y.Workout);
-
-            builder.Entity<ExerciseGroup>()
-                    .HasMany(y => y.Exercise)
-                    .WithOne(x => x.ExerciseGroup);
 
             builder.Entity<Message>()
                 .HasData(
@@ -111,87 +111,6 @@ namespace Persistence.Context
                             Name = "Squat One",
                             Id = "5f2ed3f1-a767-4803-b612-d3f04e508cc1"
                         }
-                );
-
-            builder.Entity<ExerciseGroup>()
-                .HasData(
-                    new ExerciseGroup
-                    {
-                        WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330",
-                        Id = "2b60f7f4-09c5-403c-882b-eadf0bf912d0",
-                        Pace = "x-safe",
-                        Sets = 4,
-                        Name = "DB Hang Snatch",
-                    },
-                    new ExerciseGroup
-                    {
-                        Id = "adf78c99-8106-49df-b0dd-d0b145ddc53e",
-                        WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330",
-                        Pace = "safe-x",
-                        Sets = 4,
-                        Name = "Goblet Front Squat"
-                    },
-                    new ExerciseGroup
-                    {
-                        Id = "6bcc3b40-17e5-440a-9f5f-98bdbb73f7f7",
-                        WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330",
-                        Pace = "3-1-x",
-                        Sets = 4,
-                        Name = "DB RDL"
-                    }
-                );
-
-            builder.Entity<Exercise>()
-                .HasData(
-                    new Exercise
-                    {
-                        ExerciseGroupId = "2b60f7f4-09c5-403c-882b-eadf0bf912d0",
-                        Reps = 4,
-                        Id = "fbc63f06-619a-4002-a676-849fc4e8f4fb",
-                        Name = "",
-                        Description = ""
-                    },
-                    new Exercise
-                    {
-                        ExerciseGroupId = "2b60f7f4-09c5-403c-882b-eadf0bf912d0",
-                        Reps = 4,
-                        Id = "d46c92bf-2369-462b-9bc7-da99f788813e",
-                        Name = "",
-                        Description = ""
-                    },
-                    new Exercise
-                    {
-                        ExerciseGroupId = "2b60f7f4-09c5-403c-882b-eadf0bf912d0",
-                        Reps = 3,
-                        Id = "77c5b70c-4c90-4ebf-a3b3-3374e913cd3e",
-                        Name = "",
-                        Description = ""
-                    },
-                    new Exercise
-                    {
-                        ExerciseGroupId = "adf78c99-8106-49df-b0dd-d0b145ddc53e",
-                        Reps = 4,
-                        Id = "42816968-45cc-4f49-aa90-197af1fb3b35",
-                        Name = "",
-                        Description = ""
-                    },
-                    new Exercise
-                    {
-                        ExerciseGroupId = "adf78c99-8106-49df-b0dd-d0b145ddc53e",
-                        Reps = 4,
-                        Id = "7bbb4df8-2a92-4ea5-8ebc-0ec72cfcc9d4",
-                        Name = "",
-                        Description = ""
-                    },
-                    new Exercise
-                    {
-                        ExerciseGroupId = "adf78c99-8106-49df-b0dd-d0b145ddc53e",
-                        Reps = 3,
-                        Id = "47e7b0de-6cd9-4895-9054-1c70c5c423ed",
-                        Name = "",
-                        Description = ""
-                    }
-
                 );
         }
     }

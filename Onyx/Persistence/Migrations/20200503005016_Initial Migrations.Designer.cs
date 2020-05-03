@@ -9,8 +9,8 @@ using Persistence.Context;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200429011519_initial")]
-    partial class initial
+    [Migration("20200503005016_Initial Migrations")]
+    partial class InitialMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,6 +51,9 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(256);
 
+                    b.Property<string>("OrganizationId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
 
@@ -81,6 +84,8 @@ namespace Persistence.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasName("UserNameIndex");
+
+                    b.HasIndex("OrganizationId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -146,7 +151,7 @@ namespace Persistence.Migrations
                         {
                             Id = "3a0a646e-2fa8-4ab9-b2dc-3aa2518d4e78",
                             Content = "Test Message 1",
-                            DateOfMessage = new DateTime(2020, 4, 27, 21, 15, 19, 531, DateTimeKind.Local).AddTicks(9845),
+                            DateOfMessage = new DateTime(2020, 5, 1, 20, 50, 15, 764, DateTimeKind.Local).AddTicks(7111),
                             From = "Anna Runner",
                             IsDeleted = false
                         },
@@ -154,7 +159,7 @@ namespace Persistence.Migrations
                         {
                             Id = "d1940fcc-f86a-4b48-ad97-3f7ff1321647",
                             Content = "Test Message 2",
-                            DateOfMessage = new DateTime(2020, 4, 28, 21, 15, 19, 534, DateTimeKind.Local).AddTicks(3457),
+                            DateOfMessage = new DateTime(2020, 5, 2, 20, 50, 15, 767, DateTimeKind.Local).AddTicks(1752),
                             From = "Michael Kovalsky",
                             IsDeleted = false
                         },
@@ -162,10 +167,23 @@ namespace Persistence.Migrations
                         {
                             Id = "b92e0a10-33e1-4108-be76-c1ec87677330",
                             Content = "Test Message 3",
-                            DateOfMessage = new DateTime(2020, 4, 26, 21, 15, 19, 534, DateTimeKind.Local).AddTicks(3495),
+                            DateOfMessage = new DateTime(2020, 4, 30, 20, 50, 15, 767, DateTimeKind.Local).AddTicks(1791),
                             From = "Aaron Runner",
                             IsDeleted = false
                         });
+                });
+
+            modelBuilder.Entity("Domain.Organization", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Organization");
                 });
 
             modelBuilder.Entity("Domain.Workouts.Exercise", b =>
@@ -173,10 +191,10 @@ namespace Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("AppUserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ExerciseGroupId")
+                    b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -185,78 +203,10 @@ namespace Persistence.Migrations
                     b.Property<int>("Reps")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Weight")
+                    b.Property<int>("Sets")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExerciseGroupId");
-
-                    b.ToTable("Exercise");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "fbc63f06-619a-4002-a676-849fc4e8f4fb",
-                            Description = "",
-                            ExerciseGroupId = "2b60f7f4-09c5-403c-882b-eadf0bf912d0",
-                            Name = "",
-                            Reps = 4
-                        },
-                        new
-                        {
-                            Id = "d46c92bf-2369-462b-9bc7-da99f788813e",
-                            Description = "",
-                            ExerciseGroupId = "2b60f7f4-09c5-403c-882b-eadf0bf912d0",
-                            Name = "",
-                            Reps = 4
-                        },
-                        new
-                        {
-                            Id = "77c5b70c-4c90-4ebf-a3b3-3374e913cd3e",
-                            Description = "",
-                            ExerciseGroupId = "2b60f7f4-09c5-403c-882b-eadf0bf912d0",
-                            Name = "",
-                            Reps = 3
-                        },
-                        new
-                        {
-                            Id = "42816968-45cc-4f49-aa90-197af1fb3b35",
-                            Description = "",
-                            ExerciseGroupId = "adf78c99-8106-49df-b0dd-d0b145ddc53e",
-                            Name = "",
-                            Reps = 4
-                        },
-                        new
-                        {
-                            Id = "7bbb4df8-2a92-4ea5-8ebc-0ec72cfcc9d4",
-                            Description = "",
-                            ExerciseGroupId = "adf78c99-8106-49df-b0dd-d0b145ddc53e",
-                            Name = "",
-                            Reps = 4
-                        },
-                        new
-                        {
-                            Id = "47e7b0de-6cd9-4895-9054-1c70c5c423ed",
-                            Description = "",
-                            ExerciseGroupId = "adf78c99-8106-49df-b0dd-d0b145ddc53e",
-                            Name = "",
-                            Reps = 3
-                        });
-                });
-
-            modelBuilder.Entity("Domain.Workouts.ExerciseGroup", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Pace")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Sets")
+                    b.Property<int?>("Weight")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("WorkoutId")
@@ -264,35 +214,11 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AppUserId");
+
                     b.HasIndex("WorkoutId");
 
-                    b.ToTable("ExerciseGroup");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "2b60f7f4-09c5-403c-882b-eadf0bf912d0",
-                            Name = "DB Hang Snatch",
-                            Pace = "x-safe",
-                            Sets = 4,
-                            WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330"
-                        },
-                        new
-                        {
-                            Id = "adf78c99-8106-49df-b0dd-d0b145ddc53e",
-                            Name = "Goblet Front Squat",
-                            Pace = "safe-x",
-                            Sets = 4,
-                            WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330"
-                        },
-                        new
-                        {
-                            Id = "6bcc3b40-17e5-440a-9f5f-98bdbb73f7f7",
-                            Name = "DB RDL",
-                            Pace = "3-1-x",
-                            Sets = 4,
-                            WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330"
-                        });
+                    b.ToTable("Exercise");
                 });
 
             modelBuilder.Entity("Domain.Workouts.Workout", b =>
@@ -322,7 +248,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = "ba596bca-7603-4d16-b9bc-aae93a414330",
-                            DateOfWorkout = new DateTime(2020, 4, 28, 21, 15, 19, 535, DateTimeKind.Local).AddTicks(8414),
+                            DateOfWorkout = new DateTime(2020, 5, 2, 20, 50, 15, 768, DateTimeKind.Local).AddTicks(5978),
                             Description = "Regular push ups",
                             MembershipId = "29ad0121-b184-461b-b2c9-518355e35123",
                             Name = "Gopnik One"
@@ -330,7 +256,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = "5f2ed3f1-a767-4803-b612-d3f04e508cc1",
-                            DateOfWorkout = new DateTime(2020, 4, 28, 21, 15, 19, 536, DateTimeKind.Local).AddTicks(630),
+                            DateOfWorkout = new DateTime(2020, 5, 2, 20, 50, 15, 768, DateTimeKind.Local).AddTicks(8278),
                             Description = "Test Description",
                             MembershipId = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
                             Name = "Squat One"
@@ -465,17 +391,21 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Domain.Workouts.Exercise", b =>
+            modelBuilder.Entity("Domain.Identity.AppUser", b =>
                 {
-                    b.HasOne("Domain.Workouts.ExerciseGroup", "ExerciseGroup")
-                        .WithMany("Exercise")
-                        .HasForeignKey("ExerciseGroupId");
+                    b.HasOne("Domain.Organization", "Organization")
+                        .WithMany("Members")
+                        .HasForeignKey("OrganizationId");
                 });
 
-            modelBuilder.Entity("Domain.Workouts.ExerciseGroup", b =>
+            modelBuilder.Entity("Domain.Workouts.Exercise", b =>
                 {
+                    b.HasOne("Domain.Identity.AppUser", null)
+                        .WithMany("Exercises")
+                        .HasForeignKey("AppUserId");
+
                     b.HasOne("Domain.Workouts.Workout", "Workout")
-                        .WithMany("ExerciseGroup")
+                        .WithMany("Exercises")
                         .HasForeignKey("WorkoutId");
                 });
 

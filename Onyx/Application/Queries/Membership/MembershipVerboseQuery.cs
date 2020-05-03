@@ -34,26 +34,27 @@ namespace Application.Queries.Membership
                     Name = x.Name,
                     Id = x.Id,
                     Cost = x.Cost,
-                    Workouts = x.Workout.Select(y => new WorkoutViewModel
-                    {
-                        DateOfWorkout = y.DateOfWorkout,
-                        Id = y.Id,
-                        Name = y.Name,
-                        ExerciseGroups = y.ExerciseGroup.Select(z => new ExerciseGroupViewModel
-                        {
-                            Id = z.Id,
-                            Name = z.Name,
-                            Pace = z.Pace,
-                            Sets = z.Sets,
-                            Exercises = z.Exercise.Select(e => new ExerciseViewModel
-                            {
-                                Description = e.Description,
-                                Name = e.Name,
-                                Reps = e.Reps,
-                                Weight = e.Weight
-                            })
-                        })
-                    })
+                    //Workouts = x.Workout.Select(y => new WorkoutViewModel
+                    //{
+                    //    DateOfWorkout = y.DateOfWorkout,
+                    //    Id = y.Id,
+                    //    Name = y.Name,
+                    //    ExerciseGroups = y.ExerciseGroup.Select(z => new ExerciseGroupViewModel
+                    //    {
+                    //        Id = z.Id,
+                    //        Name = z.Name,
+                    //        Pace = z.Pace,
+                    //        Sets = z.Sets,
+                    //        Exercises = z.Exercise.Select(e => new ExerciseViewModel
+                    //        {
+                    //            Description = e.Description,
+                    //            Name = e.Name,
+                    //            Reps = e.Reps,
+                    //            Weight = e.Weight,
+                    //            Id = e.Id
+                    //        })
+                    //    })
+                    //})
                 }).ToListAsync();
 
                 return vm;

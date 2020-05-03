@@ -2,7 +2,7 @@ import React, { useContext, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 import { MembershipShoreContext } from '../../Stores/MembershipStore';
 import { Container, Segment, Header,  Table, Label, Icon, } from 'semantic-ui-react';
-import { Membership } from '../../Models/Membership';
+import Jumbotron from 'react-bootstrap/Jumbotron'
 
 const Memberships : React.FC = () => {
 
