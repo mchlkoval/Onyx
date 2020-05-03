@@ -4,7 +4,7 @@ import Messages from './Overview/Messages'
 import { Grid } from 'semantic-ui-react'
 import { MessageStoreContext } from '../Stores/MessageStore'
 import { MembershipShoreContext } from '../Stores/MembershipStore'
-import Memberships from './Overview/Memberships'
+import Memberships from './Memberships/Memberships'
 import Progress from './Overview/Progress'
 
 const Overview : React.FC = () => {
@@ -17,7 +17,6 @@ const Overview : React.FC = () => {
     useEffect(() => {
         loadMessages();
         loadMemberships();
-        
     }, [loadMessages, loadMemberships])
 
     return (

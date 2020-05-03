@@ -9,9 +9,11 @@ import Overview from '../Overview';
 import { LoadingComponent } from '../General/Loading/LoadingComponent';
 import { HomePage } from '../Home/HomePage';
 import Scheduling from '../Scheduling/Scheduling';
-import VerboseMembership from '../Memberships/VerboseMembership';
+import Memberships from '../Memberships/Memberships';
+import Workouts from '../Workouts/Workouts';
+import Workout from '../Workouts/Workout';
 
-const Root : React.FC<RouteComponentProps> = () => {
+const Root : React.FC<RouteComponentProps> = ({location}) => {
 
     const rootContext = useContext(RootStoreContext);
     const {setAppLoaded, token, appLoaded} = rootContext.commonStore;
@@ -45,7 +47,9 @@ const Root : React.FC<RouteComponentProps> = () => {
                     <Switch>
                             <Route exact path="/overview" component={Overview}/>
                             <Route path="/scheduling" component={Scheduling}/>
-                            <Route path="/membership" component={VerboseMembership} />
+                            <Route path="/membership" component={Memberships} />
+                            <Route exact path="/workout" component={Workouts} />
+                            <Route key={location.key} path='/workout/:id' component={Workout}/>
                     </Switch>
                     </Grid.Column>
                 </Grid>
