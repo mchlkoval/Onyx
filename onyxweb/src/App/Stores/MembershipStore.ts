@@ -2,20 +2,27 @@ import { createContext } from "react";
 import { observable, action, runInAction } from "mobx";
 import { Membership} from "../Models/Membership";
 import Agent from "../API/Agent";
+import { RootStore } from "./RootStore";
 
-export class MembershipShore {
+export class MembershipStore {
+
+    rootStore : RootStore;
 
     @observable memberships : Membership[] = [];
     @observable membership : Membership |  null = null;
 
-
+    constructor(root: RootStore) {
+        this.rootStore = root;
+    }
 
     @action loadMemberships = async () => {
         try {
             const apiResult = await Agent.Memberships.list();
             
             runInAction("Getting Memberships from API", () => {
+                console.log("data from membership: ", apiResult);
                 this.memberships = apiResult;
+                console.log(this.memberships);
             })
 
         } catch (error) {
@@ -41,5 +48,3 @@ export class MembershipShore {
     }
 
 }
-
-export const MembershipShoreContext = createContext(new MembershipShore());

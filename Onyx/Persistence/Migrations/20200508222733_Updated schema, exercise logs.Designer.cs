@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Context;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200508222733_Updated schema, exercise logs")]
+    partial class Updatedschemaexerciselogs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,7 +151,7 @@ namespace Persistence.Migrations
                         {
                             Id = "3a0a646e-2fa8-4ab9-b2dc-3aa2518d4e78",
                             Content = "Test Message 1",
-                            DateOfMessage = new DateTime(2020, 5, 7, 21, 5, 18, 77, DateTimeKind.Local).AddTicks(7762),
+                            DateOfMessage = new DateTime(2020, 5, 7, 18, 27, 33, 414, DateTimeKind.Local).AddTicks(9455),
                             From = "Anna Runner",
                             IsDeleted = false
                         },
@@ -157,7 +159,7 @@ namespace Persistence.Migrations
                         {
                             Id = "d1940fcc-f86a-4b48-ad97-3f7ff1321647",
                             Content = "Test Message 2",
-                            DateOfMessage = new DateTime(2020, 5, 8, 21, 5, 18, 80, DateTimeKind.Local).AddTicks(3204),
+                            DateOfMessage = new DateTime(2020, 5, 8, 18, 27, 33, 417, DateTimeKind.Local).AddTicks(4692),
                             From = "Michael Kovalsky",
                             IsDeleted = false
                         },
@@ -165,7 +167,7 @@ namespace Persistence.Migrations
                         {
                             Id = "b92e0a10-33e1-4108-be76-c1ec87677330",
                             Content = "Test Message 3",
-                            DateOfMessage = new DateTime(2020, 5, 6, 21, 5, 18, 80, DateTimeKind.Local).AddTicks(3244),
+                            DateOfMessage = new DateTime(2020, 5, 6, 18, 27, 33, 417, DateTimeKind.Local).AddTicks(4729),
                             From = "Aaron Runner",
                             IsDeleted = false
                         });
@@ -217,36 +219,6 @@ namespace Persistence.Migrations
                     b.HasIndex("WorkoutId");
 
                     b.ToTable("Exercise");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "cb168e0f-ed08-4588-ae72-1b2fb80daff3",
-                            Description = "Basic pull ups",
-                            Name = "Upper Body",
-                            Reps = 5,
-                            Sets = 5,
-                            WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330"
-                        },
-                        new
-                        {
-                            Id = "e3986007-27cf-4abd-86ed-589f99246482",
-                            Description = "Basic sit ups",
-                            Name = "Core Muscles",
-                            Reps = 10,
-                            Sets = 10,
-                            WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330"
-                        },
-                        new
-                        {
-                            Id = "cf25e17b-e402-4f39-9a5f-03fdc0cc513a",
-                            Description = "Pushing against weights on the leg machine",
-                            Name = "Leg Muscles",
-                            Reps = 10,
-                            Sets = 5,
-                            Weight = 30,
-                            WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Workouts.ExerciseLog", b =>
@@ -305,7 +277,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = "ba596bca-7603-4d16-b9bc-aae93a414330",
-                            DateOfWorkout = new DateTime(2020, 5, 8, 21, 5, 18, 81, DateTimeKind.Local).AddTicks(8589),
+                            DateOfWorkout = new DateTime(2020, 5, 8, 18, 27, 33, 418, DateTimeKind.Local).AddTicks(9184),
                             Description = "Regular push ups",
                             MembershipId = "29ad0121-b184-461b-b2c9-518355e35123",
                             Name = "Gopnik One"
@@ -313,7 +285,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = "5f2ed3f1-a767-4803-b612-d3f04e508cc1",
-                            DateOfWorkout = new DateTime(2020, 5, 8, 21, 5, 18, 82, DateTimeKind.Local).AddTicks(1123),
+                            DateOfWorkout = new DateTime(2020, 5, 8, 18, 27, 33, 419, DateTimeKind.Local).AddTicks(1379),
                             Description = "Test Description",
                             MembershipId = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
                             Name = "Squat One"

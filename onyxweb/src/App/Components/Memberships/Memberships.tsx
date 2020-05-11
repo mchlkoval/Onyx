@@ -1,15 +1,15 @@
 import React, { useContext, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
-import { MembershipShoreContext } from '../../Stores/MembershipStore';
 import { Container, Button} from 'semantic-ui-react';
 import Card from 'react-bootstrap/Card'
 import CardDeck from 'react-bootstrap/CardDeck'
 import { Link } from 'react-router-dom';
+import { RootStore, RootStoreContext } from '../../Stores/RootStore';
 
 const Memberships : React.FC = () => {
 
-    const membershipStore = useContext(MembershipShoreContext);
-    const {memberships} = membershipStore;
+    const root = useContext(RootStoreContext);    
+    const {memberships} = root.membershipStore;
 
     return (
         <Fragment>

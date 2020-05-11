@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Queries.Workouts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ViewModels.Workout;
 
 namespace API.Controllers
 {
@@ -13,12 +15,52 @@ namespace API.Controllers
     [ApiController]
     public class WorkoutController : BaseController
     {
-        [HttpGet]
+        [HttpPost]
         [Authorize]
-        [Route("exercisegroups")]
-        public async Task<ActionResult> GetExerciseGroups(CancellationToken ct)
+        [Route("createExercise")]
+        public async Task<ActionResult> RecordExerciseData(CancellationToken ct)
         {
             return null;
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("createWorkout")]
+        public async Task<ActionResult> CreateWorkout(CancellationToken ct)
+        {
+            return null;
+        }
+
+        [HttpPut]
+        [Authorize]
+        [Route("updateExercise")]
+        public async Task<ActionResult> UpdateExercise(CancellationToken ct)
+        {
+            return null;
+        }
+
+        [HttpPut]
+        [Authorize]
+        [Route("updateWorkout")]
+        public async Task<ActionResult> UpdateWorkout(CancellationToken ct)
+        {
+            return null;
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("workouts")]
+        public async Task<ActionResult<List<WorkoutsViewModel>>> ListWorksouts(CancellationToken ct)
+        {
+            return await Mediator.Send(new WorkoutQuery.Query(), ct);
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("exercises/{workoutId}")]
+        public async Task<ActionResult<List<ExercisesViewModel>>> ListExercises(string workoutId, CancellationToken ct)
+        {
+            return await Mediator.Send(new ExerciseQuery.Query(workoutId), ct);
         }
     }
 }

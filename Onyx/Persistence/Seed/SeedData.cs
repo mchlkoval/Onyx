@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Identity;
+using Domain.Workouts;
 using Microsoft.AspNetCore.Identity;
 using Persistence.Context;
 using Shared.Enumerations;
@@ -62,6 +63,14 @@ namespace Persistence.Seed
                     await userManager.AddPasswordAsync(user, "Pa$$w0rd");
                 }
 
+                //var exercises = new List<Exercise>
+                //{
+                //    new Exercise
+                //    {
+                //        Id = Guid.NewGuid().ToString(),
+                //        AppUserId = "d8564df2-1464-4547-b418-d1c4c75fe1fc"
+                //    }
+                //};
                 
             }
         } 

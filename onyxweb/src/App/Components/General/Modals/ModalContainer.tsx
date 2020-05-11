@@ -9,7 +9,7 @@ const ModalContainer = () => {
     const {modal: {open, body}, closeModal} = root.modalStore;
 
     return (
-    <Modal open={open} onClose={closeModal} size='large'>
+    <Modal open={open} onClose={closeModal} size='small'>
         <Modal.Content >
             {body}
         </Modal.Content>

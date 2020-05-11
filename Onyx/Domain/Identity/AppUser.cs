@@ -10,7 +10,7 @@ namespace Domain.Identity
         public UserType UserType { get; set; }
         public string OrganizationId { get; set; }
         public Organization Organization { get; set; }
-        public List<Exercise> Exercises { get; set; }
+        public List<ExerciseLog> ExerciseLogs { get; set; }
         //public ICollection<Message> Messages { get; set; }
     }
 }

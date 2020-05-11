@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { history } from '../..';
 import { Message } from '../Models/Message';
 import { Membership } from '../Models/Membership';
+import { Exercise, Workout } from '../Models/Workout';
 
 axios.defaults.baseURL = "http://localhost:5000/api"
 
@@ -67,7 +68,10 @@ const Memberships = {
 }
 
 const Workouts = {
-    //list: () : Promise<ExerciseGroup[]> => requests.get("/workout/exercisegroups")
+    editExercise: (exercise: Exercise) => requests.post("/workout/create", exercise),
+    createExercise: (exercise: Exercise) => requests.put("/workout/update", exercise),
+    listWorkouts: (): Promise<Workout[]> => requests.get(`/workout/workouts`),
+    listExercises: (workoutId: string) : Promise<Exercise[]> => requests.get(`/workout/exercises/${workoutId}`)
 }
 
 export default {

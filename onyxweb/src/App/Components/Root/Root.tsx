@@ -10,8 +10,8 @@ import { LoadingComponent } from '../General/Loading/LoadingComponent';
 import { HomePage } from '../Home/HomePage';
 import Scheduling from '../Scheduling/Scheduling';
 import Memberships from '../Memberships/Memberships';
-import Workouts from '../Workouts/Workouts';
 import Workout from '../Workouts/Workout';
+import WorkoutForm from '../Workouts/WorkoutForm';
 
 const Root : React.FC<RouteComponentProps> = ({location}) => {
 
@@ -48,8 +48,9 @@ const Root : React.FC<RouteComponentProps> = ({location}) => {
                             <Route exact path="/overview" component={Overview}/>
                             <Route path="/scheduling" component={Scheduling}/>
                             <Route path="/membership" component={Memberships} />
-                            <Route exact path="/workout" component={Workouts} />
-                            <Route key={location.key} path='/workout/:id' component={Workout}/>
+                            <Route exact path="/workout" component={Workout} />
+                            <Route key={location.key} path='/workout/:workoutId' component={WorkoutForm}/>
+
                     </Switch>
                     </Grid.Column>
                 </Grid>

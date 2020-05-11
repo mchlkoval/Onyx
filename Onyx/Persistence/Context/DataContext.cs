@@ -24,6 +24,7 @@ namespace Persistence.Context
         public DbSet<Membership> Memberships { get; set; }
         public DbSet<Workout> Workout { get; set; }
         public DbSet<Exercise> Exercise { get; set; }
+        public DbSet<ExerciseLog> ExerciseLog { get; set; }
 
         
         protected override void OnModelCreating(ModelBuilder builder)
@@ -41,6 +42,10 @@ namespace Persistence.Context
             builder.Entity<Workout>()
                     .HasMany(x => x.Exercises)
                     .WithOne(y => y.Workout);
+
+            builder.Entity<Exercise>()
+                .HasMany(x => x.ExerciseLogs)
+                .WithOne(y => y.Exercise);
 
             builder.Entity<Message>()
                 .HasData(
@@ -95,22 +100,54 @@ namespace Persistence.Context
 
             builder.Entity<Workout>()
                 .HasData(
-                        new Workout
-                        {
-                            DateOfWorkout = DateTime.Now,
-                            MembershipId = "29ad0121-b184-461b-b2c9-518355e35123",
-                            Description = "Regular push ups",
-                            Name = "Gopnik One",
-                            Id = "ba596bca-7603-4d16-b9bc-aae93a414330"
-                        },
-                        new Workout
-                        {
-                            DateOfWorkout = DateTime.Now,
-                            MembershipId = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
-                            Description = "Test Description",
-                            Name = "Squat One",
-                            Id = "5f2ed3f1-a767-4803-b612-d3f04e508cc1"
-                        }
+                    new Workout
+                    {
+                        DateOfWorkout = DateTime.Now,
+                        MembershipId = "29ad0121-b184-461b-b2c9-518355e35123",
+                        Description = "Regular push ups",
+                        Name = "Gopnik One",
+                        Id = "ba596bca-7603-4d16-b9bc-aae93a414330"
+                    },
+                    new Workout
+                    {
+                        DateOfWorkout = DateTime.Now,
+                        MembershipId = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
+                        Description = "Test Description",
+                        Name = "Squat One",
+                        Id = "5f2ed3f1-a767-4803-b612-d3f04e508cc1"
+                    }
+                );
+
+            builder.Entity<Exercise>()
+                .HasData(
+                    new Exercise
+                    {
+                        Id = "cb168e0f-ed08-4588-ae72-1b2fb80daff3",
+                        WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330",
+                        Name = "Upper Body",
+                        Sets = 5,
+                        Reps = 5,
+                        Description = "Basic pull ups",
+                    },
+                    new Exercise
+                    {
+                        Id = "e3986007-27cf-4abd-86ed-589f99246482",
+                        WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330",
+                        Name = "Core Muscles",
+                        Sets = 10,
+                        Reps = 10,
+                        Description = "Basic sit ups",
+                    },
+                    new Exercise
+                    {
+                        Id = "cf25e17b-e402-4f39-9a5f-03fdc0cc513a",
+                        WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330",
+                        Name = "Leg Muscles",
+                        Sets = 5,
+                        Reps = 10,
+                        Weight = 30,
+                        Description = "Pushing against weights on the leg machine",
+                    }
                 );
         }
     }

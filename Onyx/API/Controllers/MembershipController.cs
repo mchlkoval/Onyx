@@ -29,7 +29,7 @@ namespace API.Controllers
         [Route("memberships/full")]
         public async Task<ActionResult<List<MembershipVerboseViewModel>>> VerboseMemberships(CancellationToken ct)
         {
-            return await Mediator.Send(new MembershipVerboseQuery.Query(), ct);;
+            return await Mediator.Send(new MembershipVerboseQuery.Query(), ct);
         }
     }
 }

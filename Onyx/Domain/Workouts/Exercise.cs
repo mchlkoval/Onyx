@@ -8,8 +8,6 @@ namespace Domain.Workouts
     public class Exercise
     {
         public string Id { get; set; }
-        public string AppUserId { get; set; }
-        public AppUser AppUser { get; set; }
         public string WorkoutId { get; set; }
         public Workout Workout { get; set; }
         public string Description { get; set; }
@@ -17,5 +15,7 @@ namespace Domain.Workouts
         public int Reps { get; set; }
         public int Sets { get; set; }
         public int? Weight {get; set; }
+
+        public List<ExerciseLog> ExerciseLogs { get; set; }
     }
 }

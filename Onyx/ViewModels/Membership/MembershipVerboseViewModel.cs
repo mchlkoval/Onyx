@@ -19,17 +19,7 @@ namespace ViewModels.Membership
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime DateOfWorkout { get; set; }
-        public IEnumerable<ExerciseGroupViewModel> ExerciseGroups { get; set; }
-    }
-
-    public class ExerciseGroupViewModel
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Pace { get; set; }
-        public int Sets { get; set; }
         public IEnumerable<ExerciseViewModel> Exercises { get; set; }
-
     }
 
     public class ExerciseViewModel
@@ -38,6 +28,7 @@ namespace ViewModels.Membership
         public string Description { get; set; }
         public string Name { get; set; }
         public int Reps { get; set; }
+        public int Sets { get; set; }
         public int? Weight { get; set; }
     }
 

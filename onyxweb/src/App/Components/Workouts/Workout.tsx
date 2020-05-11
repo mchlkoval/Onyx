@@ -1,33 +1,37 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext} from 'react'
 import { observer } from 'mobx-react-lite'
-import { RouteComponentProps } from 'react-router-dom'
 import { Container, Segment, Header, Button } from 'semantic-ui-react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction";
+import ProgressBar from 'react-bootstrap/ProgressBar'
+import { RootStoreContext } from '../../Stores/RootStore'
+import { history } from '../../..'
 
-interface DetailParams {
-    id: string
-}
 
-const Workout : React.FC<RouteComponentProps<DetailParams>> = ({match, history}) => {
+const Workout : React.FC = () => {
+
+    const root = useContext(RootStoreContext);
+    const {getWorkouts, events} = root.workoutStore;
 
     useEffect(() => {
-        console.log("In here");
-        if(match.params.id) {
+        getWorkouts();
+    }, [getWorkouts])
 
-        }
-    }, [match.params.id])
+    const handleEventClick = (arg: any) => {
+        history.push(`/workout/${arg.event.id}`)
+    }
 
     return (
         <Container>
         <Segment clearing>
-                <Header style={{display: 'inline'}}>My Workouts</Header>
-                <Button color='blue' floated='right' content="Add Class"></Button>
+                <Header style={{display: 'inline-block'}}>Weekly Workout Progress</Header>
+                <ProgressBar now={60} style={{marginBottom: '10px'}}/>
+                <Button color='blue' floated='right' content="Add Workout"></Button>
         </Segment>
         <Segment>
-        <FullCalendar defaultView='dayGridWeek'  plugins={[dayGridPlugin, interactionPlugin]} weekends={true} 
-        events={[{ title: 'event 1', date: '2020-04-24T16:00:00' }, { title: 'event 2', date: '2020-04-24T18:00:00' }]} />
+        <FullCalendar defaultView='dayGridWeek' plugins={[dayGridPlugin, interactionPlugin]} weekends={true} 
+        events={events} eventClick={handleEventClick} />
         </Segment>
     </Container>
     )

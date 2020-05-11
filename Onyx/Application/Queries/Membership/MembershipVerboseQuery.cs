@@ -29,33 +29,32 @@ namespace Application.Queries.Membership
 
             public async Task<List<MembershipVerboseViewModel>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var vm = await context.Memberships.Select(x => new MembershipVerboseViewModel {
+                var initialFilter = await context.Memberships
+                    .Include(x => x.Workout)
+                    .ThenInclude(z => z.Exercises)
+                    .ToListAsync();
+
+                var vm = initialFilter.Select(x => new MembershipVerboseViewModel {
                     Description = x.Description,
                     Name = x.Name,
                     Id = x.Id,
                     Cost = x.Cost,
-                    //Workouts = x.Workout.Select(y => new WorkoutViewModel
-                    //{
-                    //    DateOfWorkout = y.DateOfWorkout,
-                    //    Id = y.Id,
-                    //    Name = y.Name,
-                    //    ExerciseGroups = y.ExerciseGroup.Select(z => new ExerciseGroupViewModel
-                    //    {
-                    //        Id = z.Id,
-                    //        Name = z.Name,
-                    //        Pace = z.Pace,
-                    //        Sets = z.Sets,
-                    //        Exercises = z.Exercise.Select(e => new ExerciseViewModel
-                    //        {
-                    //            Description = e.Description,
-                    //            Name = e.Name,
-                    //            Reps = e.Reps,
-                    //            Weight = e.Weight,
-                    //            Id = e.Id
-                    //        })
-                    //    })
-                    //})
-                }).ToListAsync();
+                    Workouts = x.Workout.Select(z => new WorkoutViewModel
+                    {
+                        DateOfWorkout = z.DateOfWorkout,
+                        Id = z.Id,
+                        Name = x.Name,
+                        Exercises = z.Exercises.Select(y => new ExerciseViewModel
+                        {
+                            Description = y.Description,
+                            Id = y.Id,
+                            Name = y.Name,
+                            Reps = y.Reps,
+                            Sets = y.Sets,
+                            Weight = y.Weight
+                        })
+                    })
+                }).ToList();
 
                 return vm;
             }

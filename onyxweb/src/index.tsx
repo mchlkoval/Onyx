@@ -19,7 +19,6 @@ export const history = createBrowserHistory();
 ReactDOM.render(
   <Router history={history}>
     <ToastContainer position="bottom-right"/>
-    <ModalContainer />
     <ScrollToTop>
         <Root />
     </ScrollToTop>
