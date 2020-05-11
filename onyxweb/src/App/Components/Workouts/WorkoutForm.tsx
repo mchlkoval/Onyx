@@ -47,19 +47,31 @@ const WorkoutForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) =
             <Container>
                 <Segment>
                     <Header>Record Workout</Header>
-                    <Formik key={uuid()} onSubmit={handleFormSubmit}  enableReinitialize={true} initialValues={{exercises: exercisesForForm}}
+                    <Formik key={uuid()} onSubmit={handleFormSubmit}  enableReinitialize={true} initialValues={exercisesForForm}
                         render={({values, handleChange, handleSubmit}) => (
                             <Form onSubmit={handleSubmit}>
                                 <FieldArray 
                                     name="exercises"
                                     render={arrayHelpers => ( 
-                                        values.exercises.map((e, index) => (
+                                        values.map((e, index) => (
                                             <Fragment key={index}>
                                                 <Header>{e.name}</Header>
                                                 <Form.Row>
                                                     <Form.Group as={Col}>
                                                         <Form.Label>Sets</Form.Label>
-                                                        <Form.Control key={`${index}_sets`} type='number' name={`exercises[${index}].sets`} value={(e.sets)} onChange={handleChange} />
+                                                        <Form.Control key={`${index}_sets`} type='number' name={`[${index}].sets`} value={(e.sets)} onChange={handleChange} />
+                                                    </Form.Group>
+                                                </Form.Row>
+                                                <Form.Row>
+                                                    <Form.Group as={Col}>
+                                                        <Form.Label>Reps</Form.Label>
+                                                        <Form.Control key={`${index}_reps`} type='number' name={`[${index}].reps`} value={(e.reps)} onChange={handleChange} />
+                                                    </Form.Group>
+                                                </Form.Row>
+                                                <Form.Row>
+                                                    <Form.Group as={Col}>
+                                                        <Form.Label>Weight</Form.Label>
+                                                        <Form.Control key={`${index}_weight`} type='number' name={`[${index}].weight`} value={(e.weight)} onChange={handleChange} />
                                                     </Form.Group>
                                                 </Form.Row>
                                             </Fragment>
@@ -113,57 +125,6 @@ const WorkoutForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) =
                 //         </Form.Row>     
                 //         </Form> */}
                     
-            
-            
-                // {/* <Formik onSubmit={handleFormSubmit} initialValues={exercise}>
-                //     {({
-                //         handleSubmit,
-                //         handleChange,
-                //         values
-                //     }) => (
-                //     <Form onSubmit={handleSubmit} >
-                //         <Form.Row>
-                //             <Form.Group as={Col} controlId='01'>
-                //                 <Form.Label>Sets</Form.Label>
-                //                 <Form.Control 
-                //                     type='number'
-                //                     name='sets'
-                //                     value={values.sets}
-                //                     onChange={handleChange}
-                //                 />
-                //             </Form.Group>
-                //             <Form.Group as={Col} controlId='02'>
-                //                 <Form.Label>Sets</Form.Label>
-                //                 <Form.Control 
-                //                     type='number'
-                //                     name='reps'
-                //                     value={values.reps}
-                //                     onChange={handleChange}
-                //                 />
-                //             </Form.Group>
-                //         </Form.Row>
-                //         <Form.Row>
-                //         <Form.Group as={Col} controlId='03'>
-                //                 <Form.Label>Sets</Form.Label>
-                //                 <Form.Control 
-                //                     as='textarea'
-                //                     name='description' 
-                //                     rows={10}
-                //                     value={values.description}
-                //                     onChange={handleChange}
-                //                 />
-                //             </Form.Group>
-                //         </Form.Row>
-                //         <Form.Row>
-                //             <Form.Group as={Col} controlId='04'>
-                //                 <Button content="Submit" floated='right' type="submit"/>
-                //             </Form.Group>
-                            
-                //         </Form.Row>
-                //     </Form>
-                // )}
-                // </Formik> */}
- 
     )
 }
 
