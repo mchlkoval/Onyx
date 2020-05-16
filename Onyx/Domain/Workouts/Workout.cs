@@ -14,7 +14,10 @@ namespace Domain.Workouts
         public Membership Membership { get; set; }
         public string Name { get; set; }
         public DateTime DateOfWorkout { get; set; }
-        public List<ExerciseGroup> ExerciseGroup { get; set; }
+        public int MinSets { get; set; }
+        public int MinReps { get; set; }
+        public int? MinWeight { get; set; }
+        public List<Exercise> Exercises { get; set; }
 
 
     }

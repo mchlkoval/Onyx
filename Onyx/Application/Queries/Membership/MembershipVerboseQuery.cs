@@ -13,12 +13,17 @@ namespace Application.Queries.Membership
 {
     public class MembershipVerboseQuery
     {
-        public class Query : IRequest<List<MembershipVerboseViewModel>>
+        public class Query : IRequest<MembershipVerboseViewModel>
         {
+            public string MembershipId { get; set; }
 
+            public Query(string membershipId)
+            {
+                this.MembershipId = membershipId;
+            }
         }
 
-        public class Handler : IRequestHandler<Query, List<MembershipVerboseViewModel>>
+        public class Handler : IRequestHandler<Query, MembershipVerboseViewModel>
         {
             private DataContext context;
 
@@ -27,34 +32,36 @@ namespace Application.Queries.Membership
                 this.context = context;
             }
 
-            public async Task<List<MembershipVerboseViewModel>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<MembershipVerboseViewModel> Handle(Query request, CancellationToken cancellationToken)
             {
-                var vm = await context.Memberships.Select(x => new MembershipVerboseViewModel {
+                var initialFilter = await context.Memberships
+                    .Include(x => x.Workout)
+                    .ThenInclude(z => z.Exercises)
+                    .Where(x => x.Id == request.MembershipId)
+                    .ToListAsync();
+
+                var vm = initialFilter.Select(x => new MembershipVerboseViewModel {
+                    Id = x.Id,
                     Description = x.Description,
                     Name = x.Name,
-                    Id = x.Id,
                     Cost = x.Cost,
-                    Workouts = x.Workout.Select(y => new WorkoutViewModel
+                    StartDate = x.StartDate,
+                    EndDate = x.EndDate,
+                    Workouts = x.Workout.Select(z => new WorkoutViewModel
                     {
-                        DateOfWorkout = y.DateOfWorkout,
-                        Id = y.Id,
-                        Name = y.Name,
-                        ExerciseGroups = y.ExerciseGroup.Select(z => new ExerciseGroupViewModel
+                        DateOfWorkout = z.DateOfWorkout,
+                        Name = z.Name,
+                        Description = z.Description,
+                        MinReps = z.MinReps,
+                        MinSets = z.MinSets,
+                        MinWeight = z.MinWeight,
+                        Exercises = z.Exercises.Select(y => new ExerciseViewModel
                         {
-                            Id = z.Id,
-                            Name = z.Name,
-                            Pace = z.Pace,
-                            Sets = z.Sets,
-                            Exercises = z.Exercise.Select(e => new ExerciseViewModel
-                            {
-                                Description = e.Description,
-                                Name = e.Name,
-                                Reps = e.Reps,
-                                Weight = e.Weight
-                            })
+                            Description = y.Description,
+                            Name = y.Name,
                         })
                     })
-                }).ToListAsync();
+                }).First();
 
                 return vm;
             }

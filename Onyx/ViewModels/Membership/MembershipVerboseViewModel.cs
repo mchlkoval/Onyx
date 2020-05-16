@@ -10,35 +10,26 @@ namespace ViewModels.Membership
         public string Name { get; set; }
         public string Description { get; set; }
         public double Cost { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public IEnumerable<WorkoutViewModel> Workouts { get; set; }
     }
 
     public class WorkoutViewModel
     {
-        public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime DateOfWorkout { get; set; }
-        public IEnumerable<ExerciseGroupViewModel> ExerciseGroups { get; set; }
-    }
-
-    public class ExerciseGroupViewModel
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Pace { get; set; }
-        public int Sets { get; set; }
+        public int MinReps { get; set; }
+        public int MinSets { get; set; }
+        public int? MinWeight { get; set; }
         public IEnumerable<ExerciseViewModel> Exercises { get; set; }
-
     }
 
     public class ExerciseViewModel
     {
-        public string Id { get; set; }
         public string Description { get; set; }
         public string Name { get; set; }
-        public int Reps { get; set; }
-        public int? Weight { get; set; }
     }
 
 }

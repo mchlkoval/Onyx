@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence.Migrations
 {
-    public partial class initial : Migration
+    public partial class Newerschema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,39 +22,15 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    UserType = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Memberships",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Cost = table.Column<double>(nullable: false)
+                    Cost = table.Column<double>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,6 +53,18 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Organization",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Organization", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -95,6 +83,86 @@ namespace Persistence.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Workout",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    MembershipId = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    DateOfWorkout = table.Column<DateTime>(nullable: false),
+                    MinSets = table.Column<int>(nullable: false),
+                    MinReps = table.Column<int>(nullable: false),
+                    MinWeight = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Workout", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Workout_Memberships_MembershipId",
+                        column: x => x.MembershipId,
+                        principalTable: "Memberships",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    UserType = table.Column<int>(nullable: false),
+                    OrganizationId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Organization_OrganizationId",
+                        column: x => x.OrganizationId,
+                        principalTable: "Organization",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Exercise",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    WorkoutId = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Reps = table.Column<int>(nullable: false),
+                    Sets = table.Column<int>(nullable: false),
+                    Weight = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Exercise", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Exercise_Workout_WorkoutId",
+                        column: x => x.WorkoutId,
+                        principalTable: "Workout",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -183,148 +251,83 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Workout",
+                name: "ExerciseLog",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    MembershipId = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    DateOfWorkout = table.Column<DateTime>(nullable: false)
+                    Reps = table.Column<string>(nullable: true),
+                    Sets = table.Column<string>(nullable: true),
+                    Weight = table.Column<int>(nullable: true),
+                    AppUserId = table.Column<string>(nullable: true),
+                    ExerciseId = table.Column<string>(nullable: true),
+                    DateRecorded = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Workout", x => x.Id);
+                    table.PrimaryKey("PK_ExerciseLog", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Workout_Memberships_MembershipId",
-                        column: x => x.MembershipId,
-                        principalTable: "Memberships",
+                        name: "FK_ExerciseLog_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ExerciseGroup",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Pace = table.Column<string>(nullable: true),
-                    WorkoutId = table.Column<string>(nullable: true),
-                    Sets = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ExerciseGroup", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ExerciseGroup_Workout_WorkoutId",
-                        column: x => x.WorkoutId,
-                        principalTable: "Workout",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Exercise",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    ExerciseGroupId = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Reps = table.Column<int>(nullable: false),
-                    Weight = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Exercise", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Exercise_ExerciseGroup_ExerciseGroupId",
-                        column: x => x.ExerciseGroupId,
-                        principalTable: "ExerciseGroup",
+                        name: "FK_ExerciseLog_Exercise_ExerciseId",
+                        column: x => x.ExerciseId,
+                        principalTable: "Exercise",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "Memberships",
-                columns: new[] { "Id", "Cost", "Description", "Name" },
-                values: new object[] { "29ad0121-b184-461b-b2c9-518355e35123", 250.0, "Approved by Boris, loved by Slavs, misunderstood by Americans.", "Gopnik Workout" });
+                columns: new[] { "Id", "Cost", "Description", "EndDate", "Name", "StartDate" },
+                values: new object[] { "29ad0121-b184-461b-b2c9-518355e35123", 250.0, "Approved by Boris, loved by Slavs, misunderstood by Americans.", new DateTime(2020, 6, 14, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(4375), "Gopnik Workout", new DateTime(2020, 5, 15, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(3885) });
 
             migrationBuilder.InsertData(
                 table: "Memberships",
-                columns: new[] { "Id", "Cost", "Description", "Name" },
-                values: new object[] { "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a", 100.0, "Simple and effective after you gorged yourself", "Squats and Pull Ups" });
+                columns: new[] { "Id", "Cost", "Description", "EndDate", "Name", "StartDate" },
+                values: new object[] { "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a", 100.0, "Simple and effective after you gorged yourself", new DateTime(2020, 6, 14, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(4916), "Squats and Pull Ups", new DateTime(2020, 5, 15, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(4892) });
 
             migrationBuilder.InsertData(
                 table: "Messages",
                 columns: new[] { "Id", "Content", "DateOfMessage", "From", "IsDeleted" },
-                values: new object[] { "3a0a646e-2fa8-4ab9-b2dc-3aa2518d4e78", "Test Message 1", new DateTime(2020, 4, 27, 21, 15, 19, 531, DateTimeKind.Local).AddTicks(9845), "Anna Runner", false });
+                values: new object[] { "3a0a646e-2fa8-4ab9-b2dc-3aa2518d4e78", "Test Message 1", new DateTime(2020, 5, 14, 20, 55, 39, 234, DateTimeKind.Local).AddTicks(7553), "Anna Runner", false });
 
             migrationBuilder.InsertData(
                 table: "Messages",
                 columns: new[] { "Id", "Content", "DateOfMessage", "From", "IsDeleted" },
-                values: new object[] { "d1940fcc-f86a-4b48-ad97-3f7ff1321647", "Test Message 2", new DateTime(2020, 4, 28, 21, 15, 19, 534, DateTimeKind.Local).AddTicks(3457), "Michael Kovalsky", false });
+                values: new object[] { "d1940fcc-f86a-4b48-ad97-3f7ff1321647", "Test Message 2", new DateTime(2020, 5, 15, 20, 55, 39, 237, DateTimeKind.Local).AddTicks(789), "Michael Kovalsky", false });
 
             migrationBuilder.InsertData(
                 table: "Messages",
                 columns: new[] { "Id", "Content", "DateOfMessage", "From", "IsDeleted" },
-                values: new object[] { "b92e0a10-33e1-4108-be76-c1ec87677330", "Test Message 3", new DateTime(2020, 4, 26, 21, 15, 19, 534, DateTimeKind.Local).AddTicks(3495), "Aaron Runner", false });
+                values: new object[] { "b92e0a10-33e1-4108-be76-c1ec87677330", "Test Message 3", new DateTime(2020, 5, 13, 20, 55, 39, 237, DateTimeKind.Local).AddTicks(825), "Aaron Runner", false });
 
             migrationBuilder.InsertData(
                 table: "Workout",
-                columns: new[] { "Id", "DateOfWorkout", "Description", "MembershipId", "Name" },
-                values: new object[] { "ba596bca-7603-4d16-b9bc-aae93a414330", new DateTime(2020, 4, 28, 21, 15, 19, 535, DateTimeKind.Local).AddTicks(8414), "Regular push ups", "29ad0121-b184-461b-b2c9-518355e35123", "Gopnik One" });
+                columns: new[] { "Id", "DateOfWorkout", "Description", "MembershipId", "MinReps", "MinSets", "MinWeight", "Name" },
+                values: new object[] { "ba596bca-7603-4d16-b9bc-aae93a414330", new DateTime(2020, 5, 15, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(6310), "Regular push ups", "29ad0121-b184-461b-b2c9-518355e35123", 5, 5, null, "Gopnik One" });
 
             migrationBuilder.InsertData(
                 table: "Workout",
-                columns: new[] { "Id", "DateOfWorkout", "Description", "MembershipId", "Name" },
-                values: new object[] { "5f2ed3f1-a767-4803-b612-d3f04e508cc1", new DateTime(2020, 4, 28, 21, 15, 19, 536, DateTimeKind.Local).AddTicks(630), "Test Description", "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a", "Squat One" });
-
-            migrationBuilder.InsertData(
-                table: "ExerciseGroup",
-                columns: new[] { "Id", "Name", "Pace", "Sets", "WorkoutId" },
-                values: new object[] { "2b60f7f4-09c5-403c-882b-eadf0bf912d0", "DB Hang Snatch", "x-safe", 4, "ba596bca-7603-4d16-b9bc-aae93a414330" });
-
-            migrationBuilder.InsertData(
-                table: "ExerciseGroup",
-                columns: new[] { "Id", "Name", "Pace", "Sets", "WorkoutId" },
-                values: new object[] { "adf78c99-8106-49df-b0dd-d0b145ddc53e", "Goblet Front Squat", "safe-x", 4, "ba596bca-7603-4d16-b9bc-aae93a414330" });
-
-            migrationBuilder.InsertData(
-                table: "ExerciseGroup",
-                columns: new[] { "Id", "Name", "Pace", "Sets", "WorkoutId" },
-                values: new object[] { "6bcc3b40-17e5-440a-9f5f-98bdbb73f7f7", "DB RDL", "3-1-x", 4, "ba596bca-7603-4d16-b9bc-aae93a414330" });
+                columns: new[] { "Id", "DateOfWorkout", "Description", "MembershipId", "MinReps", "MinSets", "MinWeight", "Name" },
+                values: new object[] { "5f2ed3f1-a767-4803-b612-d3f04e508cc1", new DateTime(2020, 5, 15, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(9325), "Test Description", "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a", 5, 2, null, "Squat One" });
 
             migrationBuilder.InsertData(
                 table: "Exercise",
-                columns: new[] { "Id", "Description", "ExerciseGroupId", "Name", "Reps", "Weight" },
-                values: new object[] { "fbc63f06-619a-4002-a676-849fc4e8f4fb", "", "2b60f7f4-09c5-403c-882b-eadf0bf912d0", "", 4, null });
+                columns: new[] { "Id", "Description", "Name", "Reps", "Sets", "Weight", "WorkoutId" },
+                values: new object[] { "cb168e0f-ed08-4588-ae72-1b2fb80daff3", "Basic pull ups", "Upper Body", 5, 5, null, "ba596bca-7603-4d16-b9bc-aae93a414330" });
 
             migrationBuilder.InsertData(
                 table: "Exercise",
-                columns: new[] { "Id", "Description", "ExerciseGroupId", "Name", "Reps", "Weight" },
-                values: new object[] { "d46c92bf-2369-462b-9bc7-da99f788813e", "", "2b60f7f4-09c5-403c-882b-eadf0bf912d0", "", 4, null });
+                columns: new[] { "Id", "Description", "Name", "Reps", "Sets", "Weight", "WorkoutId" },
+                values: new object[] { "e3986007-27cf-4abd-86ed-589f99246482", "Basic sit ups", "Core Muscles", 10, 10, null, "ba596bca-7603-4d16-b9bc-aae93a414330" });
 
             migrationBuilder.InsertData(
                 table: "Exercise",
-                columns: new[] { "Id", "Description", "ExerciseGroupId", "Name", "Reps", "Weight" },
-                values: new object[] { "77c5b70c-4c90-4ebf-a3b3-3374e913cd3e", "", "2b60f7f4-09c5-403c-882b-eadf0bf912d0", "", 3, null });
-
-            migrationBuilder.InsertData(
-                table: "Exercise",
-                columns: new[] { "Id", "Description", "ExerciseGroupId", "Name", "Reps", "Weight" },
-                values: new object[] { "42816968-45cc-4f49-aa90-197af1fb3b35", "", "adf78c99-8106-49df-b0dd-d0b145ddc53e", "", 4, null });
-
-            migrationBuilder.InsertData(
-                table: "Exercise",
-                columns: new[] { "Id", "Description", "ExerciseGroupId", "Name", "Reps", "Weight" },
-                values: new object[] { "7bbb4df8-2a92-4ea5-8ebc-0ec72cfcc9d4", "", "adf78c99-8106-49df-b0dd-d0b145ddc53e", "", 4, null });
-
-            migrationBuilder.InsertData(
-                table: "Exercise",
-                columns: new[] { "Id", "Description", "ExerciseGroupId", "Name", "Reps", "Weight" },
-                values: new object[] { "47e7b0de-6cd9-4895-9054-1c70c5c423ed", "", "adf78c99-8106-49df-b0dd-d0b145ddc53e", "", 3, null });
+                columns: new[] { "Id", "Description", "Name", "Reps", "Sets", "Weight", "WorkoutId" },
+                values: new object[] { "cf25e17b-e402-4f39-9a5f-03fdc0cc513a", "Pushing against weights on the leg machine", "Leg Muscles", 10, 5, 30, "ba596bca-7603-4d16-b9bc-aae93a414330" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -364,14 +367,24 @@ namespace Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Exercise_ExerciseGroupId",
-                table: "Exercise",
-                column: "ExerciseGroupId");
+                name: "IX_AspNetUsers_OrganizationId",
+                table: "AspNetUsers",
+                column: "OrganizationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExerciseGroup_WorkoutId",
-                table: "ExerciseGroup",
+                name: "IX_Exercise_WorkoutId",
+                table: "Exercise",
                 column: "WorkoutId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExerciseLog_AppUserId",
+                table: "ExerciseLog",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExerciseLog_ExerciseId",
+                table: "ExerciseLog",
+                column: "ExerciseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Workout_MembershipId",
@@ -397,7 +410,7 @@ namespace Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Exercise");
+                name: "ExerciseLog");
 
             migrationBuilder.DropTable(
                 name: "Messages");
@@ -409,7 +422,10 @@ namespace Persistence.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "ExerciseGroup");
+                name: "Exercise");
+
+            migrationBuilder.DropTable(
+                name: "Organization");
 
             migrationBuilder.DropTable(
                 name: "Workout");

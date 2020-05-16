@@ -3,21 +3,20 @@ import { observer } from 'mobx-react-lite'
 import Messages from './Overview/Messages'
 import { Grid } from 'semantic-ui-react'
 import { MessageStoreContext } from '../Stores/MessageStore'
-import { MembershipShoreContext } from '../Stores/MembershipStore'
-import Memberships from './Overview/Memberships'
+import Memberships from './Memberships/Memberships'
 import Progress from './Overview/Progress'
+import { RootStoreContext } from '../Stores/RootStore'
 
 const Overview : React.FC = () => {
 
     const messageStore = useContext(MessageStoreContext);
-    const memberStore = useContext(MembershipShoreContext);
+    const root = useContext(RootStoreContext);    
     const {loadMessages} = messageStore;
-    const {loadMemberships} = memberStore;
+    const {loadMemberships} = root.membershipStore;
 
     useEffect(() => {
         loadMessages();
         loadMemberships();
-        
     }, [loadMessages, loadMemberships])
 
     return (

@@ -1,23 +1,29 @@
 import { createContext } from "react";
 import { observable, action, runInAction } from "mobx";
-import { Membership, VerboseMembership } from "../Models/Membership";
+import { Membership} from "../Models/Memberships/Membership";
 import Agent from "../API/Agent";
+import { RootStore } from "./RootStore";
+import { IDetailedMembership } from "../Models/Memberships/IDetailedMembership";
 
-export class MembershipShore {
+export class MembershipStore {
+
+    rootStore : RootStore;
 
     @observable memberships : Membership[] = [];
-    @observable membership : Membership |  null = null;
+    @observable detailedMembership: IDetailedMembership | null = null;
 
-    @observable verboseMemberships : VerboseMembership[] = [];
-    @observable verboseMembership : VerboseMembership | null = null;
-
+    constructor(root: RootStore) {
+        this.rootStore = root;
+    }
 
     @action loadMemberships = async () => {
         try {
             const apiResult = await Agent.Memberships.list();
             
             runInAction("Getting Memberships from API", () => {
+                console.log("data from membership: ", apiResult);
                 this.memberships = apiResult;
+                console.log(this.memberships);
             })
 
         } catch (error) {
@@ -25,23 +31,16 @@ export class MembershipShore {
         }
     }
 
-    @action loadVerboseMemberships = async () => {
+    @action loadVerboseMembership = async (membershipId: string) => {
         try {
-            const apiResult = await Agent.Memberships.verboseList();
+            const apiResult = await Agent.Memberships.detailed(membershipId);
             runInAction("Getting Verbose Memberships from API", () => {
-                this.verboseMemberships = apiResult;
+                this.detailedMembership = apiResult;
             })
             
+            return apiResult;
         } catch (error) {
             console.log("Error loading messages");
         }
     }
-
-    @action setVerboseMembership = async (membershipId : string) => {
-        const toSet = this.verboseMemberships.filter(member => member.id === membershipId)[0];
-        this.verboseMembership = toSet;
-    }
-
 }
-
-export const MembershipShoreContext = createContext(new MembershipShore());

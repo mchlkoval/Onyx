@@ -19,6 +19,7 @@ const MainNavBar = () => {
             {user && user.userType === UserType.Athelete && <AtheleteNavBar/>}
             {user && user.userType === UserType.Coach && <CoachNavBar />}
             {user && user.userType === UserType.Manager && <ManagerNavBar />}
+            <Menu.Item as={NavLink} to="/logout">Logout</Menu.Item>
         </Menu>
     )
 }

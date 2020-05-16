@@ -3,15 +3,7 @@ export interface Workout {
     id: string,
     name: string,
     description: string,
-    exerciseGroups : ExerciseGroup[]
-}
-
-export interface ExerciseGroup {
-    id: string,
-    name: string,
-    workoutId: string,
-    sets: number,
-    exercises: Exercise[]
+    exercises : Exercise[]
 }
 
 export interface Exercise {
@@ -20,5 +12,6 @@ export interface Exercise {
     name: string,
     pace : string,
     reps: number,
+    sets: number,
     weight? : number
 }
