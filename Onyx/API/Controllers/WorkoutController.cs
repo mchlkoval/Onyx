@@ -57,10 +57,11 @@ namespace API.Controllers
 
         [HttpGet]
         [Authorize]
-        [Route("exercises/{workoutId}")]
-        public async Task<ActionResult<List<ExercisesViewModel>>> ListExercises(string workoutId, CancellationToken ct)
+        [Route("exercises/{workoutId}/{dateRecorded}")]
+        public async Task<ActionResult<List<ExercisesViewModel>>> ListExercises(string workoutId, string dateRecorded, CancellationToken ct)
         {
-            return await Mediator.Send(new ExerciseQuery.Query(workoutId), ct);
+            var date = DateTime.Parse(dateRecorded);
+            return await Mediator.Send(new ExerciseQuery.Query(workoutId, date), ct);
         }
     }
 }

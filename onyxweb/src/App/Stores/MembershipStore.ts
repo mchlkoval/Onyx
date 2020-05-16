@@ -1,15 +1,16 @@
 import { createContext } from "react";
 import { observable, action, runInAction } from "mobx";
-import { Membership} from "../Models/Membership";
+import { Membership} from "../Models/Memberships/Membership";
 import Agent from "../API/Agent";
 import { RootStore } from "./RootStore";
+import { IDetailedMembership } from "../Models/Memberships/IDetailedMembership";
 
 export class MembershipStore {
 
     rootStore : RootStore;
 
     @observable memberships : Membership[] = [];
-    @observable membership : Membership |  null = null;
+    @observable detailedMembership: IDetailedMembership | null = null;
 
     constructor(root: RootStore) {
         this.rootStore = root;
@@ -30,21 +31,16 @@ export class MembershipStore {
         }
     }
 
-    @action loadVerboseMemberships = async () => {
+    @action loadVerboseMembership = async (membershipId: string) => {
         try {
-            const apiResult = await Agent.Memberships.verboseList();
+            const apiResult = await Agent.Memberships.detailed(membershipId);
             runInAction("Getting Verbose Memberships from API", () => {
-                this.memberships = apiResult;
+                this.detailedMembership = apiResult;
             })
             
+            return apiResult;
         } catch (error) {
             console.log("Error loading messages");
         }
     }
-
-    @action setVerboseMembership = async (membershipId : string) => {
-        const toSet = this.memberships.filter(member => member.id === membershipId)[0];
-        this.membership = toSet;
-    }
-
 }

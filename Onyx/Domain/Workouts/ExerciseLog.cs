@@ -15,5 +15,6 @@ namespace Domain.Workouts
         public AppUser AppUser { get; set; }
         public string ExerciseId { get; set; }
         public Exercise Exercise { get; set; }
+        public DateTime DateRecorded { get; set; }
     }
 }

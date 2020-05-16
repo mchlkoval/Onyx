@@ -19,7 +19,7 @@ const Workout : React.FC = () => {
     }, [getWorkouts])
 
     const handleEventClick = (arg: any) => {
-        history.push(`/workout/${arg.event.id}`)
+        history.push(`/workout/${arg.event.id}/${arg.event.start}`)
     }
 
     return (

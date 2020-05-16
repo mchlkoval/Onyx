@@ -26,10 +26,10 @@ namespace API.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("memberships/full")]
-        public async Task<ActionResult<List<MembershipVerboseViewModel>>> VerboseMemberships(CancellationToken ct)
+        [Route("memberships/{membershipId}")]
+        public async Task<MembershipVerboseViewModel> VerboseMemberships(string membershipId, CancellationToken ct)
         {
-            return await Mediator.Send(new MembershipVerboseQuery.Query(), ct);
+            return await Mediator.Send(new MembershipVerboseQuery.Query(membershipId), ct);
         }
     }
 }

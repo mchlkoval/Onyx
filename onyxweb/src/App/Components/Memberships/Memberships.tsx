@@ -1,19 +1,33 @@
-import React, { useContext, Fragment } from 'react'
+import React, { useContext, Fragment, useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
-import { Container, Button} from 'semantic-ui-react';
+import { Container, Button, Segment, Header} from 'semantic-ui-react';
 import Card from 'react-bootstrap/Card'
 import CardDeck from 'react-bootstrap/CardDeck'
 import { Link } from 'react-router-dom';
-import { RootStore, RootStoreContext } from '../../Stores/RootStore';
+import { RootStoreContext } from '../../Stores/RootStore';
+import { UserType } from '../../Models/Enums/UserType';
 
 const Memberships : React.FC = () => {
 
     const root = useContext(RootStoreContext);    
     const {memberships} = root.membershipStore;
+    const {user} = root.userStore;
+    const {loadMemberships} = root.membershipStore;
+
+    const [isManager, setUserType] = useState(false);
+
+    useEffect(() => {
+        loadMemberships().finally(() => setUserType(user!.userType === UserType.Manager));
+    }, [loadMemberships, user])
 
     return (
         <Fragment>
             <Container>
+                <Segment>
+                    <Segment clearing>
+                        <Header floated='left' content={isManager ? "Manage Memberships" : "My Memberships"} />
+                        {user!.userType === UserType.Manager ? <Button floated='right'>Create</Button> : null}
+                    </Segment>
                 <CardDeck>
                 {memberships.map(m => (
                     <Card key={m.id}>
@@ -23,11 +37,12 @@ const Memberships : React.FC = () => {
                             <Card.Text>{m.description}</Card.Text>
                         </Card.Body>
                         <Card.Footer>
-                            <Button as={Link} to={`/membership/${m.id}`} positive floated='right' content="View Workouts" />
+                            <Button as={Link} to={`/membership/${m.id}`} positive floated='right' content={isManager ? "Edit Workouts" : "View Workouts"} />
                         </Card.Footer>
                     </Card>
                 ))}
                </CardDeck>
+                </Segment>
                 
             </Container>
         </Fragment>

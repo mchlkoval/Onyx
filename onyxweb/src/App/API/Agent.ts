@@ -3,8 +3,9 @@ import { IUser, IUserFormValues } from '../Models/User';
 import { toast } from 'react-toastify';
 import { history } from '../..';
 import { Message } from '../Models/Message';
-import { Membership } from '../Models/Membership';
+import { Membership } from '../Models/Memberships/Membership';
 import { Exercise, Workout } from '../Models/Workout';
+import { IDetailedMembership } from '../Models/Memberships/IDetailedMembership';
 
 axios.defaults.baseURL = "http://localhost:5000/api"
 
@@ -64,14 +65,14 @@ const Messages = {
 
 const Memberships = {
     list : () : Promise<Membership[]> => requests.get("/membership/memberships"),
-    verboseList : () : Promise<Membership[]> => requests.get("/membership/memberships/full")
+    detailed : (membershipId: string) => requests.get(`/membership/memberships/${membershipId}`)
 }
 
 const Workouts = {
     editExercise: (exercise: Exercise) => requests.post("/workout/create", exercise),
     createExercise: (exercise: Exercise) => requests.put("/workout/update", exercise),
     listWorkouts: (): Promise<Workout[]> => requests.get(`/workout/workouts`),
-    listExercises: (workoutId: string) : Promise<Exercise[]> => requests.get(`/workout/exercises/${workoutId}`)
+    listExercises: (workoutId: string, dateRecorded: string) : Promise<Exercise[]> => requests.get(`/workout/exercises/${workoutId}/${dateRecorded}`)
 }
 
 export default {

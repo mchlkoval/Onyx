@@ -41,10 +41,10 @@ export default class WorkoutStore {
         this.rootStore = root;
     }
 
-    @action getExercises = async (workoutId: string) => {
+    @action getExercises = async (workoutId: string, isoDateString: string) => {
         
         try {
-            const data = await Agent.Workouts.listExercises(workoutId);
+            const data = await Agent.Workouts.listExercises(workoutId, isoDateString);
             runInAction('setting exercise', () => {
                 this.exercises = data
             });

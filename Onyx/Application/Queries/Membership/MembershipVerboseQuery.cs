@@ -13,12 +13,17 @@ namespace Application.Queries.Membership
 {
     public class MembershipVerboseQuery
     {
-        public class Query : IRequest<List<MembershipVerboseViewModel>>
+        public class Query : IRequest<MembershipVerboseViewModel>
         {
+            public string MembershipId { get; set; }
 
+            public Query(string membershipId)
+            {
+                this.MembershipId = membershipId;
+            }
         }
 
-        public class Handler : IRequestHandler<Query, List<MembershipVerboseViewModel>>
+        public class Handler : IRequestHandler<Query, MembershipVerboseViewModel>
         {
             private DataContext context;
 
@@ -27,34 +32,35 @@ namespace Application.Queries.Membership
                 this.context = context;
             }
 
-            public async Task<List<MembershipVerboseViewModel>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<MembershipVerboseViewModel> Handle(Query request, CancellationToken cancellationToken)
             {
                 var initialFilter = await context.Memberships
                     .Include(x => x.Workout)
                     .ThenInclude(z => z.Exercises)
+                    .Where(x => x.Id == request.MembershipId)
                     .ToListAsync();
 
                 var vm = initialFilter.Select(x => new MembershipVerboseViewModel {
+                    Id = x.Id,
                     Description = x.Description,
                     Name = x.Name,
-                    Id = x.Id,
                     Cost = x.Cost,
+                    StartDate = x.StartDate,
+                    EndDate = x.EndDate,
                     Workouts = x.Workout.Select(z => new WorkoutViewModel
                     {
                         DateOfWorkout = z.DateOfWorkout,
-                        Id = z.Id,
-                        Name = x.Name,
+                        Name = z.Name,
+                        MinReps = z.MinReps,
+                        MinSets = z.MinSets,
+                        MinWeight = z.MinWeight,
                         Exercises = z.Exercises.Select(y => new ExerciseViewModel
                         {
                             Description = y.Description,
-                            Id = y.Id,
                             Name = y.Name,
-                            Reps = y.Reps,
-                            Sets = y.Sets,
-                            Weight = y.Weight
                         })
                     })
-                }).ToList();
+                }).First();
 
                 return vm;
             }

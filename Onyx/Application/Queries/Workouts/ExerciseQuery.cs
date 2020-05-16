@@ -16,10 +16,12 @@ namespace Application.Queries.Workouts
         public class Query : IRequest<List<ExercisesViewModel>>
         {
             public string WorkoutId { get; set; }
+            public DateTime DateRecorded { get; set; }
 
-            public Query(string workoutId)
+            public Query(string workoutId, DateTime dateRecorded)
             {
                 this.WorkoutId = workoutId;
+                this.DateRecorded = dateRecorded;
             }
 
             public class Handler : IRequestHandler<Query, List<ExercisesViewModel>>
@@ -34,6 +36,7 @@ namespace Application.Queries.Workouts
                 public async Task<List<ExercisesViewModel>> Handle(Query request, CancellationToken cancellationToken)
                 {
                     var vm = await context.Exercise
+                        .Include(x => x.ExerciseLogs)
                         .Where(x => x.WorkoutId == request.WorkoutId)
                         .Select(x => new ExercisesViewModel
                         {
@@ -42,7 +45,12 @@ namespace Application.Queries.Workouts
                             Description = x.Description,
                             Sets = x.Sets,
                             Reps = x.Reps,
-                            Weight = x.Weight.GetValueOrDefault()
+                            Weight = x.Weight.GetValueOrDefault(),
+                            ExerciseLogs = x.ExerciseLogs.Where(x => x.DateRecorded == request.DateRecorded)
+                            .Select(z => new ExerciseLogsViewModel
+                            {
+                                Id = z.Id
+                            })
                         }).ToListAsync();
                     
                     return vm;
