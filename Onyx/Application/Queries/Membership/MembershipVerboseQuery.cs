@@ -51,6 +51,7 @@ namespace Application.Queries.Membership
                     {
                         DateOfWorkout = z.DateOfWorkout,
                         Name = z.Name,
+                        Description = z.Description,
                         MinReps = z.MinReps,
                         MinSets = z.MinSets,
                         MinWeight = z.MinWeight,

@@ -9,8 +9,8 @@ using Persistence.Context;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200503005016_Initial Migrations")]
-    partial class InitialMigrations
+    [Migration("20200516005539_Newer schema")]
+    partial class Newerschema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -101,7 +101,13 @@ namespace Persistence.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -114,14 +120,18 @@ namespace Persistence.Migrations
                             Id = "29ad0121-b184-461b-b2c9-518355e35123",
                             Cost = 250.0,
                             Description = "Approved by Boris, loved by Slavs, misunderstood by Americans.",
-                            Name = "Gopnik Workout"
+                            EndDate = new DateTime(2020, 6, 14, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(4375),
+                            Name = "Gopnik Workout",
+                            StartDate = new DateTime(2020, 5, 15, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(3885)
                         },
                         new
                         {
                             Id = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
                             Cost = 100.0,
                             Description = "Simple and effective after you gorged yourself",
-                            Name = "Squats and Pull Ups"
+                            EndDate = new DateTime(2020, 6, 14, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(4916),
+                            Name = "Squats and Pull Ups",
+                            StartDate = new DateTime(2020, 5, 15, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(4892)
                         });
                 });
 
@@ -151,7 +161,7 @@ namespace Persistence.Migrations
                         {
                             Id = "3a0a646e-2fa8-4ab9-b2dc-3aa2518d4e78",
                             Content = "Test Message 1",
-                            DateOfMessage = new DateTime(2020, 5, 1, 20, 50, 15, 764, DateTimeKind.Local).AddTicks(7111),
+                            DateOfMessage = new DateTime(2020, 5, 14, 20, 55, 39, 234, DateTimeKind.Local).AddTicks(7553),
                             From = "Anna Runner",
                             IsDeleted = false
                         },
@@ -159,7 +169,7 @@ namespace Persistence.Migrations
                         {
                             Id = "d1940fcc-f86a-4b48-ad97-3f7ff1321647",
                             Content = "Test Message 2",
-                            DateOfMessage = new DateTime(2020, 5, 2, 20, 50, 15, 767, DateTimeKind.Local).AddTicks(1752),
+                            DateOfMessage = new DateTime(2020, 5, 15, 20, 55, 39, 237, DateTimeKind.Local).AddTicks(789),
                             From = "Michael Kovalsky",
                             IsDeleted = false
                         },
@@ -167,7 +177,7 @@ namespace Persistence.Migrations
                         {
                             Id = "b92e0a10-33e1-4108-be76-c1ec87677330",
                             Content = "Test Message 3",
-                            DateOfMessage = new DateTime(2020, 4, 30, 20, 50, 15, 767, DateTimeKind.Local).AddTicks(1791),
+                            DateOfMessage = new DateTime(2020, 5, 13, 20, 55, 39, 237, DateTimeKind.Local).AddTicks(825),
                             From = "Aaron Runner",
                             IsDeleted = false
                         });
@@ -191,9 +201,6 @@ namespace Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
@@ -214,11 +221,71 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.HasIndex("WorkoutId");
 
                     b.ToTable("Exercise");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "cb168e0f-ed08-4588-ae72-1b2fb80daff3",
+                            Description = "Basic pull ups",
+                            Name = "Upper Body",
+                            Reps = 5,
+                            Sets = 5,
+                            WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330"
+                        },
+                        new
+                        {
+                            Id = "e3986007-27cf-4abd-86ed-589f99246482",
+                            Description = "Basic sit ups",
+                            Name = "Core Muscles",
+                            Reps = 10,
+                            Sets = 10,
+                            WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330"
+                        },
+                        new
+                        {
+                            Id = "cf25e17b-e402-4f39-9a5f-03fdc0cc513a",
+                            Description = "Pushing against weights on the leg machine",
+                            Name = "Leg Muscles",
+                            Reps = 10,
+                            Sets = 5,
+                            Weight = 30,
+                            WorkoutId = "ba596bca-7603-4d16-b9bc-aae93a414330"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Workouts.ExerciseLog", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateRecorded")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ExerciseId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Reps")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Sets")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("Weight")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("ExerciseId");
+
+                    b.ToTable("ExerciseLog");
                 });
 
             modelBuilder.Entity("Domain.Workouts.Workout", b =>
@@ -235,6 +302,15 @@ namespace Persistence.Migrations
                     b.Property<string>("MembershipId")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("MinReps")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MinSets")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("MinWeight")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
@@ -248,17 +324,21 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = "ba596bca-7603-4d16-b9bc-aae93a414330",
-                            DateOfWorkout = new DateTime(2020, 5, 2, 20, 50, 15, 768, DateTimeKind.Local).AddTicks(5978),
+                            DateOfWorkout = new DateTime(2020, 5, 15, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(6310),
                             Description = "Regular push ups",
                             MembershipId = "29ad0121-b184-461b-b2c9-518355e35123",
+                            MinReps = 5,
+                            MinSets = 5,
                             Name = "Gopnik One"
                         },
                         new
                         {
                             Id = "5f2ed3f1-a767-4803-b612-d3f04e508cc1",
-                            DateOfWorkout = new DateTime(2020, 5, 2, 20, 50, 15, 768, DateTimeKind.Local).AddTicks(8278),
+                            DateOfWorkout = new DateTime(2020, 5, 15, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(9325),
                             Description = "Test Description",
                             MembershipId = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
+                            MinReps = 5,
+                            MinSets = 2,
                             Name = "Squat One"
                         });
                 });
@@ -400,13 +480,20 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Workouts.Exercise", b =>
                 {
-                    b.HasOne("Domain.Identity.AppUser", null)
-                        .WithMany("Exercises")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("Domain.Workouts.Workout", "Workout")
                         .WithMany("Exercises")
                         .HasForeignKey("WorkoutId");
+                });
+
+            modelBuilder.Entity("Domain.Workouts.ExerciseLog", b =>
+                {
+                    b.HasOne("Domain.Identity.AppUser", "AppUser")
+                        .WithMany("ExerciseLogs")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("Domain.Workouts.Exercise", "Exercise")
+                        .WithMany("ExerciseLogs")
+                        .HasForeignKey("ExerciseId");
                 });
 
             modelBuilder.Entity("Domain.Workouts.Workout", b =>

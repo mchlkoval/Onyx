@@ -85,7 +85,9 @@ namespace Persistence.Context
                         Cost = 250,
                         Description = "Approved by Boris, loved by Slavs, misunderstood by Americans.",
                         Name = "Gopnik Workout",
-                        Id = "29ad0121-b184-461b-b2c9-518355e35123"
+                        Id = "29ad0121-b184-461b-b2c9-518355e35123",
+                        StartDate = DateTime.Now,
+                        EndDate = DateTime.Now.AddDays(30)
                         
                     },
                     new Membership
@@ -93,7 +95,9 @@ namespace Persistence.Context
                         Cost = 100,
                         Description = "Simple and effective after you gorged yourself",
                         Name = "Squats and Pull Ups",
-                        Id = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a"
+                        Id = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
+                        StartDate = DateTime.Now,
+                        EndDate = DateTime.Now.AddDays(30)
                         
                     }
                 );
@@ -106,7 +110,9 @@ namespace Persistence.Context
                         MembershipId = "29ad0121-b184-461b-b2c9-518355e35123",
                         Description = "Regular push ups",
                         Name = "Gopnik One",
-                        Id = "ba596bca-7603-4d16-b9bc-aae93a414330"
+                        Id = "ba596bca-7603-4d16-b9bc-aae93a414330",
+                        MinReps = 5,
+                        MinSets = 5
                     },
                     new Workout
                     {
@@ -114,7 +120,9 @@ namespace Persistence.Context
                         MembershipId = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
                         Description = "Test Description",
                         Name = "Squat One",
-                        Id = "5f2ed3f1-a767-4803-b612-d3f04e508cc1"
+                        Id = "5f2ed3f1-a767-4803-b612-d3f04e508cc1",
+                        MinSets = 2,
+                        MinReps = 5
                     }
                 );
 

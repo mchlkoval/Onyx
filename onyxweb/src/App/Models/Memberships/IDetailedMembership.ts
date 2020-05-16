@@ -27,19 +27,18 @@ export class DetailedMembership implements IDetailedMembership {
     cost: number = 0;
     startDate: Date = new Date();
     endDate: Date = new Date();
-    workouts!: [
-        { name: string; 
-            description: string; 
-            dateOfWorkout: Date; 
-            minSets: number; 
-            minReps: number; 
-            minWeight: number | undefined; 
-            exercises: [
-            { 
-                description: string; 
-                name: string; 
-            }]; 
+    workouts: [{
+        name: string;
+        description: string;
+        dateOfWorkout: Date;
+        minSets: number;
+        minReps: number;
+        minWeight: number | undefined;
+        exercises: [{
+            description: string;
+            name: string;
         }];
+    }] = [{name: "", description: "", dateOfWorkout: new Date(), minSets: 0, minReps: 0, minWeight: 0, exercises: [{description: "", name: ""}]}];
     
 
     constructor(init? : IDetailedMembership) { 
