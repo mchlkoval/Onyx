@@ -1,9 +1,10 @@
-import { createContext } from "react";
 import { observable, action, runInAction } from "mobx";
 import { Membership} from "../Models/Memberships/Membership";
+import { history } from '../..';
 import Agent from "../API/Agent";
 import { RootStore } from "./RootStore";
 import { IDetailedMembership } from "../Models/Memberships/IDetailedMembership";
+import { toast } from "react-toastify";
 
 export class MembershipStore {
 
@@ -14,6 +15,16 @@ export class MembershipStore {
 
     constructor(root: RootStore) {
         this.rootStore = root;
+    }
+
+    @action editMembership = async (data : IDetailedMembership)  => {
+        try {
+            await Agent.Memberships.update(data);
+            history.push("/membership");
+            toast.success("Successfully edited activity");
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     @action loadMemberships = async () => {

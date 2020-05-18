@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Commands.Memberships;
 using Application.Queries.Membership;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,5 +33,22 @@ namespace API.Controllers
         {
             return await Mediator.Send(new MembershipVerboseQuery.Query(membershipId), ct);
         }
+
+        [Authorize]
+        [HttpPut]
+        [Route("memberships/update")]
+        public async Task<ActionResult<Unit>> UpdateMembership(UpdateMembershipCommand.Command command, CancellationToken ct)
+        {
+            return await Mediator.Send(command, ct);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("memberships/create")]
+        public async Task<ActionResult> CreateMembership(CancellationToken ct)
+        {
+            return null;
+        }
+
     }
 }

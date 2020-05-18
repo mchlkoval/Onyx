@@ -17,6 +17,7 @@ namespace ViewModels.Membership
 
     public class WorkoutViewModel
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime DateOfWorkout { get; set; }
@@ -28,6 +29,7 @@ namespace ViewModels.Membership
 
     public class ExerciseViewModel
     {
+        public string Id { get; set; }
         public string Description { get; set; }
         public string Name { get; set; }
     }
