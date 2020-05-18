@@ -5,7 +5,8 @@ export interface IDetailedMembership {
     cost: number,
     startDate: Date,
     endDate: Date,
-    workouts: [{
+    workouts: {
+        id: string,
         name: string,
         description: string,
         dateOfWorkout: Date,
@@ -13,10 +14,11 @@ export interface IDetailedMembership {
         minReps: number,
         minWeight: number | undefined,
         exercises: [{
+            id: string
             description: string,
             name: string
         }]
-    }]
+    }[]
 } 
 
 
@@ -27,7 +29,8 @@ export class DetailedMembership implements IDetailedMembership {
     cost: number = 0;
     startDate: Date = new Date();
     endDate: Date = new Date();
-    workouts: [{
+    workouts: {
+        id: string,
         name: string;
         description: string;
         dateOfWorkout: Date;
@@ -35,10 +38,11 @@ export class DetailedMembership implements IDetailedMembership {
         minReps: number;
         minWeight: number | undefined;
         exercises: [{
+            id: string,
             description: string;
             name: string;
         }];
-    }] = [{name: "", description: "", dateOfWorkout: new Date(), minSets: 0, minReps: 0, minWeight: 0, exercises: [{description: "", name: ""}]}];
+    }[] = [{id: "", name: "", description: "", dateOfWorkout: new Date(), minSets: 0, minReps: 0, minWeight: 0, exercises: [{description: "", name: "", id: ""}]}];
     
 
     constructor(init? : IDetailedMembership) { 

@@ -19,6 +19,7 @@ axios.interceptors.request.use((config) => {
     
     return config;
 }, error => {
+    console.log("Error with the request interceptor", error);
     return Promise.reject(error);
 });
 
@@ -65,7 +66,9 @@ const Messages = {
 
 const Memberships = {
     list : () : Promise<Membership[]> => requests.get("/membership/memberships"),
-    detailed : (membershipId: string) => requests.get(`/membership/memberships/${membershipId}`)
+    detailed : (membershipId: string) => requests.get(`/membership/memberships/${membershipId}`),
+    update: (membership: IDetailedMembership) => requests.put("/membership/memberships/update", membership),
+    create: (membership: IDetailedMembership) => requests.post("/membership/memberships/create", membership)
 }
 
 const Workouts = {

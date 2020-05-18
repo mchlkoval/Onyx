@@ -16,7 +16,7 @@ namespace Persistence.Context
 
         public DataContext(DbContextOptions options) : base(options)
         {
-
+            
         }
 
         public DbSet<Organization> Organization { get; set; }

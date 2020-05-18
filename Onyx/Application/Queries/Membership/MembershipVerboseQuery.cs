@@ -49,6 +49,7 @@ namespace Application.Queries.Membership
                     EndDate = x.EndDate,
                     Workouts = x.Workout.Select(z => new WorkoutViewModel
                     {
+                        Id = z.Id,
                         DateOfWorkout = z.DateOfWorkout,
                         Name = z.Name,
                         Description = z.Description,
@@ -57,6 +58,7 @@ namespace Application.Queries.Membership
                         MinWeight = z.MinWeight,
                         Exercises = z.Exercises.Select(y => new ExerciseViewModel
                         {
+                            Id = y.Id,
                             Description = y.Description,
                             Name = y.Name,
                         })
