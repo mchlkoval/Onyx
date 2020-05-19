@@ -45,9 +45,9 @@ namespace API.Controllers
         [Authorize]
         [HttpPost]
         [Route("memberships/create")]
-        public async Task<ActionResult> CreateMembership(CancellationToken ct)
+        public async Task<ActionResult<Unit>> CreateMembership(CreateMembershipCommand.Command command, CancellationToken ct)
         {
-            return null;
+            return await Mediator.Send(command, ct);;
         }
 
     }

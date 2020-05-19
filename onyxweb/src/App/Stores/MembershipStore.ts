@@ -21,7 +21,17 @@ export class MembershipStore {
         try {
             await Agent.Memberships.update(data);
             history.push("/membership");
-            toast.success("Successfully edited activity");
+            toast.success("Successfully edited membership");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    @action createMembership = async (data: IDetailedMembership) => {
+        try {
+            await Agent.Memberships.create(data);
+            history.push("/membership");
+            toast.success("Successfully created membership");
         } catch (error) {
             console.log(error);
         }
@@ -38,7 +48,7 @@ export class MembershipStore {
             })
 
         } catch (error) {
-            console.log("Error loading messages");
+            console.log("Error loadinging membership");
         }
     }
 
@@ -51,7 +61,7 @@ export class MembershipStore {
             
             return apiResult;
         } catch (error) {
-            console.log("Error loading messages");
+            console.log("Error loading detailed membership");
         }
     }
 }

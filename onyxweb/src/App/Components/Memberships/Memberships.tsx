@@ -26,7 +26,7 @@ const Memberships : React.FC = () => {
                 <Segment>
                     <Segment clearing>
                         <Header floated='left' content={isManager ? "Manage Memberships" : "My Memberships"} />
-                        {user!.userType === UserType.Manager ? <Button floated='right'>Create</Button> : null}
+                        {user!.userType === UserType.Manager ? <Button as={Link} to="/membership/create" floated='right' >Create</Button> : null}
                     </Segment>
                 <CardDeck>
                 {memberships.map(m => (

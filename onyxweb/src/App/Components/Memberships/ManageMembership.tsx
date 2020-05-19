@@ -17,15 +17,14 @@ interface IProps {
 const ManageMembership : React.FC<RouteComponentProps<IProps>>= ({match, history}) => {
 
     const root = useContext(RootStoreContext);    
-    const {loadVerboseMembership, editMembership} = root.membershipStore;
+    const {loadVerboseMembership, editMembership, createMembership} = root.membershipStore;
 
     const [detail, setDetail] = useState(new DetailedMembership());
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if(match.params.id) {
+        if(match.params.id !== "create") {
             setLoading(true);
-            console.log("Calling use effect");
             loadVerboseMembership(match.params.id).then((data) => 
                 setDetail(new DetailedMembership(data))             
             ).finally(() => {
@@ -34,12 +33,11 @@ const ManageMembership : React.FC<RouteComponentProps<IProps>>= ({match, history
     }, [loadVerboseMembership, match.params.id])
 
     const handleFormSubmit = (values: any) => {
-        if(match.params.id) {
-            //edit
-            console.log(JSON.stringify(values, null, 2));
-            editMembership(values)
+        console.log(JSON.stringify(values, null, 2));
+        if(values.id !== "") {
+            editMembership(values);
         } else {
-            //create
+            createMembership(values);
         }
     }
 

@@ -49,7 +49,7 @@ const Root : React.FC<RouteComponentProps> = ({location}) => {
                             <Route exact path="/overview" component={Overview}/>
                             <Route path="/scheduling" component={Scheduling}/>
                             <Route exact path="/membership" component={Memberships} />
-                            <Route path='/membership/:id' component={ManageMembership}/>
+                            <Route path={['/membership/:id', '/membership/create']} component={ManageMembership}/>
                             <Route exact path="/workout" component={Workout} />
                             <Route key={location.key} path='/workout/:workoutId/:dateRecorded' component={WorkoutForm}/>
 
