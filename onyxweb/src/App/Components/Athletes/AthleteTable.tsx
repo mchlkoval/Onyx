@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import Table from 'react-bootstrap/Table'
 import { Button, Icon } from 'semantic-ui-react'
@@ -15,6 +15,11 @@ interface IProps {
 }
 
 const AthleteTable : React.FC<IProps> = ({handleGenderEnum, editAthlete, messageAthlete, archiveAthlete, athletes, state}) => {
+
+    useEffect(() => {
+
+    }, [])
+
     return (
         <Table striped bordered hover>
             <thead>

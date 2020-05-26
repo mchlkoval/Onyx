@@ -2,10 +2,11 @@ import React, { useEffect, useContext, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
-import { Container, Segment } from 'semantic-ui-react'
+import { Container, Segment, Search, Header, Divider } from 'semantic-ui-react'
 import { RootStoreContext } from '../../Stores/RootStore';
 import { GenderType } from '../../Models/Enums/Gender';
 import AthleteTable from './AthleteTable'
+import { Athletes } from '../../Models/Athlete/Athletes'
 
 const AthletesList = () => {
     
@@ -13,6 +14,7 @@ const AthletesList = () => {
     const {listAthletes, athletes} = rootStore.athleteStore;
 
     const [key, setKey] = useState('active');
+    const [filteredAthletes, updateFilteredAthletes] = useState(athletes);
     const [active, setFilter] = useState(true);
 
     useEffect(() => {
@@ -42,51 +44,49 @@ const AthletesList = () => {
         alert(`Athlete to archive: ${id}`);
     }
 
+    const handleChange = (value:string | undefined, filter? : string) => {
+
+        let localActive = true;
+        let result : Athletes[] = [];
+        
+        if(filter) {
+            localActive = filter === "active" ? true : false;
+        }
+
+        if(value === "" || value === undefined) {
+            result = athletes.filter((athlete) => athlete.isActive === localActive);
+            updateFilteredAthletes(result);
+            return;
+        }
+
+        result = athletes.filter((athlete) => {
+            return (athlete.name.toLowerCase().indexOf(value!.toLowerCase()) !== -1 || value!.toLowerCase() === "")
+        });
+        
+        updateFilteredAthletes(result);
+    }
+
     return (
         <Container>
+            <Segment clearing>
+                <Header as="h3" floated="left" textAlign="center">Search For Athletes</Header>
+                <Search style={{float: 'right'}} onSearchChange={(e, {value}) => handleChange(value)}/>
+            </Segment>
+            <Divider />
             <Segment>
+                
                 <Tabs fill defaultActiveKey="active" id="controlled-tab" activeKey={key} onSelect={(k : string) => {
-                    
                     setFilter(k === "active" ? true : false);
                     setKey(k);
+                    handleChange("", k);
                 }}>
                     <Tab eventKey="active" title="Active">
-                        <AthleteTable athletes={athletes} editAthlete={editAthlete} messageAthlete={messageAthlete} archiveAthlete={archiveAthlete} handleGenderEnum={handleGenderEnum} state={key}/>
+                        <AthleteTable athletes={filteredAthletes.length > 0 ? filteredAthletes : athletes} editAthlete={editAthlete} messageAthlete={messageAthlete} archiveAthlete={archiveAthlete} handleGenderEnum={handleGenderEnum} state={key}/>
                     </Tab>
                     <Tab eventKey="archived" title="Archived">
-                        <AthleteTable athletes={athletes} editAthlete={editAthlete} messageAthlete={messageAthlete} archiveAthlete={archiveAthlete} handleGenderEnum={handleGenderEnum} state={key}/>
+                        <AthleteTable athletes={filteredAthletes.length > 0 ? filteredAthletes : athletes} editAthlete={editAthlete} messageAthlete={messageAthlete} archiveAthlete={archiveAthlete} handleGenderEnum={handleGenderEnum} state={key}/>
                     </Tab>
                 </Tabs>
-                {/* <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th>Date Joined</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {athletes.map(athlete => (
-                            <tr key={athlete.id}>
-                                <td>{athlete.name}</td>
-                                <td>{handleGenderEnum(athlete.gender)}</td>
-                                <td>{new Date(athlete.dateJoined).toISOString().split('T')[0]}</td>
-                                <td>
-                                    <Button floated="right" onClick={() => editAthlete(athlete.id)}>
-                                        <Icon name="pencil" />
-                                    </Button>
-                                    <Button floated="right" onClick={() => messageAthlete(athlete.id)}>
-                                        <Icon name="envelope" />
-                                    </Button>
-                                    <Button floated="right" onClick={() => archiveAthlete(athlete.id)}>
-                                        <Icon name="trash" />
-                                    </Button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table> */}
             </Segment>
         </Container>
     )
