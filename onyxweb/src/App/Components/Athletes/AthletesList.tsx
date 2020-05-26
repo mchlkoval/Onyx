@@ -1,19 +1,25 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { observer } from 'mobx-react-lite'
-import { Container, Label, Icon, Segment } from 'semantic-ui-react'
+import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tab'
+import { Container, Segment } from 'semantic-ui-react'
 import { RootStoreContext } from '../../Stores/RootStore';
-import Table from 'react-bootstrap/Table'
 import { GenderType } from '../../Models/Enums/Gender';
+import AthleteTable from './AthleteTable'
 
 const AthletesList = () => {
     
     const rootStore = useContext(RootStoreContext);
     const {listAthletes, athletes} = rootStore.athleteStore;
 
-    useEffect(() => {
-        listAthletes(true);
-    }, [listAthletes]) 
+    const [key, setKey] = useState('active');
+    const [active, setFilter] = useState(true);
 
+    useEffect(() => {
+        listAthletes(active);
+    }, [listAthletes, active]) 
+
+    
     const handleGenderEnum = (gender : GenderType) => {
         if(gender === 0) {
             return "Male";
@@ -23,11 +29,35 @@ const AthletesList = () => {
             return "Other";
         }
     }
+    
+    const messageAthlete = (id: string) => {
+        alert(`Athlete to message is: ${id}`);
+    }
+    
+    const editAthlete = (id: string) => {
+        alert(`Athlete to edit: ${id}`);
+    }
+    
+    const archiveAthlete = (id: string) => {
+        alert(`Athlete to archive: ${id}`);
+    }
 
     return (
         <Container>
             <Segment>
-                <Table striped bordered hover>
+                <Tabs fill defaultActiveKey="active" id="controlled-tab" activeKey={key} onSelect={(k : string) => {
+                    
+                    setFilter(k === "active" ? true : false);
+                    setKey(k);
+                }}>
+                    <Tab eventKey="active" title="Active">
+                        <AthleteTable athletes={athletes} editAthlete={editAthlete} messageAthlete={messageAthlete} archiveAthlete={archiveAthlete} handleGenderEnum={handleGenderEnum} state={key}/>
+                    </Tab>
+                    <Tab eventKey="archived" title="Archived">
+                        <AthleteTable athletes={athletes} editAthlete={editAthlete} messageAthlete={messageAthlete} archiveAthlete={archiveAthlete} handleGenderEnum={handleGenderEnum} state={key}/>
+                    </Tab>
+                </Tabs>
+                {/* <Table striped bordered hover>
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -38,25 +68,25 @@ const AthletesList = () => {
                     </thead>
                     <tbody>
                         {athletes.map(athlete => (
-                            <tr>
+                            <tr key={athlete.id}>
                                 <td>{athlete.name}</td>
                                 <td>{handleGenderEnum(athlete.gender)}</td>
                                 <td>{new Date(athlete.dateJoined).toISOString().split('T')[0]}</td>
                                 <td>
-                                    <Label>
-                                        <Icon name="pencil"/>
-                                    </Label>
-                                    <Label>
+                                    <Button floated="right" onClick={() => editAthlete(athlete.id)}>
+                                        <Icon name="pencil" />
+                                    </Button>
+                                    <Button floated="right" onClick={() => messageAthlete(athlete.id)}>
                                         <Icon name="envelope" />
-                                    </Label>
-                                    <Label>
+                                    </Button>
+                                    <Button floated="right" onClick={() => archiveAthlete(athlete.id)}>
                                         <Icon name="trash" />
-                                    </Label>
+                                    </Button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
-                </Table>
+                </Table> */}
             </Segment>
         </Container>
     )
