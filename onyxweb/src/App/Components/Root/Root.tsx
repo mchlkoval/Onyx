@@ -13,6 +13,7 @@ import Memberships from '../Memberships/Memberships';
 import Workout from '../Workouts/Workout';
 import WorkoutForm from '../Workouts/WorkoutForm';
 import ManageMembership from '../Memberships/ManageMembership';
+import AthletesList from '../Athletes/AthletesList';
 
 const Root : React.FC<RouteComponentProps> = ({location}) => {
 
@@ -52,6 +53,7 @@ const Root : React.FC<RouteComponentProps> = ({location}) => {
                             <Route path={['/membership/:id', '/membership/create']} component={ManageMembership}/>
                             <Route exact path="/workout" component={Workout} />
                             <Route key={location.key} path='/workout/:workoutId/:dateRecorded' component={WorkoutForm}/>
+                            <Route exact path="/athletes" component={AthletesList} />
 
                     </Switch>
                     </Grid.Column>

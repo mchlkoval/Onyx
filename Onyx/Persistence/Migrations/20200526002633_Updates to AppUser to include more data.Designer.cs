@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Context;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200526002633_Updates to AppUser to include more data")]
+    partial class UpdatestoAppUsertoincludemoredata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,9 +53,6 @@ namespace Persistence.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
@@ -133,18 +132,18 @@ namespace Persistence.Migrations
                             Id = "29ad0121-b184-461b-b2c9-518355e35123",
                             Cost = 250.0,
                             Description = "Approved by Boris, loved by Slavs, misunderstood by Americans.",
-                            EndDate = new DateTime(2020, 6, 24, 20, 31, 8, 481, DateTimeKind.Local).AddTicks(3547),
+                            EndDate = new DateTime(2020, 6, 24, 20, 26, 32, 656, DateTimeKind.Local).AddTicks(6070),
                             Name = "Gopnik Workout",
-                            StartDate = new DateTime(2020, 5, 25, 20, 31, 8, 481, DateTimeKind.Local).AddTicks(3041)
+                            StartDate = new DateTime(2020, 5, 25, 20, 26, 32, 656, DateTimeKind.Local).AddTicks(5509)
                         },
                         new
                         {
                             Id = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
                             Cost = 100.0,
                             Description = "Simple and effective after you gorged yourself",
-                            EndDate = new DateTime(2020, 6, 24, 20, 31, 8, 481, DateTimeKind.Local).AddTicks(4091),
+                            EndDate = new DateTime(2020, 6, 24, 20, 26, 32, 656, DateTimeKind.Local).AddTicks(6701),
                             Name = "Squats and Pull Ups",
-                            StartDate = new DateTime(2020, 5, 25, 20, 31, 8, 481, DateTimeKind.Local).AddTicks(4069)
+                            StartDate = new DateTime(2020, 5, 25, 20, 26, 32, 656, DateTimeKind.Local).AddTicks(6681)
                         });
                 });
 
@@ -174,7 +173,7 @@ namespace Persistence.Migrations
                         {
                             Id = "3a0a646e-2fa8-4ab9-b2dc-3aa2518d4e78",
                             Content = "Test Message 1",
-                            DateOfMessage = new DateTime(2020, 5, 24, 20, 31, 8, 477, DateTimeKind.Local).AddTicks(6407),
+                            DateOfMessage = new DateTime(2020, 5, 24, 20, 26, 32, 652, DateTimeKind.Local).AddTicks(7820),
                             From = "Anna Runner",
                             IsDeleted = false
                         },
@@ -182,7 +181,7 @@ namespace Persistence.Migrations
                         {
                             Id = "d1940fcc-f86a-4b48-ad97-3f7ff1321647",
                             Content = "Test Message 2",
-                            DateOfMessage = new DateTime(2020, 5, 25, 20, 31, 8, 479, DateTimeKind.Local).AddTicks(9260),
+                            DateOfMessage = new DateTime(2020, 5, 25, 20, 26, 32, 655, DateTimeKind.Local).AddTicks(1520),
                             From = "Michael Kovalsky",
                             IsDeleted = false
                         },
@@ -190,7 +189,7 @@ namespace Persistence.Migrations
                         {
                             Id = "b92e0a10-33e1-4108-be76-c1ec87677330",
                             Content = "Test Message 3",
-                            DateOfMessage = new DateTime(2020, 5, 23, 20, 31, 8, 479, DateTimeKind.Local).AddTicks(9295),
+                            DateOfMessage = new DateTime(2020, 5, 23, 20, 26, 32, 655, DateTimeKind.Local).AddTicks(1556),
                             From = "Aaron Runner",
                             IsDeleted = false
                         });
@@ -337,7 +336,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = "ba596bca-7603-4d16-b9bc-aae93a414330",
-                            DateOfWorkout = new DateTime(2020, 5, 25, 20, 31, 8, 481, DateTimeKind.Local).AddTicks(5303),
+                            DateOfWorkout = new DateTime(2020, 5, 25, 20, 26, 32, 656, DateTimeKind.Local).AddTicks(8023),
                             Description = "Regular push ups",
                             MembershipId = "29ad0121-b184-461b-b2c9-518355e35123",
                             MinReps = 5,
@@ -347,7 +346,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = "5f2ed3f1-a767-4803-b612-d3f04e508cc1",
-                            DateOfWorkout = new DateTime(2020, 5, 25, 20, 31, 8, 481, DateTimeKind.Local).AddTicks(8280),
+                            DateOfWorkout = new DateTime(2020, 5, 25, 20, 26, 32, 657, DateTimeKind.Local).AddTicks(1471),
                             Description = "Test Description",
                             MembershipId = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
                             MinReps = 5,

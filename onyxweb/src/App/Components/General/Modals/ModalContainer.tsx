@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import { Modal} from 'semantic-ui-react'
 import { observer } from 'mobx-react-lite';
 import { RootStoreContext } from '../../../Stores/RootStore';
+import Modal from 'react-bootstrap/Modal'
 
 const ModalContainer = () => {
 
@@ -9,10 +9,10 @@ const ModalContainer = () => {
     const {modal: {open, body}, closeModal} = root.modalStore;
 
     return (
-    <Modal open={open} onClose={closeModal} size='small'>
-        <Modal.Content >
+    <Modal show={open} onHide={closeModal}>
+        <Modal.Body >
             {body}
-        </Modal.Content>
+        </Modal.Body>
     </Modal>
     )
 }

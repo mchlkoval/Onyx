@@ -8,7 +8,7 @@ const ManagerNavBar = () => {
         <Fragment>
             <Menu.Item name="Dashboard" as={NavLink} to="/overview" /> 
             <Menu.Item name="Billing" as={NavLink} to="/billing" /> 
-            <Menu.Item name="Athletes" as={NavLink} to="/atheletes" />
+            <Menu.Item name="Athletes" as={NavLink} to="/athletes" />
             <Menu.Item name="Coaches" as={NavLink} to="/coaches"/>
             <Menu.Item name="Memberships" as={NavLink} to="/membership"/>
             <Menu.Item name="Profile" as={NavLink} to="/profile"/>
