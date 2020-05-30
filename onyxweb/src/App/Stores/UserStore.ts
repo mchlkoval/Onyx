@@ -11,7 +11,6 @@ export default class UserStore {
     @observable user: IUser | null = null;
 
     @computed get isLoggedIn() {
-        console.log("User is ", this.user);
         return !!this.user;
     }
 
@@ -22,8 +21,7 @@ export default class UserStore {
     @action login = async (values: IUserFormValues) => {
         try {
             const user = await Agent.User.login(values);
-            console.log("user: ", user);
-            runInAction('Setting user', () => { 
+            runInAction('Setting user login', () => { 
                 this.user = user; 
             });  
             this.rootStore.commonStore.setToken(user.token);
@@ -54,7 +52,7 @@ export default class UserStore {
     @action setUser = async () => {
         try {
             const user = await Agent.User.current();
-            console.log("Current user: ", user);
+            console.log("current user: ", user)
             runInAction(() => {
                 this.user = user;
             })

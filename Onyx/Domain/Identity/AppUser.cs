@@ -15,6 +15,14 @@ namespace Domain.Identity
         public string Name { get; set; }
         public bool IsActive { get; set; }
         public string OrganizationId { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Country { get; set; }
+        public string Address { get; set; }
+        public string Address2 { get; set; }
+        public int Weight { get; set; }
+        public int Age { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public Organization Organization { get; set; }
         public List<ExerciseLog> ExerciseLogs { get; set; }
         //public ICollection<Message> Messages { get; set; }

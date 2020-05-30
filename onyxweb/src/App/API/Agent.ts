@@ -7,7 +7,8 @@ import { Membership } from '../Models/Memberships/Membership';
 import { Exercise, Workout } from '../Models/Workout';
 import { IDetailedMembership } from '../Models/Memberships/IDetailedMembership';
 import { Athletes } from '../Models/Athlete/Athletes';
-import { request } from 'http';
+import { MessageAthlete } from '../Models/Athlete/MessageAthlete';
+import { IDetailedAthlete } from '../Models/Athlete/IDetailedAthlete';
 
 axios.defaults.baseURL = "http://localhost:5000/api"
 
@@ -67,7 +68,11 @@ const Messages = {
 }
 
 const Athlete = {
-    list: (active : boolean) : Promise<Athletes[]> => requests.get(`/athlete/${active}`)
+    list: (active : boolean) : Promise<Athletes[]> => requests.get(`/athlete/athletes/${active}`),
+    archive :  (id: string) : Promise<any> => requests.put(`/athlete/archive/${id}`, {}),
+    activate: (id: string) : Promise<any> => requests.put(`/athlete/reactivate/${id}`, {}),
+    messageAthlete : (message: MessageAthlete) : Promise<any> => requests.post(`/athlete/message`, message),
+    loadAthlete : (id: string) : Promise<IDetailedAthlete> => requests.get(`/athlete/${id}`)
 }
 
 const Memberships = {

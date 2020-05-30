@@ -14,6 +14,7 @@ import Workout from '../Workouts/Workout';
 import WorkoutForm from '../Workouts/WorkoutForm';
 import ManageMembership from '../Memberships/ManageMembership';
 import AthletesList from '../Athletes/AthletesList';
+import AthleteForm from '../Athletes/AthleteForm';
 
 const Root : React.FC<RouteComponentProps> = ({location}) => {
 
@@ -54,6 +55,7 @@ const Root : React.FC<RouteComponentProps> = ({location}) => {
                             <Route exact path="/workout" component={Workout} />
                             <Route key={location.key} path='/workout/:workoutId/:dateRecorded' component={WorkoutForm}/>
                             <Route exact path="/athletes" component={AthletesList} />
+                            <Route path={["/athletes/create", '/athletes/edit/:id']} component={AthleteForm}/>
 
                     </Switch>
                     </Grid.Column>

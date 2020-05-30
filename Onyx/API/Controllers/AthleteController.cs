@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Commands.Athletes;
 using Application.Queries.Athlete;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,33 +19,50 @@ namespace API.Controllers
     {
         [Authorize]
         [HttpGet]
-        [Route("{active}")]
+        [Route("athletes/{active}")]
         public async Task<ActionResult<List<ListAthleteViewModel>>> ListAthletes(bool active, CancellationToken ct)
         {
-            var converted = active.ToString().ToLower() == "true" ? true : false;
-            return await Mediator.Send(new ListAthletesQuery.Query(converted), ct);
+            return await Mediator.Send(new ListAthletesQuery.Query(active), ct);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult<DetailedAthleteViewModel>> LoadAthlete(string id, CancellationToken ct)
+        {
+            return await Mediator.Send(new DetailedAthleteQuery.Query(id), ct);
         }
 
         [Authorize]
         [HttpPut]
-        public async Task<ActionResult> DeactivateAthlete(string athleteId)
+        [Route("archive/{athleteId}")]
+        public async Task<ActionResult<Unit>> DeactivateAthlete(string athleteId, CancellationToken ct)
         {
-            return null;
+            return await Mediator.Send(new UpdateAthleteStatusCommand.Command(athleteId, false), ct);
         }
 
         [Authorize]
         [HttpPut]
-        public async Task<ActionResult> ActivateStudent(string athleteId)
+        [Route("reactivate/{athleteId}")]
+        public async Task<ActionResult<Unit>> ActivateStudent(string athleteId, CancellationToken ct)
         {
-            return null;
+            return await Mediator.Send(new UpdateAthleteStatusCommand.Command(athleteId, true), ct);
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> MessageStudent()
+        [Route("message")]
+        public async Task<ActionResult<Unit>> MessageAthlete(MessageAthleteCommand.Command command, CancellationToken ct)
         {
-            return null;
+            return await Mediator.Send(command, ct);
         }
 
+        [Authorize]
+        [HttpPost]
+        [Route("create")]
+        public async Task<ActionResult<Unit>> CreateEditAthlete(CreateEditAthleteCommand.Command command, CancellationToken ct)
+        {
+            return await Mediator.Send(command, ct);
+        }
     }
 }

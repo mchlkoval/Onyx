@@ -31,7 +31,15 @@ namespace Persistence.Seed
                         Gender = GenderType.Female,
                         Name = "Anna Runner",
                         DateJoined = DateTime.Now,
-                        IsActive = true
+                        IsActive = true,
+                        City = "Alpharetta",
+                        State = "Georgia",
+                        Country = "United States of America",
+                        Address = "10700 Pinewalk Forest Circle",
+                        Address2 = "",
+                        Age = 25,
+                        DateOfBirth = DateTime.Now.AddYears(-25)
+
                     },
                     new AppUser
                     {
@@ -43,7 +51,14 @@ namespace Persistence.Seed
                         Gender = GenderType.Male,
                         Name = "Aaron Runner",
                         DateJoined = DateTime.Now,
-                        IsActive = true
+                        IsActive = true,
+                        City = "Alpharetta",
+                        State = "Georgia",
+                        Country = "United States of America",
+                        Address = "10700 Pinewalk Forest Circle",
+                        Address2 = "",
+                        Age = 25,
+                        DateOfBirth = DateTime.Now.AddYears(-25)
                     },
                     new AppUser
                     {
@@ -55,7 +70,14 @@ namespace Persistence.Seed
                         Gender = GenderType.Male,
                         Name = "Michael Kovalsky",
                         DateJoined = DateTime.Now,
-                        IsActive = true
+                        IsActive = true,
+                        City = "Alpharetta",
+                        State = "Georgia",
+                        Country = "United States of America",
+                        Address = "10700 Pinewalk Forest Circle",
+                        Address2 = "",
+                        Age = 25,
+                        DateOfBirth = DateTime.Now.AddYears(-25)
                     },
                     new AppUser
                     {
@@ -67,7 +89,14 @@ namespace Persistence.Seed
                         Gender = GenderType.Female,
                         Name = "Victoria Kovalsky",
                         DateJoined = DateTime.Now,
-                        IsActive = true
+                        IsActive = true,
+                        City = "Alpharetta",
+                        State = "Georgia",
+                        Country = "United States of America",
+                        Address = "10700 Pinewalk Forest Circle",
+                        Address2 = "",
+                        Age = 25,
+                        DateOfBirth = DateTime.Now.AddYears(-25)
                     },
                     new AppUser
                     {
@@ -79,7 +108,14 @@ namespace Persistence.Seed
                         Gender = GenderType.Male,
                         Name = "Igor Kovalsky",
                         DateJoined = DateTime.Now,
-                        IsActive = true
+                        IsActive = true,
+                        City = "Alpharetta",
+                        State = "Georgia",
+                        Country = "United States of America",
+                        Address = "10700 Pinewalk Forest Circle",
+                        Address2 = "",
+                        Age = 25,
+                        DateOfBirth = DateTime.Now.AddYears(-25)
                     },
                     new AppUser
                     {
@@ -92,7 +128,14 @@ namespace Persistence.Seed
                         Name = "Anna Kovalsky",
                         DateJoined = DateTime.Now.AddDays(-7),
                         DateArchived = DateTime.Now,
-                        IsActive = false
+                        IsActive = false,
+                        City = "Alpharetta",
+                        State = "Georgia",
+                        Country = "United States of America",
+                        Address = "10700 Pinewalk Forest Circle",
+                        Address2 = "",
+                        Age = 25,
+                        DateOfBirth = DateTime.Now.AddYears(-25)
 
                     },
                     new AppUser
@@ -106,7 +149,14 @@ namespace Persistence.Seed
                         Name = "Josh Something",
                         DateJoined = DateTime.Now.AddDays(-7),
                         DateArchived = DateTime.Now,
-                        IsActive = false
+                        IsActive = false,
+                        City = "Alpharetta",
+                        State = "Georgia",
+                        Country = "United States of America",
+                        Address = "10700 Pinewalk Forest Circle",
+                        Address2 = "",
+                        Age = 25,
+                        DateOfBirth = DateTime.Now.AddYears(-25)
                     }
                 };
 

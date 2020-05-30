@@ -4,17 +4,18 @@ import Table from 'react-bootstrap/Table'
 import { Button, Icon } from 'semantic-ui-react'
 import { GenderType } from '../../Models/Enums/Gender'
 import { Athletes } from '../../Models/Athlete/Athletes'
+import { Link } from 'react-router-dom'
 
 interface IProps {
     handleGenderEnum : (gender : GenderType) => string,
-    editAthlete : (id: string) => void,
-    messageAthlete : (id: string) => void,
-    archiveAthlete : (id: string) => void,
+    messageAthlete : (id: string, name: string) => void,
+    archiveAthlete? : (id: string, name: string) => void,
+    activateAthlete? : (id : string, name : string) => void
     athletes : Athletes[]
     state : string
 }
 
-const AthleteTable : React.FC<IProps> = ({handleGenderEnum, editAthlete, messageAthlete, archiveAthlete, athletes, state}) => {
+const AthleteTable : React.FC<IProps> = ({handleGenderEnum, messageAthlete, archiveAthlete, activateAthlete, athletes, state}) => {
 
     useEffect(() => {
 
@@ -39,13 +40,18 @@ const AthleteTable : React.FC<IProps> = ({handleGenderEnum, editAthlete, message
                         <td>{new Date(athlete.dateJoined).toISOString().split('T')[0]}</td>
                         {state === "archived" ? <td>{new Date(athlete.dateArchived!).toISOString().split('T')[0]}</td> : null}
                         <td>
-                            <Button floated="right" onClick={() => editAthlete(athlete.id)}>
+                            <Button floated="right" as={Link} to={`/athletes/edit/${athlete.id}`}>
                                 <Icon name="pencil" />
                             </Button>
-                            <Button floated="right" onClick={() => messageAthlete(athlete.id)}>
+                            <Button floated="right" onClick={() => messageAthlete(athlete.id, athlete.name)}>
                                 <Icon name="envelope" />
                             </Button>
-                            <Button floated="right" onClick={() => archiveAthlete(athlete.id)}>
+                            <Button floated="right" onClick={() => {
+                                if(state === "active")
+                                    archiveAthlete!(athlete.id, athlete.name)
+                                else
+                                    activateAthlete!(athlete.id, athlete.name)
+                                }}>
                                 <Icon name={state === "archived" ? "user plus" : "user times"} />
                             </Button>
                         </td>

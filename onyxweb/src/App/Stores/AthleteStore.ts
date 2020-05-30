@@ -1,16 +1,78 @@
 import { RootStore } from "./RootStore";
-import { action, observable, runInAction } from "mobx";
+import { action, observable, runInAction, computed } from "mobx";
 import Agent from "../API/Agent";
 import { Athletes } from "../Models/Athlete/Athletes";
+import { toast } from "react-toastify";
+import { MessageAthlete } from "../Models/Athlete/MessageAthlete";
+import { IDetailedAthlete } from "../Models/Athlete/IDetailedAthlete";
 
 export class AthleteStore {
 
     rootStore : RootStore;
 
     @observable athletes : Athletes[] = [];
+    @observable athlete : IDetailedAthlete | null = null;
+
+    @computed get activeAthletes() {
+        return this.athletes.filter(x => x.isActive === true);
+    }
+
+    @computed get archivedAthletes() {
+        return this.athletes.filter(x => x.isActive === false);
+    }
 
     constructor(root: RootStore) {
         this.rootStore = root;
+    }
+
+    @action loadAthlete = async (id: string) => {
+        try {
+            var apiData = await Agent.Athlete.loadAthlete(id);
+            runInAction("Loading Athlete", () => {
+                this.athlete = apiData;
+            })
+
+            return apiData;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    @action messageAthlete = async (values : MessageAthlete) => {
+        try {
+            await Agent.Athlete.messageAthlete(values);
+            toast("Message sent");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    @action archiveAthlete = async (id : string) => {
+        try {
+            await Agent.Athlete.archive(id);
+            
+            runInAction(() => {
+                this.athletes = this.athletes.filter(x => x.id !== id);
+            })
+
+            toast("Successfully archived!");
+        } catch (error) {
+            toast("Error saving message", {type: "error"})
+        }
+    }
+
+    @action reactiveAthlete = async (id: string) => {
+        try {
+            await Agent.Athlete.activate(id);
+
+            runInAction(() => {
+                this.athletes = this.athletes.filter(x => x.id !== id);
+            })
+
+            toast("Successfully reactivated!");
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     @action listAthletes = async (active: boolean) => {

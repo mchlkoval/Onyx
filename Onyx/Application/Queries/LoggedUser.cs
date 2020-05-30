@@ -34,6 +34,7 @@ namespace Application.Queries
 
                 return new UserViewModel
                 {
+                    Id = loggedInUser.Id,
                     Email = loggedInUser.Email,
                     Token = generator.CreateToken(loggedInUser),
                     Username = loggedInUser.UserName,

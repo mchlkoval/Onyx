@@ -14,7 +14,7 @@ interface IProps {
     id: string
 }
 
-const ManageMembership : React.FC<RouteComponentProps<IProps>>= ({match, history}) => {
+const ManageMembership : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
 
     const root = useContext(RootStoreContext);    
     const {loadVerboseMembership, editMembership, createMembership} = root.membershipStore;
