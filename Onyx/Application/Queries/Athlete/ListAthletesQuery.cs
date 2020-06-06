@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
+using Shared.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,8 @@ namespace Application.Queries.Athlete
 
             public async Task<List<ListAthleteViewModel>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var students = await context.Users.Where(x => x.IsActive == request.IsActive)
+                var students = await context.Users.Where(x => x.IsActive == request.IsActive
+                    && x.UserType == UserType.Athlete)
                     .Select(x => new ListAthleteViewModel
                     {
                          Id = x.Id,

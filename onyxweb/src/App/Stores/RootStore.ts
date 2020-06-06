@@ -6,6 +6,7 @@ import { createContext } from 'react';
 import WorkoutStore from './WorkoutStore';
 import { MembershipStore } from './MembershipStore';
 import { AthleteStore } from './AthleteStore';
+import { CoachesStore } from './CoachesStore';
 
 
 configure({enforceActions: 'always'});
@@ -17,6 +18,7 @@ export class RootStore {
     workoutStore: WorkoutStore;
     membershipStore: MembershipStore;
     athleteStore: AthleteStore;
+    coachStore: CoachesStore;
 
     constructor() {
         this.userStore = new UserStore(this);
@@ -25,7 +27,7 @@ export class RootStore {
         this.workoutStore = new WorkoutStore(this);
         this.membershipStore = new MembershipStore(this);
         this.athleteStore = new AthleteStore(this);
-        
+        this.coachStore = new CoachesStore(this);
     }
 }
 
