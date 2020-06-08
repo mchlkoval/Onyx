@@ -54,7 +54,11 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
                                 </Form.Group>
                                 <Form.Group as={Col}>
                                     <Form.Label>Gender</Form.Label>
-                                    <Form.Control type='text' name="gender" value={values.gender} onChange={handleChange}/>
+                                    <Form.Control as="select" name="gender" value={values.gender} onChange={handleChange}>
+                                                        <option value={GenderType.Male} >Male</option>
+                                                        <option value={GenderType.Female}>Female</option>
+                                                        <option value={GenderType.Other} >Other</option>
+                                                    </Form.Control>
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row>
