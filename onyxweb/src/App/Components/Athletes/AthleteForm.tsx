@@ -24,7 +24,6 @@ const AthleteForm : React.FC<RouteComponentProps<IProps>>= ({match, history}) =>
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        console.log("Params: ", match.params);
         setLoading(true);
         if(match.params.id !== undefined) {
             loadAthlete(match.params.id).then((data) => {

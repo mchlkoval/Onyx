@@ -4,12 +4,14 @@ import { ICoaches } from "../Models/Coaches/ICoaches";
 import Agent from "../API/Agent";
 import { IMessageCoach } from "../Models/Coaches/IMessageCoach";
 import { toast } from "react-toastify";
+import { IDetailedCoach } from "../Models/Coaches/IDetailedCoach";
 
 export class CoachesStore {
 
     rootStore : RootStore;
 
     @observable coaches : ICoaches[] = [];
+    @observable coach : IDetailedCoach | null = null;
 
     @computed get activeCoaches() {
         return this.coaches.filter(x => x.isActive === true);
@@ -32,6 +34,21 @@ export class CoachesStore {
 
             return apiData;
         } catch (error) {
+            console.log(error);
+        }
+    }
+
+    @action loadCoach = async(id : string) => {
+        try {
+            var data = await Agent.Coaches.loadCoach(id);
+            
+            runInAction("Setting coach", () => {
+                this.coach = data;
+            });
+
+            return data;
+
+        } catch(error) {
             console.log(error);
         }
     }

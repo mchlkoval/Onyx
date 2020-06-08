@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Identity;
+using Domain.JoinTables;
 using Domain.Memberships;
 using Domain.Workouts;
 using Microsoft.AspNetCore.Identity;
@@ -25,7 +26,7 @@ namespace Persistence.Context
         public DbSet<Workout> Workout { get; set; }
         public DbSet<Exercise> Exercise { get; set; }
         public DbSet<ExerciseLog> ExerciseLog { get; set; }
-
+        public DbSet<CoachAthlete> AssignedAthletes { get; set; }
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -157,6 +158,20 @@ namespace Persistence.Context
                         Description = "Pushing against weights on the leg machine",
                     }
                 );
+
+            builder.Entity<CoachAthlete>()
+               .HasKey(sc => new { sc.AthleteId, sc.CoachId });
+
+            builder.Entity<CoachAthlete>()
+               .HasOne(x => x.Coach)
+               .WithMany(s => s.AssignedAthletes)
+               .HasForeignKey(z => z.CoachId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<CoachAthlete>()
+               .HasOne(x => x.Athlete)
+               .WithMany(s => s.AssignedCoaches)
+               .HasForeignKey(z => z.AthleteId);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Identity;
+using Domain.JoinTables;
 using Domain.Workouts;
 using Microsoft.AspNetCore.Identity;
 using Persistence.Context;
@@ -18,10 +19,7 @@ namespace Persistence.Seed
         {
             if(!userManager.Users.Any())
             {
-
-                var users = new List<AppUser>
-                {
-                    new AppUser
+                var admin = new AppUser
                     {
                         Id = "7130588c-82d8-4432-821d-67bc3b1187cd",
                         OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67",
@@ -40,27 +38,8 @@ namespace Persistence.Seed
                         Age = 25,
                         DateOfBirth = DateTime.Now.AddYears(-25)
 
-                    },
-                    new AppUser
-                    {
-                        Id = "23a48e56-3e68-4e0e-b9b1-aa0d02cdd425",
-                        OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67",
-                        UserName = "coach",
-                        Email = "coach@coach.com",
-                        UserType = UserType.Coach,
-                        Gender = GenderType.Male,
-                        Name = "Aaron Runner",
-                        DateJoined = DateTime.Now,
-                        IsActive = true,
-                        City = "Alpharetta",
-                        State = "Georgia",
-                        Country = "United States of America",
-                        Address = "10700 Pinewalk Forest Circle",
-                        Address2 = "",
-                        Age = 25,
-                        DateOfBirth = DateTime.Now.AddYears(-25)
-                    },
-                    new AppUser
+                    };          
+                var athlete = new AppUser
                     {
                         Id = "d8564df2-1464-4547-b418-d1c4c75fe1fc",
                         OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67",
@@ -78,8 +57,8 @@ namespace Persistence.Seed
                         Address2 = "",
                         Age = 25,
                         DateOfBirth = DateTime.Now.AddYears(-25)
-                    },
-                    new AppUser
+                    };
+                var athlete2 = new AppUser
                     {
                         Id = "246f3ff3-a889-4027-9643-0f376eeba4ce",
                         OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67",
@@ -97,12 +76,12 @@ namespace Persistence.Seed
                         Address2 = "",
                         Age = 25,
                         DateOfBirth = DateTime.Now.AddYears(-25)
-                    },
-                    new AppUser
+                    };
+                var athlete3 = new AppUser
                     {
                         Id = "e36db0a1-4fe9-482c-910c-fc8b87770401",
                         OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67",
-                        UserName = "athlete3",
+                        UserName = "disabled",
                         Email = "athlete3@athlete.com",
                         UserType = UserType.Athlete,
                         Gender = GenderType.Male,
@@ -116,12 +95,12 @@ namespace Persistence.Seed
                         Address2 = "",
                         Age = 25,
                         DateOfBirth = DateTime.Now.AddYears(-25)
-                    },
-                    new AppUser
+                    };
+                var athlete4 = new AppUser
                     {
                         Id = "61531ff0-2bfe-485a-8e89-cb411d9fc8b0",
                         OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67",
-                        UserName = "athlete4",
+                        UserName = "disabled2",
                         Email = "athlete4@athlete.com",
                         UserType = UserType.Athlete,
                         Gender = GenderType.Female,
@@ -137,8 +116,8 @@ namespace Persistence.Seed
                         Age = 25,
                         DateOfBirth = DateTime.Now.AddYears(-25)
 
-                    },
-                    new AppUser
+                    };
+                var athlete5 = new AppUser
                     {
                         Id = "922029c1-2413-4656-8e90-93eb61067990",
                         OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67",
@@ -157,7 +136,54 @@ namespace Persistence.Seed
                         Address2 = "",
                         Age = 25,
                         DateOfBirth = DateTime.Now.AddYears(-25)
-                    }
+                    };
+                var coach = new AppUser
+                    {
+                        Id = "23a48e56-3e68-4e0e-b9b1-aa0d02cdd425",
+                        OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67",
+                        UserName = "coach",
+                        Email = "coach@coach.com",
+                        UserType = UserType.Coach,
+                        Gender = GenderType.Male,
+                        Name = "Aaron Runner",
+                        DateJoined = DateTime.Now,
+                        IsActive = true,
+                        City = "Alpharetta",
+                        State = "Georgia",
+                        Country = "United States of America",
+                        Address = "10700 Pinewalk Forest Circle",
+                        Address2 = "",
+                        Age = 25,
+                        DateOfBirth = DateTime.Now.AddYears(-25),
+                        AssignedAthletes = new List<CoachAthlete>()
+                        {
+                            new CoachAthlete
+                            {
+                                AthleteId = athlete.Id,
+                                CoachId = "23a48e56-3e68-4e0e-b9b1-aa0d02cdd425"
+                            },
+                            new CoachAthlete
+                            {
+                                AthleteId = athlete2.Id,
+                                CoachId = "23a48e56-3e68-4e0e-b9b1-aa0d02cdd425"
+                            },
+                            new CoachAthlete
+                            {
+                                AthleteId = athlete3.Id,
+                                CoachId = "23a48e56-3e68-4e0e-b9b1-aa0d02cdd425"
+                            }
+                        }
+                    };
+
+                var users = new List<AppUser>
+                {
+                    admin,
+                    coach,
+                    athlete,
+                    athlete2,
+                    athlete3,
+                    athlete4,
+                    athlete5
                 };
 
 
@@ -176,6 +202,23 @@ namespace Persistence.Seed
                     await userManager.AddPasswordAsync(user, "Pa$$w0rd");
                 }
 
+                //This is where we are going to assign coaches to athletes
+                var assignedAthletes = users.Single(x => x.UserName == "coach")
+                    .AssignedAthletes.Select(x => x.AthleteId);
+                foreach(var user in users.Where(x => assignedAthletes.Contains(x.Id)))
+                {
+                    user.AssignedCoaches = new List<CoachAthlete>()
+                    {
+                        new CoachAthlete
+                        {
+                            CoachId = "23a48e56-3e68-4e0e-b9b1-aa0d02cdd425",
+                            AthleteId = user.Id
+                        }
+                    };
+
+                    Console.WriteLine($"Updating: {user.UserName}");
+                    context.Users.Update(user);
+                }
                 //var exercises = new List<Exercise>
                 //{
                 //    new Exercise

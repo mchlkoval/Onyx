@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
-import Table from 'react-bootstrap/Table'
 import { Link } from 'react-router-dom'
 import { Button, Icon } from 'semantic-ui-react'
 import { ICoaches } from '../../Models/Coaches/ICoaches'
+import Table from 'react-bootstrap/Table'
 
 interface IProps {
     state : string

@@ -1,4 +1,5 @@
-﻿using Domain.Workouts;
+﻿using Domain.JoinTables;
+using Domain.Workouts;
 using Microsoft.AspNetCore.Identity;
 using Shared.Enumerations;
 using System;
@@ -25,6 +26,8 @@ namespace Domain.Identity
         public DateTime DateOfBirth { get; set; }
         public Organization Organization { get; set; }
         public List<ExerciseLog> ExerciseLogs { get; set; }
+        public List<CoachAthlete> AssignedAthletes { get; set; }
+        public List<CoachAthlete> AssignedCoaches { get; set; }
         //public ICollection<Message> Messages { get; set; }
     }
 }
