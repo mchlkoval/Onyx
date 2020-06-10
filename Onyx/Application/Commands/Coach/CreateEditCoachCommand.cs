@@ -1,8 +1,11 @@
 ﻿using Domain.Identity;
 using Domain.JoinTables;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using Persistence.Context;
 using Shared.Enumerations;
 using System;
@@ -41,16 +44,41 @@ namespace Application.Commands.Coach
                 
                 if(string.IsNullOrEmpty(request.Id))
                 {
-                    CreateCoach(request);
+                    await CreateCoach(request);
                 } else
                 {
-                    EditCoach(request);
+                    await EditCoach(request);
                 }
 
                 return Unit.Value;
             }
 
-            private async void CreateCoach(Command request)
+            private async Task SendEmail(string coachName, string userName)
+            {
+                var messageToSend = new MimeMessage
+                {
+                    Sender = new MailboxAddress("Onyx Test Message", "mchlkovalsky@outlook.com"),
+                    Subject = "User Created",
+                    Body = new TextPart(MimeKit.Text.TextFormat.Plain)
+                    {
+                        Text = $"We've successfully created a new coach with the username of {userName} and a name of {coachName} \n" +
+                        $"The temporary password is: Pa$$w0rd. Please make sure they change their password as soon as possible"
+                    }
+                };
+
+                messageToSend.From.Add(new MailboxAddress("Michael Kovalsky", "mchlkovalsky@outlook.com"));
+                messageToSend.To.Add(new MailboxAddress("Michael Kovalsky", "mchlkovalsky@gmail.com"));
+
+                using (var smtp = new SmtpClient())
+                {
+                    smtp.Connect("smtp.live.com", 587, SecureSocketOptions.StartTls);
+                    smtp.Authenticate("mchlkovalsky@outlook.com", "Jaljap2732!");
+                    await smtp.SendAsync(messageToSend);
+                    await smtp.DisconnectAsync(true);
+                }
+            }
+
+            private async Task CreateCoach(Command request)
             {
                 var numberOfCoaches = context.Users
                     .Where(x => x.UserType == UserType.Coach)
@@ -74,28 +102,35 @@ namespace Application.Commands.Coach
                     Address = request.Address,
                     Address2 = request.Address2,
                     DateOfBirth = request.DateOfBirth,
-                    Age = (int)(DateTime.Now - request.DateOfBirth).TotalDays/365
+                    Age = (int)(DateTime.Now - request.DateOfBirth).TotalDays/365,   
+                    AssignedAthletes = new List<CoachAthlete>(),
+                    AssignedCoaches = new List<CoachAthlete>()
                 };
 
                 try
                 {
                     //first we add the coach
-                    await userManager.AddPasswordAsync(coach, "Pa$$w0rd");
-
-                    coach.AssignedAthletes = request.AssignedAthletes.Select(x => new CoachAthlete
+                    await userManager.CreateAsync(coach, "Pa$$w0rd");
+                    if(request.AssignedAthletes != null)
                     {
-                        AthleteId = x.AthleteId,
-                        CoachId = coach.Id
-                    }).ToList();
+                        coach.AssignedAthletes = request.AssignedAthletes.Select(x => new CoachAthlete
+                        {
+                            AthleteId = x.AthleteId,
+                            CoachId = coach.Id
+                        }).ToList();
 
-                    context.Users.Update(coach);
+                        context.Users.Update(coach);
+                        
+                        var result = await context.SaveChangesAsync();
 
-                    var result = await context.SaveChangesAsync();
-
-                    if(result < 0)
-                    {
-                        throw new Exception("Failed to create coach");
+                        if(result < 0)
+                        {
+                            throw new Exception("Failed to create coach");
+                        }
                     }
+
+                    await SendEmail(coach.Name, coach.UserName);
+
                 } catch (Exception e)
                 {
                     throw;
@@ -103,7 +138,7 @@ namespace Application.Commands.Coach
                 
             }
 
-            private async void EditCoach(Command request)
+            private async Task EditCoach(Command request)
             {
                 var coach = await context.Users
                     .Include(x => x.AssignedAthletes)
@@ -135,6 +170,7 @@ namespace Application.Commands.Coach
                     {
                         throw new Exception("Failed to update coach");
                     }
+
                 } catch (Exception e)
                 {
                     throw;

@@ -221,14 +221,6 @@ namespace Persistence.Seed
 
                     await context.SaveChangesAsync();
                 }
-                //var exercises = new List<Exercise>
-                //{
-                //    new Exercise
-                //    {
-                //        Id = Guid.NewGuid().ToString(),
-                //        AppUserId = "d8564df2-1464-4547-b418-d1c4c75fe1fc"
-                //    }
-                //};
                 
             }
         } 

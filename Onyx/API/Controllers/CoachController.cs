@@ -52,9 +52,9 @@ namespace API.Controllers
         [Authorize]
         [HttpPost]
         [Route("create")]
-        public async Task<ActionResult> CreateCoach(DetailedCoachViewModel vm, CancellationToken ct)
+        public async Task<ActionResult<Unit>> CreateCoach(CreateEditCoachCommand.Command command, CancellationToken ct)
         {
-            return null;
+            return await Mediator.Send(command, ct);
         }
 
         [Authorize]

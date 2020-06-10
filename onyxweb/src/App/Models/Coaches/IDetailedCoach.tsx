@@ -12,7 +12,7 @@ export interface IDetailedCoach {
     gender: GenderType,
     dateHired: Date,
     dateOfBirth : Date,
-    assignedAthletes : IAssignedAthletes[]
+    assignedAthletes: IAssignedAthletes[] | null
 }
 
 interface IAssignedAthletes {
@@ -34,13 +34,7 @@ export class DetailedCoach implements IDetailedCoach {
     gender: GenderType = GenderType.Female;
     dateHired: Date = new Date();
     dateOfBirth: Date = new Date();
-    assignedAthletes: IAssignedAthletes[] =
-    [{
-        athleteId: "",
-        name: "",
-        dateJoined: new Date(),
-        gender: GenderType.Female
-    }];
+    assignedAthletes: IAssignedAthletes[] | null = null;
 
     constructor(init? : IDetailedCoach) {
         Object.assign(this, init);

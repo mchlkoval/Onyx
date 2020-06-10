@@ -25,8 +25,9 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
+        
         if(match.params.id !== undefined) {
+            setLoading(true);
             loadCoach(match.params.id).then((data) => {
                 setCoach(new DetailedCoach(data));
             }).finally(() => {
@@ -43,6 +44,7 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
             editCoach(values);
         } else {
             //create
+            values.gender = parseInt(values.gender);
             createCoach(values);
         }
     }
@@ -116,7 +118,8 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
                                 <Header floated="left">Assigned Athletes</Header>
                                 <Button positive content="New Athlete" floated="right" type="button" />
                                 
-                                <Table striped bordered hover>
+                                {values.assignedAthletes !== null ? 
+                                    <Table striped bordered hover>
                                     <thead>
                                         <tr>
                                             <th>Name</th>
@@ -127,7 +130,7 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
                                     </thead>
                                     <tbody>
                                         <FieldArray name="assignedAthletes" render={arrayHelpers => (
-                                        values.assignedAthletes.map((athlete, index) => (
+                                        values.assignedAthletes!.map((athlete, index) => (
                                             <tr key={athlete.athleteId}>
                                                 <td>{athlete.name}</td>
                                                 <td>
@@ -149,6 +152,8 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
                                         )}/>
                                     </tbody>
                                 </Table>
+                                : null}
+                                
                             </Segment>
                         
                             <Divider />

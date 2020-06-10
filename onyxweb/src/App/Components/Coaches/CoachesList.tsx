@@ -2,12 +2,14 @@ import React, { useContext, useState, useEffect } from 'react'
 import { RootStoreContext } from '../../Stores/RootStore';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
-import { Container, Segment, Header, Search, Divider } from 'semantic-ui-react';
+import { Container, Segment, Header, Search, Divider, Button } from 'semantic-ui-react';
 import CoachesTable from './CoachesTable';
 import MessageCoachModal from './Modals/MessageCoachModal';
 import { observer } from 'mobx-react-lite';
 import ArchiveCoachModal from './Modals/ArchiveCoachModal';
 import ReactivateCoachModal from './Modals/ReactivateCoachModal';
+import { history } from '../../..';
+import { Link } from 'react-router-dom';
 
 const CoachesList = () => {
 
@@ -44,6 +46,9 @@ const CoachesList = () => {
             </Segment>
             <Divider />
             <Segment>
+                <Segment clearing>
+                    <Button as={Link} to="/coaches/create" positive floated="right">Create</Button>
+                </Segment>
                 <Tabs fill defaultActiveKey="active" id="controlled-tab" activeKey={key} onSelect={(k : string) => {
                     setFilter(k === "active" ? true : false);
                     setKey(k);;
