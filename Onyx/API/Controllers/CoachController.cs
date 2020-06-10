@@ -48,5 +48,30 @@ namespace API.Controllers
         {
             return await Mediator.Send(new UpdateCoachStatusCommand.Command(id, true), ct);
         }
+
+        [Authorize]
+        [HttpPost]
+        [Route("create")]
+        public async Task<ActionResult> CreateCoach(DetailedCoachViewModel vm, CancellationToken ct)
+        {
+            return null;
+        }
+
+        [Authorize]
+        [HttpPut]
+        [Route("edit")]
+        public async Task<ActionResult<Unit>> EditCoach(CreateEditCoachCommand.Command command, CancellationToken ct)
+        {
+            return await Mediator.Send(command, ct);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("availableStudents/{id}")]
+        public async Task<ActionResult> AvailableStudentsToAssign(string id, CancellationToken ct)
+        {
+            return null;
+        }
+
     }
 }

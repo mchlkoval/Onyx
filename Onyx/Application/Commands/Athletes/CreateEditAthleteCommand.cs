@@ -16,7 +16,7 @@ namespace Application.Commands.Athletes
     {
         public class Command : IRequest
         {
-             public string Id { get; set; }
+            public string Id { get; set; }
             public string Name { get; set; }
             public GenderType Gender { get; set; }
             public UserType UserType { get; set; }
@@ -58,7 +58,10 @@ namespace Application.Commands.Athletes
                 {
                     CreateAthlete(request);
                     return Unit.Value;
-                } 
+                } else
+                {
+
+                }
 
                 return Unit.Value;
             }

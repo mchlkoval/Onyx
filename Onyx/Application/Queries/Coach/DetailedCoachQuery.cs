@@ -43,6 +43,12 @@ namespace Application.Queries.Coach
                         Gender = x.Gender,
                         DateHired = x.DateJoined,
                         DateOfBirth = x.DateOfBirth,
+                        City = x.City,
+                        State = x.State,
+                        Address = x.Address,
+                        Address2 = x.Address,
+                        Country = x.Country,
+                        Email = x.Email,
                         AssignedAthletes = x.AssignedAthletes.Select(x => new AssignedAthletesViewModel {
                             AthleteId = x.Athlete.Id,
                             Gender = x.Athlete.Gender,

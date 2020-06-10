@@ -218,6 +218,8 @@ namespace Persistence.Seed
 
                     Console.WriteLine($"Updating: {user.UserName}");
                     context.Users.Update(user);
+
+                    await context.SaveChangesAsync();
                 }
                 //var exercises = new List<Exercise>
                 //{

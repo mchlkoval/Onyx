@@ -5,6 +5,7 @@ import Agent from "../API/Agent";
 import { IMessageCoach } from "../Models/Coaches/IMessageCoach";
 import { toast } from "react-toastify";
 import { IDetailedCoach } from "../Models/Coaches/IDetailedCoach";
+import { history } from "../..";
 
 export class CoachesStore {
 
@@ -78,5 +79,25 @@ export class CoachesStore {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    @action editCoach = async (values : IDetailedCoach) =>{
+        try {
+            await Agent.Coaches.edit(values);
+            toast("Successfully edited coach");
+            history.push("/coaches");
+        } catch(error) {
+            console.log(error);
+        }
+        
+    }
+
+    @action createCoach = async (values: IDetailedCoach) => {
+        await Agent.Coaches.create(values);
+        toast("Successfully created coach");
+    }
+
+    @action listAvailableStudents = async (id: string) => {
+        
     }
 }

@@ -4,12 +4,12 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import { Container, Segment, Search, Header, Divider } from 'semantic-ui-react'
 import { RootStoreContext } from '../../Stores/RootStore';
-import { GenderType } from '../../Models/Enums/Gender';
 import AthleteTable from './AthleteTable'
 import { Athletes } from '../../Models/Athlete/Athletes'
 import ArchiveAthleteModal from './Modals/ArchiveAthleteModal'
 import ReactivateAthleteModal from './Modals/ReactivateAthleteModal'
 import MessageAthleteModal from './Modals/MessageAthleteModal'
+import { handleGender } from '../../Utility/UtilityFunctions'
 
 const AthletesList = () => {
     
@@ -25,17 +25,6 @@ const AthletesList = () => {
         listAthletes(active);
     }, [listAthletes, active]) 
 
-    
-    const handleGenderEnum = (gender : GenderType) => {
-        if(gender === 0) {
-            return "Male";
-        } else if (gender === 1) {
-            return "Female";
-        } else {
-            return "Other";
-        }
-    }
-    
     const messageAthlete = (id: string, name: string) => {
         openModal(<MessageAthleteModal id={id} name={name} />);
     }
@@ -84,10 +73,10 @@ const AthletesList = () => {
                     setKey(k);
                 }}>
                     <Tab eventKey="active" title="Active">
-                        <AthleteTable athletes={activeAthletes} messageAthlete={messageAthlete} archiveAthlete={archiveAthlete} handleGenderEnum={handleGenderEnum} state={key}/>
+                        <AthleteTable athletes={activeAthletes} messageAthlete={messageAthlete} archiveAthlete={archiveAthlete} handleGenderEnum={handleGender} state={key}/>
                     </Tab>
                     <Tab eventKey="archived" title="Archived">
-                        <AthleteTable athletes={archivedAthletes} messageAthlete={messageAthlete} activateAthlete={reactivateAthlete} handleGenderEnum={handleGenderEnum} state={key}/>
+                        <AthleteTable athletes={archivedAthletes} messageAthlete={messageAthlete} activateAthlete={reactivateAthlete} handleGenderEnum={handleGender} state={key}/>
                     </Tab>
                 </Tabs>
             </Segment>

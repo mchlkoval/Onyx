@@ -10,6 +10,7 @@ import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table'
 import { GenderType } from '../../Models/Enums/Gender';
+import { handleGender, handleDate } from '../../Utility/UtilityFunctions';
 
 interface IProps {
     id: string
@@ -18,7 +19,7 @@ interface IProps {
 const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
     
     const root = useContext(RootStoreContext);
-    const {loadCoach} = root.coachStore;
+    const {loadCoach, createCoach, editCoach} = root.coachStore;
 
     const [coach, setCoach] = useState(new DetailedCoach());
     const [loading, setLoading] = useState(false);
@@ -35,6 +36,17 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
     }, [loadCoach, match.params])
 
 
+    const handleFormSubmit = (values: any) => {
+        if(values.id !== "") {
+            //edit
+            values.gender = parseInt(values.gender);
+            editCoach(values);
+        } else {
+            //create
+            createCoach(values);
+        }
+    }
+
     if(loading) {
         return <LoadingComponent content="Loading ..."/>
     }
@@ -43,7 +55,7 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
         <Container>
             <Segment clearing>
                 <Header>Manage Coach</Header>
-                <Formik onSubmit={(values) => console.log(values)} initialValues={coach}
+                <Formik onSubmit={(values) => handleFormSubmit(values)} initialValues={coach}
                 render = {
                     ({values, handleChange, handleSubmit}) => (
                         <Form onSubmit={handleSubmit}>
@@ -60,16 +72,44 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
                                                         <option value={GenderType.Other} >Other</option>
                                                     </Form.Control>
                                 </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Email</Form.Label>
+                                    <Form.Control type="email" name="email" value={values.email} onChange={handleChange}/>
+                                </Form.Group>
                             </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col}>
                                     <Form.Label>Date Hired</Form.Label>
-                                    <Form.Control type='date' name="dateHired" value={new Date(values.dateHired).toISOString().split('T')[0]} onChange={handleChange}/>
+                                    <Form.Control type='date' name="dateHired" value={handleDate(values.dateHired)} onChange={handleChange}/>
                                 </Form.Group>
                                 <Form.Group as={Col}>
                                     <Form.Label>Date of Birth</Form.Label>
-                                    <Form.Control type='date' name="dateOfBirth" value={new Date(values.dateOfBirth).toISOString().split('T')[0]} onChange={handleChange}/>
+                                    <Form.Control type='date' name="dateOfBirth" value={handleDate(values.dateOfBirth)} onChange={handleChange}/>
                                 </Form.Group>
+                            </Form.Row>
+                            <Form.Row>
+                                <Form.Group as={Col}>
+                                    <Form.Label>Country</Form.Label>
+                                    <Form.Control type='text' name="country" value={values.country} onChange={handleChange}/>
+                                </Form.Group>
+                                <Form.Group as={Col}>
+                                    <Form.Label>State</Form.Label>
+                                    <Form.Control type='text' name="state" value={values.state} onChange={handleChange}/>
+                                </Form.Group>  
+                                <Form.Group as={Col}>
+                                    <Form.Label>City</Form.Label>
+                                    <Form.Control type='text' name="city" value={values.city} onChange={handleChange}/>
+                                </Form.Group>    
+                            </Form.Row>
+                            <Form.Row>
+                                <Form.Group as={Col}>
+                                    <Form.Label>Address 1</Form.Label>
+                                    <Form.Control type='text' name="address" value={values.address} onChange={handleChange}/>
+                                </Form.Group>
+                                <Form.Group as={Col}>
+                                    <Form.Label>Address 2</Form.Label>
+                                    <Form.Control type='text' name="address2" value={values.address2} onChange={handleChange}/>
+                                </Form.Group>      
                             </Form.Row>
                             <Divider />
                             <Segment clearing>
@@ -89,16 +129,12 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
                                         <FieldArray name="assignedAthletes" render={arrayHelpers => (
                                         values.assignedAthletes.map((athlete, index) => (
                                             <tr key={athlete.athleteId}>
-                                                <td><Form.Control name={`assignedAthletes[${index}].name`} value={athlete.name} onChange={handleChange}/></td>
+                                                <td>{athlete.name}</td>
                                                 <td>
-                                                    <Form.Control as="select" name={`assignedAthletes[${index}].gender`} value={athlete.gender} onChange={handleChange}>
-                                                        <option value={GenderType.Male} >Male</option>
-                                                        <option value={GenderType.Female}>Female</option>
-                                                        <option value={GenderType.Other} >Other</option>
-                                                    </Form.Control>
+                                                    {handleGender(athlete.gender)}
                                                 </td>
                                                 <td>
-                                                    <Form.Control type="date" name={`assignedAthletes[${index}.dateJoined]`} value={new Date(athlete.dateJoined).toISOString().split('T')[0]} onChange={handleChange}/>
+                                                    {handleDate(athlete.dateJoined)}
                                                 </td>
                                                 <td>
                                                     <Button floated="right" type="button">

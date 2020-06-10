@@ -83,7 +83,10 @@ const Coaches = {
     loadCoach : (id: string) : Promise<IDetailedCoach> => requests.get(`/coach/detail/${id}`),
     archive: (id: string) : Promise<any> => requests.put(`coach/archive/${id}`, {}),
     activate: (id: string) : Promise<any> => requests.put(`coach/activate/${id}`, {}),
-    messageCoach: (message : IMessageCoach) : Promise<any> => requests.post("/coach/message", message)
+    messageCoach: (message : IMessageCoach) : Promise<any> => requests.post("/coach/message", message),
+    create: (values: IDetailedCoach) : Promise<any> => requests.post("/coach/create", values),
+    edit: (values: IDetailedCoach) : Promise<any> => requests.put("/coach/edit", values),
+    availableAthletes: (id: string) : Promise<any> => requests.get(`/coach/availableStudents/${id}`)
 }
 
 const Memberships = {
