@@ -10,7 +10,7 @@ import { Athletes } from '../Models/Athlete/Athletes';
 import { MessageAthlete } from '../Models/Athlete/MessageAthlete';
 import { IDetailedAthlete } from '../Models/Athlete/IDetailedAthlete';
 import { ICoaches } from '../Models/Coaches/ICoaches';
-import { IDetailedCoach } from '../Models/Coaches/IDetailedCoach';
+import { IDetailedCoach, IAssignedAthletes } from '../Models/Coaches/IDetailedCoach';
 import { IMessageCoach } from '../Models/Coaches/IMessageCoach';
 
 axios.defaults.baseURL = "http://localhost:5000/api"
@@ -86,7 +86,7 @@ const Coaches = {
     messageCoach: (message : IMessageCoach) : Promise<any> => requests.post("/coach/message", message),
     create: (values: IDetailedCoach) : Promise<any> => requests.post("/coach/create", values),
     edit: (values: IDetailedCoach) : Promise<any> => requests.put("/coach/edit", values),
-    availableAthletes: (id: string) : Promise<any> => requests.get(`/coach/availableStudents/${id}`)
+    availableAthletes: (id: string) : Promise<IAssignedAthletes[]> => requests.get(`/coach/availableStudents/${id}`)
 }
 
 const Memberships = {

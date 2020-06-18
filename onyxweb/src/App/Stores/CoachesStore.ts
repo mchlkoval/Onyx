@@ -4,8 +4,9 @@ import { ICoaches } from "../Models/Coaches/ICoaches";
 import Agent from "../API/Agent";
 import { IMessageCoach } from "../Models/Coaches/IMessageCoach";
 import { toast } from "react-toastify";
-import { IDetailedCoach } from "../Models/Coaches/IDetailedCoach";
+import { IDetailedCoach, IAssignedAthletes } from "../Models/Coaches/IDetailedCoach";
 import { history } from "../..";
+import { GenderType } from "../Models/Enums/Gender";
 
 export class CoachesStore {
 
@@ -13,6 +14,8 @@ export class CoachesStore {
 
     @observable coaches : ICoaches[] = [];
     @observable coach : IDetailedCoach | null = null;
+
+    @observable availableAthletes : IAssignedAthletes[] = [];
 
     @computed get activeCoaches() {
         return this.coaches.filter(x => x.isActive === true);
@@ -97,7 +100,36 @@ export class CoachesStore {
         toast("Successfully created coach");
     }
 
-    @action listAvailableStudents = async (id: string) => {
+    @action handleAddingAvailableAthlete = async (athlete : IAssignedAthletes) => {
+        var indexToRemove = this.availableAthletes.indexOf(athlete);
         
+        runInAction("Removing element", () => {  
+            this.availableAthletes.splice(indexToRemove, 0);
+        })
+        
+        runInAction("Pushing athletes", () => {
+            this.coach?.assignedAthletes?.push(athlete);
+        })
     }
+
+    @action listAvailableStudents = async (id: string) => {
+        try {
+            var apiData = await Agent.Coaches.availableAthletes(id);
+
+            if(this.coach !== null) {
+                
+                apiData = apiData.filter((x, index) => this.coach!.assignedAthletes?.some(x => {
+                    return JSON.stringify(apiData[index]) === JSON.stringify(x)
+                })) 
+            }
+            console.log("API Data after: ", apiData);
+            runInAction("Setting available students", () => {
+                this.availableAthletes = apiData;
+            })
+
+            return apiData;
+        } catch (error) {
+            console.log(error);
+        }
+     }
 }

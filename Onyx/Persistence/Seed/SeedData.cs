@@ -137,6 +137,26 @@ namespace Persistence.Seed
                         Age = 25,
                         DateOfBirth = DateTime.Now.AddYears(-25)
                     };
+                var athlete6 = new AppUser
+                    {
+                        Id = "71630dfc-f03a-45c0-b72c-24190658fa76",
+                        OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67",
+                        UserName = "athlete6",
+                        Email = "athlete6@athlete.com",
+                        UserType = UserType.Athlete,
+                        Gender = GenderType.Male,
+                        Name = "Unassigned Something",
+                        DateJoined = DateTime.Now.AddDays(-7),
+                        DateArchived = DateTime.Now,
+                        IsActive = false,
+                        City = "Alpharetta",
+                        State = "Georgia",
+                        Country = "United States of America",
+                        Address = "10700 Pinewalk Forest Circle",
+                        Address2 = "",
+                        Age = 25,
+                        DateOfBirth = DateTime.Now.AddYears(-25)
+                    };
                 var coach = new AppUser
                     {
                         Id = "23a48e56-3e68-4e0e-b9b1-aa0d02cdd425",
@@ -183,7 +203,8 @@ namespace Persistence.Seed
                     athlete2,
                     athlete3,
                     athlete4,
-                    athlete5
+                    athlete5,
+                    athlete6
                 };
 
 

@@ -15,7 +15,7 @@ export interface IDetailedCoach {
     assignedAthletes: IAssignedAthletes[] | null
 }
 
-interface IAssignedAthletes {
+export interface IAssignedAthletes {
     athleteId : string,
     gender: GenderType,
     dateJoined: Date,

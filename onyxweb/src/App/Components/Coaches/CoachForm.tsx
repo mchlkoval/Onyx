@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 import { RouteComponentProps } from 'react-router-dom'
 import { RootStoreContext } from '../../Stores/RootStore';
-import { DetailedCoach } from '../../Models/Coaches/IDetailedCoach';
+import { DetailedCoach, IAssignedAthletes } from '../../Models/Coaches/IDetailedCoach';
 import { LoadingComponent } from '../General/Loading/LoadingComponent';
 import { Container, Segment, Header, Divider, Button, Icon } from 'semantic-ui-react';
 import { Formik, FieldArray } from 'formik';
@@ -11,6 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table'
 import { GenderType } from '../../Models/Enums/Gender';
 import { handleGender, handleDate } from '../../Utility/UtilityFunctions';
+import AvailableAthletesModal from './Modals/AvailableAthletesModal';
 
 interface IProps {
     id: string
@@ -20,9 +21,11 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
     
     const root = useContext(RootStoreContext);
     const {loadCoach, createCoach, editCoach} = root.coachStore;
+    const {openModal} = root.modalStore;
 
     const [coach, setCoach] = useState(new DetailedCoach());
     const [loading, setLoading] = useState(false);
+
 
     useEffect(() => {
         
@@ -36,6 +39,18 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
         }
     }, [loadCoach, match.params])
 
+    // useEffect(() => {
+    //     if(newlyAssignedStudent !== undefined) {
+    //         coach.assignedAthletes?.push(newlyAssignedStudent!) 
+    //         console.log("newAthletes: ", coach.assignedAthletes);
+    //         setCoach(new DetailedCoach(coach));
+    //     }
+    // }, [newlyAssignedStudent, setCoach, coach])
+
+    const addNewlySelectedAthlete = (athlete : IAssignedAthletes) => {
+        coach.assignedAthletes?.push(athlete);
+        setCoach(new DetailedCoach(coach));
+    }
 
     const handleFormSubmit = (values: any) => {
         if(values.id !== "") {
@@ -116,7 +131,7 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
                             <Divider />
                             <Segment clearing>
                                 <Header floated="left">Assigned Athletes</Header>
-                                <Button positive content="New Athlete" floated="right" type="button" />
+                                <Button positive content="New Athlete" floated="right" type="button" onClick={() => openModal(<AvailableAthletesModal coachId={match.params.id} handleSelectAthlete={addNewlySelectedAthlete}/>)}/>
                                 
                                 {values.assignedAthletes !== null ? 
                                     <Table striped bordered hover>

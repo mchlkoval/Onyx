@@ -8,7 +8,6 @@ import MessageCoachModal from './Modals/MessageCoachModal';
 import { observer } from 'mobx-react-lite';
 import ArchiveCoachModal from './Modals/ArchiveCoachModal';
 import ReactivateCoachModal from './Modals/ReactivateCoachModal';
-import { history } from '../../..';
 import { Link } from 'react-router-dom';
 
 const CoachesList = () => {

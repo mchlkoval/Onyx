@@ -68,9 +68,9 @@ namespace API.Controllers
         [Authorize]
         [HttpGet]
         [Route("availableStudents/{id}")]
-        public async Task<ActionResult> AvailableStudentsToAssign(string id, CancellationToken ct)
+        public async Task<ActionResult<List<AssignedAthletesViewModel>>> AvailableStudentsToAssign(string id, CancellationToken ct)
         {
-            return null;
+            return await Mediator.Send(new ListAvailableStudentsQuery.Query(id), ct);
         }
 
     }
