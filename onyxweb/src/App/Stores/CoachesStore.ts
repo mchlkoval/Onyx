@@ -118,9 +118,10 @@ export class CoachesStore {
 
             if(this.coach !== null) {
                 
-                apiData = apiData.filter((x, index) => this.coach!.assignedAthletes?.some(x => {
+                apiData = apiData.filter((x, index) => !this.coach!.assignedAthletes?.some(x => {
                     return JSON.stringify(apiData[index]) === JSON.stringify(x)
                 })) 
+                
             }
             console.log("API Data after: ", apiData);
             runInAction("Setting available students", () => {
