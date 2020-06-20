@@ -34,13 +34,14 @@ namespace Application.Queries.Athlete
 
             public async Task<DetailedAthleteViewModel> Handle(Query request, CancellationToken cancellationToken)
             {
-                var athlete = await context.Users.Where(x => x.Id == request.Id)
+                var athlete = await context.Users
+                    .Include(x => x.AssignedCoaches)
+                    .Where(x => x.Id == request.Id)
                     .Select(x => new DetailedAthleteViewModel
                     {
                         Id = x.Id,
                         Name = x.Name,
                         Gender = x.Gender,
-                        UserType = x.UserType,
                         City = x.City,
                         State = x.State,
                         Country = x.Country,
@@ -48,7 +49,13 @@ namespace Application.Queries.Athlete
                         Address2 = x.Address2,
                         Weight = x.Weight,
                         Age = x.Age,
-                        DateOfBirth = x.DateOfBirth
+                        DateOfBirth = x.DateOfBirth,
+                        AssignedCoaches = x.AssignedCoaches.Select(y => new AssignedCoachViewModel
+                        {
+                            Id = y.CoachId,
+                            Name = y.Coach.Name,
+                            Gender = y.Coach.Gender
+                        })
                     }).SingleAsync();
 
                 return athlete;

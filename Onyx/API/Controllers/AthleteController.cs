@@ -50,6 +50,14 @@ namespace API.Controllers
         }
 
         [Authorize]
+        [HttpPut]
+        [Route("edit")]
+        public async Task<ActionResult<Unit>> EditAthlete(CreateEditAthleteCommand.Command command, CancellationToken ct)
+        {
+            return await Mediator.Send(command, ct);
+        }
+
+        [Authorize]
         [HttpPost]
         [Route("message")]
         public async Task<ActionResult<Unit>> MessageAthlete(MessageAthleteCommand.Command command, CancellationToken ct)
@@ -63,6 +71,14 @@ namespace API.Controllers
         public async Task<ActionResult<Unit>> CreateEditAthlete(CreateEditAthleteCommand.Command command, CancellationToken ct)
         {
             return await Mediator.Send(command, ct);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("availableCoaches/{athleteId}")]
+        public async Task<ActionResult<List<AssignedCoachViewModel>>> ListAvailableCoaches(string athleteId, CancellationToken ct)
+        {
+            return await Mediator.Send(new ListAvailableCoachesQuery.Query(athleteId), ct);
         }
     }
 }

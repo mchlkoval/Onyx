@@ -4,7 +4,7 @@ import Table from 'react-bootstrap/Table'
 import { handleGender, handleDate } from '../../../Utility/UtilityFunctions';
 import { Button, Icon, Segment, Header } from 'semantic-ui-react';
 import Spinner from 'react-bootstrap/Spinner'
-import { IAssignedAthletes, DetailedCoach } from '../../../Models/Coaches/IDetailedCoach';
+import { IAssignedAthletes } from '../../../Models/Coaches/IDetailedCoach';
 
 interface IProps {
     coachId: string
@@ -19,7 +19,6 @@ const AvailableAthletesModal : React.FC<IProps> = ({coachId, handleSelectAthlete
     const [displayedAthletes, setDisplayedAthletes] = useState<Array<IAssignedAthletes>>([]);
 
     useEffect(() => {
-        console.log("firing useeffect");
         if(coachId !== undefined) {
             listAvailableStudents(coachId)
             .then((data) => {
@@ -58,7 +57,7 @@ const AvailableAthletesModal : React.FC<IProps> = ({coachId, handleSelectAthlete
                     <th>Name</th>
                     <th>Gender</th>
                     <th>Date Joined</th>
-                    <th>Action</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>

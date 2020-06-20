@@ -157,6 +157,7 @@ namespace Persistence.Seed
                         Age = 25,
                         DateOfBirth = DateTime.Now.AddYears(-25)
                     };
+                
                 var coach = new AppUser
                     {
                         Id = "23a48e56-3e68-4e0e-b9b1-aa0d02cdd425",
@@ -195,10 +196,31 @@ namespace Persistence.Seed
                         }
                     };
 
+                var coach2 = new AppUser
+                    {
+                        Id = "4f69ddc5-d863-4edd-b403-d6de788f1b71",
+                        OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67",
+                        UserName = "coach2",
+                        Email = "coach2@coach.com",
+                        UserType = UserType.Coach,
+                        Gender = GenderType.Female,
+                        Name = "Victoria Something",
+                        DateJoined = DateTime.Now,
+                        IsActive = true,
+                        City = "Alpharetta",
+                        State = "Georgia",
+                        Country = "United States of America",
+                        Address = "10700 Pinewalk Forest Circle",
+                        Address2 = "",
+                        Age = 25,
+                        DateOfBirth = DateTime.Now.AddYears(-25)
+                    };
+
                 var users = new List<AppUser>
                 {
                     admin,
                     coach,
+                    coach2,
                     athlete,
                     athlete2,
                     athlete3,

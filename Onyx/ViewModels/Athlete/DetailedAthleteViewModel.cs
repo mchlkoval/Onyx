@@ -10,7 +10,6 @@ namespace ViewModels.Athlete
         public string Id { get; set; }
         public string Name { get; set; }
         public GenderType Gender { get; set; }
-        public UserType UserType { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
@@ -19,6 +18,13 @@ namespace ViewModels.Athlete
         public int Weight { get; set; }
         public int Age { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public IEnumerable<AssignedCoachViewModel> AssignedCoaches { get; set; }
+    }
 
+    public class AssignedCoachViewModel
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public GenderType Gender { get; set; }
     }
 }

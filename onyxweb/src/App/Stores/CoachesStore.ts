@@ -123,7 +123,7 @@ export class CoachesStore {
                 })) 
                 
             }
-            console.log("API Data after: ", apiData);
+            
             runInAction("Setting available students", () => {
                 this.availableAthletes = apiData;
             })

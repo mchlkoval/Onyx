@@ -39,27 +39,16 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
         }
     }, [loadCoach, match.params])
 
-    // useEffect(() => {
-    //     if(newlyAssignedStudent !== undefined) {
-    //         coach.assignedAthletes?.push(newlyAssignedStudent!) 
-    //         console.log("newAthletes: ", coach.assignedAthletes);
-    //         setCoach(new DetailedCoach(coach));
-    //     }
-    // }, [newlyAssignedStudent, setCoach, coach])
-
     const addNewlySelectedAthlete = (athlete : IAssignedAthletes) => {
         coach.assignedAthletes?.push(athlete);
         setCoach(new DetailedCoach(coach));
     }
 
     const handleFormSubmit = (values: any) => {
+        values.gender = parseInt(values.gender);
         if(values.id !== "") {
-            //edit
-            values.gender = parseInt(values.gender);
             editCoach(values);
         } else {
-            //create
-            values.gender = parseInt(values.gender);
             createCoach(values);
         }
     }
@@ -155,7 +144,7 @@ const CoachForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => 
                                                     {handleDate(athlete.dateJoined)}
                                                 </td>
                                                 <td>
-                                                    <Button floated="right" type="button">
+                                                    <Button floated="right" type="button" onClick={() => arrayHelpers.remove(index)}>
                                                         <Icon name="user times"/>
                                                     </Button>
                                                     <Button floated="right" type="button">

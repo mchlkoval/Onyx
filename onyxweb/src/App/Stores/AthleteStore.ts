@@ -4,7 +4,8 @@ import Agent from "../API/Agent";
 import { Athletes } from "../Models/Athlete/Athletes";
 import { toast } from "react-toastify";
 import { MessageAthlete } from "../Models/Athlete/MessageAthlete";
-import { IDetailedAthlete } from "../Models/Athlete/IDetailedAthlete";
+import { IDetailedAthlete, IAssignedCoach } from "../Models/Athlete/IDetailedAthlete";
+import { history } from "../..";
 
 export class AthleteStore {
 
@@ -12,6 +13,7 @@ export class AthleteStore {
 
     @observable athletes : Athletes[] = [];
     @observable athlete : IDetailedAthlete | null = null;
+    @observable availableCoaches : IAssignedCoach[] = [];
 
     @computed get activeAthletes() {
         return this.athletes.filter(x => x.isActive === true);
@@ -85,5 +87,54 @@ export class AthleteStore {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    @action createAthlete = async (athlete: IDetailedAthlete) => {
+        try {
+            await Agent.Athlete.create(athlete);
+            toast(`Successfully created ${athlete.name}`);
+            history.push("/athletes");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    @action editAthlete = async (athlete: IDetailedAthlete) => {
+        try {
+            await Agent.Athlete.edit(athlete);
+            toast(`Successfully edited ${athlete.name}`);
+            history.push("/athletes");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    @action handleAddingAvailableCoach = async (coach : IAssignedCoach) => {
+        var indexToRemove = this.availableCoaches.indexOf(coach);
+        
+        runInAction("Removing element", () => {  
+            this.availableCoaches.splice(indexToRemove, 0);
+        })
+        
+        runInAction("Pushing athletes", () => {
+            this.athlete?.assignedCoaches?.push(coach);
+        })
+    }
+
+    @action listAvailableCoaches = async(athleteId: string) => {
+        
+        var apiData = await Agent.Athlete.listAvailableCoaches(athleteId);
+
+        if(this.athlete != null) {
+            apiData = apiData.filter(x => 
+                !this.athlete?.assignedCoaches?.map(z => z.id).some(n => n === x.id)
+            );
+        }
+
+        runInAction("Setting available athletes", () => {
+            this.availableCoaches = apiData;
+        })
+
+        return apiData;
     }
 }

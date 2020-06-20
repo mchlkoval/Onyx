@@ -8,7 +8,7 @@ import { Exercise, Workout } from '../Models/Workout';
 import { IDetailedMembership } from '../Models/Memberships/IDetailedMembership';
 import { Athletes } from '../Models/Athlete/Athletes';
 import { MessageAthlete } from '../Models/Athlete/MessageAthlete';
-import { IDetailedAthlete } from '../Models/Athlete/IDetailedAthlete';
+import { IDetailedAthlete, IAssignedCoach } from '../Models/Athlete/IDetailedAthlete';
 import { ICoaches } from '../Models/Coaches/ICoaches';
 import { IDetailedCoach, IAssignedAthletes } from '../Models/Coaches/IDetailedCoach';
 import { IMessageCoach } from '../Models/Coaches/IMessageCoach';
@@ -72,10 +72,13 @@ const Messages = {
 
 const Athlete = {
     list: (active : boolean) : Promise<Athletes[]> => requests.get(`/athlete/athletes/${active}`),
+    edit: (athlete : IDetailedAthlete) : Promise<any> => requests.put("/athlete/edit", athlete),
+    create : (athlete: IDetailedAthlete) : Promise<any> => requests.post("/athlete/create", athlete),
     archive : (id: string) : Promise<any> => requests.put(`/athlete/archive/${id}`, {}),
     activate: (id: string) : Promise<any> => requests.put(`/athlete/reactivate/${id}`, {}),
     messageAthlete : (message: MessageAthlete) : Promise<any> => requests.post(`/athlete/message`, message),
-    loadAthlete : (id: string) : Promise<IDetailedAthlete> => requests.get(`/athlete/${id}`)
+    loadAthlete : (id: string) : Promise<IDetailedAthlete> => requests.get(`/athlete/${id}`),
+    listAvailableCoaches : (id: string) : Promise<IAssignedCoach[]> => requests.get(`/athlete/availableCoaches/${id}`)
 }
 
 const Coaches = {

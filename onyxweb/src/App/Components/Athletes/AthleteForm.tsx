@@ -2,13 +2,17 @@ import React, { useContext, useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { RouteComponentProps } from 'react-router-dom'
 import { RootStoreContext } from '../../Stores/RootStore'
-import { DetailedAthlete } from '../../Models/Athlete/IDetailedAthlete'
+import { DetailedAthlete, IAssignedCoach } from '../../Models/Athlete/IDetailedAthlete'
 import { LoadingComponent } from '../General/Loading/LoadingComponent'
-import { Container, Segment, Header, Button } from 'semantic-ui-react'
-import { Formik } from 'formik'
+import { Container, Segment, Header, Button, Icon } from 'semantic-ui-react'
+import { Formik, FieldArray } from 'formik'
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col';
+import Table from 'react-bootstrap/Table'
 import { GenderType } from '../../Models/Enums/Gender'
+import { handleGender } from '../../Utility/UtilityFunctions'
+import AvailableAthletesModal from '../Coaches/Modals/AvailableAthletesModal'
+import AvailableCoachesModal from './Modals/AvailableCoachesModal'
 
 interface IProps {
     id: string
@@ -18,7 +22,8 @@ const AthleteForm : React.FC<RouteComponentProps<IProps>>= ({match, history}) =>
 
 
     const root = useContext(RootStoreContext);
-    const { loadAthlete} = root.athleteStore;
+    const { loadAthlete, editAthlete, createAthlete} = root.athleteStore;
+    const { openModal } = root.modalStore;
 
     const [athlete, setAthlete] = useState(new DetailedAthlete());
     const [loading, setLoading] = useState(false);
@@ -35,6 +40,20 @@ const AthleteForm : React.FC<RouteComponentProps<IProps>>= ({match, history}) =>
 
     }, [loadAthlete, match.params])
 
+    const addNewlySelectedCoach = (coach : IAssignedCoach) => {
+        athlete.assignedCoaches?.push(coach);
+        setAthlete(new DetailedAthlete(athlete));
+    }
+
+    const handleFormSubmit = (values: any) => {
+        values.gender = parseInt(values.gender);
+        if(values.id !== "") {
+            editAthlete(values);
+        } else {
+            createAthlete(values);
+        }
+    }
+
     if(loading) {
         return <LoadingComponent content="Loading ..."/>
     }
@@ -43,7 +62,7 @@ const AthleteForm : React.FC<RouteComponentProps<IProps>>= ({match, history}) =>
         <Container>
             <Segment clearing>
                 <Header>Manage Athlete</Header>
-                <Formik onSubmit={(values) => console.log(values)} initialValues={athlete} 
+                <Formik onSubmit={(values) => handleFormSubmit(values)} initialValues={athlete} 
                     render={
                         ({values, handleChange, handleSubmit}) => (
                             <Form onSubmit={handleSubmit}>
@@ -93,6 +112,39 @@ const AthleteForm : React.FC<RouteComponentProps<IProps>>= ({match, history}) =>
                                         <Form.Control type="text" name="address2" value={values.address2} onChange={handleChange} />
                                     </Form.Group>
                                 </Form.Row>
+                                <Segment clearing>
+                                    <Header floated="left">Assigned Coaches</Header>
+                                    <Button positive type="button" content="Assign New Coach" floated="right" onClick={() => openModal(<AvailableCoachesModal athleteId={match.params.id} handleSelectCoach={addNewlySelectedCoach}/>)}/>
+                                    {values.assignedCoaches !== null ? 
+                                        <Table striped bordered hover>
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Gender</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <FieldArray name="assignedCoaches" render={arrayHelpers => (
+                                                    values.assignedCoaches?.map((coach, index) => (
+                                                        <tr key={coach.id}>
+                                                            <td>{coach.name}</td>
+                                                            <td>{handleGender(coach.gender)}</td>
+                                                            <td><Button floated="right" type="button" onClick={() => arrayHelpers.remove(index)}>
+                                                                <Icon name="user times"/>
+                                                            </Button>
+                                                            <Button floated="right" type="button">
+                                                                <Icon name="envelope"/>
+                                                            </Button>
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                )}/>
+                                            </tbody>
+                                        </Table> 
+                                        : null
+                                    }
+                                </Segment>
                                 <Form.Row>
                                     <Form.Group as={Col}>
                                         <Button floated="right" type="submit" positive content="Save"/>
