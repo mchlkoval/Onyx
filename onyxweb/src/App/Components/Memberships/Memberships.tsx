@@ -10,9 +10,8 @@ import { UserType } from '../../Models/Enums/UserType';
 const Memberships : React.FC = () => {
 
     const root = useContext(RootStoreContext);    
-    const {memberships} = root.membershipStore;
+    const {memberships, loadMemberships} = root.membershipStore;
     const {user} = root.userStore;
-    const {loadMemberships} = root.membershipStore;
 
     const [isManager, setUserType] = useState(false);
 

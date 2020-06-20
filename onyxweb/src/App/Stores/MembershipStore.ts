@@ -42,9 +42,7 @@ export class MembershipStore {
             const apiResult = await Agent.Memberships.list();
             
             runInAction("Getting Memberships from API", () => {
-                console.log("data from membership: ", apiResult);
                 this.memberships = apiResult;
-                console.log(this.memberships);
             })
 
         } catch (error) {

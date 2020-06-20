@@ -24,8 +24,32 @@ namespace Persistence.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Address2")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("City")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateArchived")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateJoined")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -35,10 +59,19 @@ namespace Persistence.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Gender")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
@@ -64,6 +97,9 @@ namespace Persistence.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("State")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("INTEGER");
 
@@ -72,6 +108,9 @@ namespace Persistence.Migrations
                         .HasMaxLength(256);
 
                     b.Property<int>("UserType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Weight")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -86,6 +125,21 @@ namespace Persistence.Migrations
                     b.HasIndex("OrganizationId");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Domain.JoinTables.CoachAthlete", b =>
+                {
+                    b.Property<string>("AthleteId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CoachId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AthleteId", "CoachId");
+
+                    b.HasIndex("CoachId");
+
+                    b.ToTable("AssignedAthletes");
                 });
 
             modelBuilder.Entity("Domain.Memberships.Membership", b =>
@@ -118,18 +172,18 @@ namespace Persistence.Migrations
                             Id = "29ad0121-b184-461b-b2c9-518355e35123",
                             Cost = 250.0,
                             Description = "Approved by Boris, loved by Slavs, misunderstood by Americans.",
-                            EndDate = new DateTime(2020, 6, 14, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(4375),
+                            EndDate = new DateTime(2020, 7, 7, 15, 55, 54, 714, DateTimeKind.Local).AddTicks(2427),
                             Name = "Gopnik Workout",
-                            StartDate = new DateTime(2020, 5, 15, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(3885)
+                            StartDate = new DateTime(2020, 6, 7, 15, 55, 54, 714, DateTimeKind.Local).AddTicks(1944)
                         },
                         new
                         {
                             Id = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
                             Cost = 100.0,
                             Description = "Simple and effective after you gorged yourself",
-                            EndDate = new DateTime(2020, 6, 14, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(4916),
+                            EndDate = new DateTime(2020, 7, 7, 15, 55, 54, 714, DateTimeKind.Local).AddTicks(3001),
                             Name = "Squats and Pull Ups",
-                            StartDate = new DateTime(2020, 5, 15, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(4892)
+                            StartDate = new DateTime(2020, 6, 7, 15, 55, 54, 714, DateTimeKind.Local).AddTicks(2980)
                         });
                 });
 
@@ -159,7 +213,7 @@ namespace Persistence.Migrations
                         {
                             Id = "3a0a646e-2fa8-4ab9-b2dc-3aa2518d4e78",
                             Content = "Test Message 1",
-                            DateOfMessage = new DateTime(2020, 5, 14, 20, 55, 39, 234, DateTimeKind.Local).AddTicks(7553),
+                            DateOfMessage = new DateTime(2020, 6, 6, 15, 55, 54, 710, DateTimeKind.Local).AddTicks(5323),
                             From = "Anna Runner",
                             IsDeleted = false
                         },
@@ -167,7 +221,7 @@ namespace Persistence.Migrations
                         {
                             Id = "d1940fcc-f86a-4b48-ad97-3f7ff1321647",
                             Content = "Test Message 2",
-                            DateOfMessage = new DateTime(2020, 5, 15, 20, 55, 39, 237, DateTimeKind.Local).AddTicks(789),
+                            DateOfMessage = new DateTime(2020, 6, 7, 15, 55, 54, 712, DateTimeKind.Local).AddTicks(8845),
                             From = "Michael Kovalsky",
                             IsDeleted = false
                         },
@@ -175,7 +229,7 @@ namespace Persistence.Migrations
                         {
                             Id = "b92e0a10-33e1-4108-be76-c1ec87677330",
                             Content = "Test Message 3",
-                            DateOfMessage = new DateTime(2020, 5, 13, 20, 55, 39, 237, DateTimeKind.Local).AddTicks(825),
+                            DateOfMessage = new DateTime(2020, 6, 5, 15, 55, 54, 712, DateTimeKind.Local).AddTicks(8879),
                             From = "Aaron Runner",
                             IsDeleted = false
                         });
@@ -322,7 +376,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = "ba596bca-7603-4d16-b9bc-aae93a414330",
-                            DateOfWorkout = new DateTime(2020, 5, 15, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(6310),
+                            DateOfWorkout = new DateTime(2020, 6, 7, 15, 55, 54, 714, DateTimeKind.Local).AddTicks(4235),
                             Description = "Regular push ups",
                             MembershipId = "29ad0121-b184-461b-b2c9-518355e35123",
                             MinReps = 5,
@@ -332,7 +386,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = "5f2ed3f1-a767-4803-b612-d3f04e508cc1",
-                            DateOfWorkout = new DateTime(2020, 5, 15, 20, 55, 39, 238, DateTimeKind.Local).AddTicks(9325),
+                            DateOfWorkout = new DateTime(2020, 6, 7, 15, 55, 54, 714, DateTimeKind.Local).AddTicks(7170),
                             Description = "Test Description",
                             MembershipId = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
                             MinReps = 5,
@@ -474,6 +528,21 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Organization", "Organization")
                         .WithMany("Members")
                         .HasForeignKey("OrganizationId");
+                });
+
+            modelBuilder.Entity("Domain.JoinTables.CoachAthlete", b =>
+                {
+                    b.HasOne("Domain.Identity.AppUser", "Athlete")
+                        .WithMany("AssignedCoaches")
+                        .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Identity.AppUser", "Coach")
+                        .WithMany("AssignedAthletes")
+                        .HasForeignKey("CoachId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Workouts.Exercise", b =>

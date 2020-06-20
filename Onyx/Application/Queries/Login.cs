@@ -59,6 +59,7 @@ namespace Application.Queries
                     //TODO return token to user
                     return new UserViewModel
                     {
+                        Id = user.Id,
                         Token = generator.CreateToken(user),
                         Username = user.UserName,
                         Email = user.Email,

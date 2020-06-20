@@ -31,15 +31,6 @@ const WorkoutForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) =
 
     const handleFormSubmit = (values: any) => {
         alert(JSON.stringify(values, null, 2));
-        // if(!values.id) {
-        //     let newExercise = {
-        //         ...values,
-        //         id: uuid()
-        //     };
-        //     createExercise(newExercise);
-        // } else {
-        //     editExercise(values);
-        // }
     }
 
     return (

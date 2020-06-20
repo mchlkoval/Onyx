@@ -60,7 +60,7 @@ namespace Application.Commands
                 };
 
                 var result = await manager.CreateAsync(user, request.Password);
-
+                
                 if(result.Succeeded)
                 {
                     return new UserViewModel

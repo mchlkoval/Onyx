@@ -13,6 +13,10 @@ import Memberships from '../Memberships/Memberships';
 import Workout from '../Workouts/Workout';
 import WorkoutForm from '../Workouts/WorkoutForm';
 import ManageMembership from '../Memberships/ManageMembership';
+import AthletesList from '../Athletes/AthletesList';
+import AthleteForm from '../Athletes/AthleteForm';
+import CoachesList from '../Coaches/CoachesList';
+import CoachForm from '../Coaches/CoachForm';
 
 const Root : React.FC<RouteComponentProps> = ({location}) => {
 
@@ -52,7 +56,10 @@ const Root : React.FC<RouteComponentProps> = ({location}) => {
                             <Route path={['/membership/:id', '/membership/create']} component={ManageMembership}/>
                             <Route exact path="/workout" component={Workout} />
                             <Route key={location.key} path='/workout/:workoutId/:dateRecorded' component={WorkoutForm}/>
-
+                            <Route exact path="/athletes" component={AthletesList} />
+                            <Route path={["/athletes/create", '/athletes/edit/:id']} component={AthleteForm}/>
+                            <Route exact path="/coaches" component={CoachesList} />
+                            <Route path={["/coaches/create", "/coaches/edit/:id"]} component={CoachForm} />
                     </Switch>
                     </Grid.Column>
                 </Grid>

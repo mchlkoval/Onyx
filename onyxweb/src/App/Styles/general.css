@@ -50,6 +50,10 @@ body {
     padding-right: 80px
   }
   
+  .ui.search .results.transition {
+    display: none !important;
+  }
+
   .masthead h2 {
     font-size: 1.7em;
     font-weight: normal;

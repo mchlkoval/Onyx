@@ -6,6 +6,12 @@ import { Message } from '../Models/Message';
 import { Membership } from '../Models/Memberships/Membership';
 import { Exercise, Workout } from '../Models/Workout';
 import { IDetailedMembership } from '../Models/Memberships/IDetailedMembership';
+import { Athletes } from '../Models/Athlete/Athletes';
+import { MessageAthlete } from '../Models/Athlete/MessageAthlete';
+import { IDetailedAthlete, IAssignedCoach } from '../Models/Athlete/IDetailedAthlete';
+import { ICoaches } from '../Models/Coaches/ICoaches';
+import { IDetailedCoach, IAssignedAthletes } from '../Models/Coaches/IDetailedCoach';
+import { IMessageCoach } from '../Models/Coaches/IMessageCoach';
 
 axios.defaults.baseURL = "http://localhost:5000/api"
 
@@ -64,6 +70,28 @@ const Messages = {
     list: () : Promise<Message[]> => requests.get("/message/messages")
 }
 
+const Athlete = {
+    list: (active : boolean) : Promise<Athletes[]> => requests.get(`/athlete/athletes/${active}`),
+    edit: (athlete : IDetailedAthlete) : Promise<any> => requests.put("/athlete/edit", athlete),
+    create : (athlete: IDetailedAthlete) : Promise<any> => requests.post("/athlete/create", athlete),
+    archive : (id: string) : Promise<any> => requests.put(`/athlete/archive/${id}`, {}),
+    activate: (id: string) : Promise<any> => requests.put(`/athlete/reactivate/${id}`, {}),
+    messageAthlete : (message: MessageAthlete) : Promise<any> => requests.post(`/athlete/message`, message),
+    loadAthlete : (id: string) : Promise<IDetailedAthlete> => requests.get(`/athlete/${id}`),
+    listAvailableCoaches : (id: string) : Promise<IAssignedCoach[]> => requests.get(`/athlete/availableCoaches/${id}`)
+}
+
+const Coaches = {
+    list: (active : boolean) : Promise<ICoaches[]> => requests.get(`/coach/coaches/${active}`),
+    loadCoach : (id: string) : Promise<IDetailedCoach> => requests.get(`/coach/detail/${id}`),
+    archive: (id: string) : Promise<any> => requests.put(`coach/archive/${id}`, {}),
+    activate: (id: string) : Promise<any> => requests.put(`coach/activate/${id}`, {}),
+    messageCoach: (message : IMessageCoach) : Promise<any> => requests.post("/coach/message", message),
+    create: (values: IDetailedCoach) : Promise<any> => requests.post("/coach/create", values),
+    edit: (values: IDetailedCoach) : Promise<any> => requests.put("/coach/edit", values),
+    availableAthletes: (id: string) : Promise<IAssignedAthletes[]> => requests.get(`/coach/availableStudents/${id}`)
+}
+
 const Memberships = {
     list : () : Promise<Membership[]> => requests.get("/membership/memberships"),
     detailed : (membershipId: string) => requests.get(`/membership/memberships/${membershipId}`),
@@ -82,5 +110,7 @@ export default {
     User,
     Messages,
     Memberships,
-    Workouts
+    Workouts,
+    Athlete,
+    Coaches
 }

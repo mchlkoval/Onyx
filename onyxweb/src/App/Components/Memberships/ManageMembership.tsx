@@ -9,12 +9,13 @@ import { RootStoreContext } from '../../Stores/RootStore';
 import { DetailedMembership } from '../../Models/Memberships/IDetailedMembership';
 import { LoadingComponent } from '../General/Loading/LoadingComponent';
 import {v4 as uuid} from 'uuid';
+import { handleDate } from '../../Utility/UtilityFunctions';
 
 interface IProps {
     id: string
 }
 
-const ManageMembership : React.FC<RouteComponentProps<IProps>>= ({match, history}) => {
+const ManageMembership : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
 
     const root = useContext(RootStoreContext);    
     const {loadVerboseMembership, editMembership, createMembership} = root.membershipStore;
@@ -33,7 +34,6 @@ const ManageMembership : React.FC<RouteComponentProps<IProps>>= ({match, history
     }, [loadVerboseMembership, match.params.id])
 
     const handleFormSubmit = (values: any) => {
-        console.log(JSON.stringify(values, null, 2));
         if(values.id !== "") {
             editMembership(values);
         } else {
@@ -85,11 +85,11 @@ const ManageMembership : React.FC<RouteComponentProps<IProps>>= ({match, history
                                     <Form.Row>
                                                <Form.Group as={Col}>
                                                     <Form.Label>Name</Form.Label>
-                                                    <Form.Control type='date' name="startDate" value={new Date(values.startDate).toISOString().split('T')[0]} onChange={handleChange}/>
+                                                    <Form.Control type='date' name="startDate" value={handleDate(values.startDate)} onChange={handleChange}/>
                                                </Form.Group>
                                                <Form.Group as={Col}>
                                                     <Form.Label>Date Of Workout</Form.Label>
-                                                    <Form.Control  type='date' name="endDate" value={new Date(values.endDate).toISOString().split('T')[0]} onChange={handleChange}/>
+                                                    <Form.Control  type='date' name="endDate" value={handleDate(values.endDate)} onChange={handleChange}/>
                                                </Form.Group>    
                                            </Form.Row>
                                     <Form.Row>
@@ -112,7 +112,7 @@ const ManageMembership : React.FC<RouteComponentProps<IProps>>= ({match, history
                                                 </Form.Group>
                                                 <Form.Group as={Col}>
                                                         <Form.Label>Date Of Workout</Form.Label>
-                                                        <Form.Control key={`${outerIndex}_date`} type='date' name={`workouts[${outerIndex}].dateOfWorkout`} value={new Date(work.dateOfWorkout).toISOString().split('T')[0]} onChange={handleChange}/>
+                                                        <Form.Control key={`${outerIndex}_date`} type='date' name={`workouts[${outerIndex}].dateOfWorkout`} value={handleDate(work.dateOfWorkout)} onChange={handleChange}/>
                                                 </Form.Group>    
                                             </Form.Row>
                                             <Form.Row>
