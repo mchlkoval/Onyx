@@ -3,7 +3,7 @@ import { action, observable, runInAction, computed } from "mobx";
 import Agent from "../API/Agent";
 import { Athletes } from "../Models/Athlete/Athletes";
 import { toast } from "react-toastify";
-import { MessageAthlete } from "../Models/Athlete/MessageAthlete";
+import { MessageAthlete, IMessageAllAthletes } from "../Models/Athlete/MessageAthlete";
 import { IDetailedAthlete, IAssignedCoach } from "../Models/Athlete/IDetailedAthlete";
 import { history } from "../..";
 
@@ -49,6 +49,15 @@ export class AthleteStore {
         }
     }
 
+    @action messageAllAthletes = async (values: IMessageAllAthletes) => {
+        try {
+            await Agent.Athlete.messageAllAthletes(values);
+            toast("Messages sent");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     @action archiveAthlete = async (id : string) => {
         try {
             await Agent.Athlete.archive(id);
@@ -84,6 +93,8 @@ export class AthleteStore {
             runInAction(() => {
                 this.athletes = apiResult;
             })
+
+            return apiResult;
         } catch (error) {
             console.log(error);
         }

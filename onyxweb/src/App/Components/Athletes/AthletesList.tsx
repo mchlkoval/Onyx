@@ -69,8 +69,8 @@ const AthletesList = () => {
             <Segment>
                 
                 <Tabs fill defaultActiveKey="active" id="controlled-tab" activeKey={key} onSelect={(k : string) => {
-                    setFilter(k === "active" ? true : false);
                     setKey(k);
+                    setFilter(k === "active" ? true : false);
                 }}>
                     <Tab eventKey="active" title="Active">
                         <AthleteTable athletes={activeAthletes} messageAthlete={messageAthlete} archiveAthlete={archiveAthlete} handleGenderEnum={handleGender} state={key}/>

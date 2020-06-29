@@ -172,18 +172,18 @@ namespace Persistence.Migrations
                             Id = "29ad0121-b184-461b-b2c9-518355e35123",
                             Cost = 250.0,
                             Description = "Approved by Boris, loved by Slavs, misunderstood by Americans.",
-                            EndDate = new DateTime(2020, 7, 7, 15, 55, 54, 714, DateTimeKind.Local).AddTicks(2427),
+                            EndDate = new DateTime(2020, 7, 23, 19, 42, 32, 125, DateTimeKind.Local).AddTicks(452),
                             Name = "Gopnik Workout",
-                            StartDate = new DateTime(2020, 6, 7, 15, 55, 54, 714, DateTimeKind.Local).AddTicks(1944)
+                            StartDate = new DateTime(2020, 6, 23, 19, 42, 32, 122, DateTimeKind.Local).AddTicks(7038)
                         },
                         new
                         {
                             Id = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
                             Cost = 100.0,
                             Description = "Simple and effective after you gorged yourself",
-                            EndDate = new DateTime(2020, 7, 7, 15, 55, 54, 714, DateTimeKind.Local).AddTicks(3001),
+                            EndDate = new DateTime(2020, 7, 23, 19, 42, 32, 125, DateTimeKind.Local).AddTicks(1062),
                             Name = "Squats and Pull Ups",
-                            StartDate = new DateTime(2020, 6, 7, 15, 55, 54, 714, DateTimeKind.Local).AddTicks(2980)
+                            StartDate = new DateTime(2020, 6, 23, 19, 42, 32, 125, DateTimeKind.Local).AddTicks(1044)
                         });
                 });
 
@@ -204,35 +204,14 @@ namespace Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Messages");
+                    b.HasIndex("UserId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = "3a0a646e-2fa8-4ab9-b2dc-3aa2518d4e78",
-                            Content = "Test Message 1",
-                            DateOfMessage = new DateTime(2020, 6, 6, 15, 55, 54, 710, DateTimeKind.Local).AddTicks(5323),
-                            From = "Anna Runner",
-                            IsDeleted = false
-                        },
-                        new
-                        {
-                            Id = "d1940fcc-f86a-4b48-ad97-3f7ff1321647",
-                            Content = "Test Message 2",
-                            DateOfMessage = new DateTime(2020, 6, 7, 15, 55, 54, 712, DateTimeKind.Local).AddTicks(8845),
-                            From = "Michael Kovalsky",
-                            IsDeleted = false
-                        },
-                        new
-                        {
-                            Id = "b92e0a10-33e1-4108-be76-c1ec87677330",
-                            Content = "Test Message 3",
-                            DateOfMessage = new DateTime(2020, 6, 5, 15, 55, 54, 712, DateTimeKind.Local).AddTicks(8879),
-                            From = "Aaron Runner",
-                            IsDeleted = false
-                        });
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Domain.Organization", b =>
@@ -376,7 +355,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = "ba596bca-7603-4d16-b9bc-aae93a414330",
-                            DateOfWorkout = new DateTime(2020, 6, 7, 15, 55, 54, 714, DateTimeKind.Local).AddTicks(4235),
+                            DateOfWorkout = new DateTime(2020, 6, 23, 19, 42, 32, 126, DateTimeKind.Local).AddTicks(2979),
                             Description = "Regular push ups",
                             MembershipId = "29ad0121-b184-461b-b2c9-518355e35123",
                             MinReps = 5,
@@ -386,7 +365,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = "5f2ed3f1-a767-4803-b612-d3f04e508cc1",
-                            DateOfWorkout = new DateTime(2020, 6, 7, 15, 55, 54, 714, DateTimeKind.Local).AddTicks(7170),
+                            DateOfWorkout = new DateTime(2020, 6, 23, 19, 42, 32, 126, DateTimeKind.Local).AddTicks(6195),
                             Description = "Test Description",
                             MembershipId = "615ca8e5-0124-4ea6-85b4-3badb4a6ec1a",
                             MinReps = 5,
@@ -543,6 +522,13 @@ namespace Persistence.Migrations
                         .HasForeignKey("CoachId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Message", b =>
+                {
+                    b.HasOne("Domain.Identity.AppUser", "User")
+                        .WithMany("Messages")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Domain.Workouts.Exercise", b =>

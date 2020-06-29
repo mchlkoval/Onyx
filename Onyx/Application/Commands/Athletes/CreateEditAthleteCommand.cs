@@ -74,22 +74,6 @@ namespace Application.Commands.Athletes
                         throw new Exception("Failed to update athlete");
                     }
 
-                    //var newlyAssigned = request.AssignedCoaches.Select(x => new CoachAthlete
-                    //{
-                    //    AthleteId = athlete.Id,
-                    //    CoachId = x.Id
-                    //});
-
-
-                    //var upsertResult = await context.AssignedAthletes.UpsertRange(newlyAssigned)
-                    //    .On(x => new { x.AthleteId, x.CoachId})
-                    //    .RunAsync();
-
-                    //if(upsertResult < 0)
-                    //{
-                    //    throw new Exception("Failed to update athlete");
-                    //}
-
                 } catch (Exception e)
                 {
                     throw;

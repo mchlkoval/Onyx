@@ -23,6 +23,23 @@ body {
     color: white;
   }
   
+  .tableDescription {
+    margin-bottom: 50px;
+  }
+
+  .hideMessageBox {
+    display: none;
+  }
+
+  .showMessageBox td .form-row .form-group.col button 
+  {
+    margin-top: 5px;
+  }
+
+  .showMessageBox.form-row .form-group.col button {
+    margin-top: 5px;
+  }
+
   /*home page styles*/
   
   .masthead {

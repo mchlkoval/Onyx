@@ -7,7 +7,7 @@ import { Membership } from '../Models/Memberships/Membership';
 import { Exercise, Workout } from '../Models/Workout';
 import { IDetailedMembership } from '../Models/Memberships/IDetailedMembership';
 import { Athletes } from '../Models/Athlete/Athletes';
-import { MessageAthlete } from '../Models/Athlete/MessageAthlete';
+import { MessageAthlete, IMessageAllAthletes } from '../Models/Athlete/MessageAthlete';
 import { IDetailedAthlete, IAssignedCoach } from '../Models/Athlete/IDetailedAthlete';
 import { ICoaches } from '../Models/Coaches/ICoaches';
 import { IDetailedCoach, IAssignedAthletes } from '../Models/Coaches/IDetailedCoach';
@@ -77,6 +77,7 @@ const Athlete = {
     archive : (id: string) : Promise<any> => requests.put(`/athlete/archive/${id}`, {}),
     activate: (id: string) : Promise<any> => requests.put(`/athlete/reactivate/${id}`, {}),
     messageAthlete : (message: MessageAthlete) : Promise<any> => requests.post(`/athlete/message`, message),
+    messageAllAthletes : (messages: IMessageAllAthletes) : Promise<any> => requests.post(`/athlete/message/all`, messages),
     loadAthlete : (id: string) : Promise<IDetailedAthlete> => requests.get(`/athlete/${id}`),
     listAvailableCoaches : (id: string) : Promise<IAssignedCoach[]> => requests.get(`/athlete/availableCoaches/${id}`)
 }

@@ -6,7 +6,6 @@ import { IMessageCoach } from "../Models/Coaches/IMessageCoach";
 import { toast } from "react-toastify";
 import { IDetailedCoach, IAssignedAthletes } from "../Models/Coaches/IDetailedCoach";
 import { history } from "../..";
-import { GenderType } from "../Models/Enums/Gender";
 
 export class CoachesStore {
 

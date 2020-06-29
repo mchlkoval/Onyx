@@ -36,6 +36,7 @@ namespace Persistence.Seed
                         Address = "10700 Pinewalk Forest Circle",
                         Address2 = "",
                         Age = 25,
+                        Weight = 150,
                         DateOfBirth = DateTime.Now.AddYears(-25)
 
                     };          
@@ -56,6 +57,7 @@ namespace Persistence.Seed
                         Address = "10700 Pinewalk Forest Circle",
                         Address2 = "",
                         Age = 25,
+                        Weight = 150,
                         DateOfBirth = DateTime.Now.AddYears(-25)
                     };
                 var athlete2 = new AppUser
@@ -75,6 +77,7 @@ namespace Persistence.Seed
                         Address = "10700 Pinewalk Forest Circle",
                         Address2 = "",
                         Age = 25,
+                        Weight = 150,
                         DateOfBirth = DateTime.Now.AddYears(-25)
                     };
                 var athlete3 = new AppUser
@@ -94,6 +97,7 @@ namespace Persistence.Seed
                         Address = "10700 Pinewalk Forest Circle",
                         Address2 = "",
                         Age = 25,
+                        Weight = 150,
                         DateOfBirth = DateTime.Now.AddYears(-25)
                     };
                 var athlete4 = new AppUser
@@ -114,6 +118,7 @@ namespace Persistence.Seed
                         Address = "10700 Pinewalk Forest Circle",
                         Address2 = "",
                         Age = 25,
+                        Weight = 150,
                         DateOfBirth = DateTime.Now.AddYears(-25)
 
                     };
@@ -135,6 +140,7 @@ namespace Persistence.Seed
                         Address = "10700 Pinewalk Forest Circle",
                         Address2 = "",
                         Age = 25,
+                        Weight = 150,
                         DateOfBirth = DateTime.Now.AddYears(-25)
                     };
                 var athlete6 = new AppUser
@@ -155,6 +161,7 @@ namespace Persistence.Seed
                         Address = "10700 Pinewalk Forest Circle",
                         Address2 = "",
                         Age = 25,
+                        Weight = 150,
                         DateOfBirth = DateTime.Now.AddYears(-25)
                     };
                 
@@ -175,6 +182,7 @@ namespace Persistence.Seed
                         Address = "10700 Pinewalk Forest Circle",
                         Address2 = "",
                         Age = 25,
+                        Weight = 150,
                         DateOfBirth = DateTime.Now.AddYears(-25),
                         AssignedAthletes = new List<CoachAthlete>()
                         {
@@ -213,6 +221,7 @@ namespace Persistence.Seed
                         Address = "10700 Pinewalk Forest Circle",
                         Address2 = "",
                         Age = 25,
+                        Weight = 150,
                         DateOfBirth = DateTime.Now.AddYears(-25)
                     };
 
@@ -265,6 +274,31 @@ namespace Persistence.Seed
                     await context.SaveChangesAsync();
                 }
                 
+
+                admin.Messages = new List<Message>()
+                {
+                    new Message
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Content = "Hello, this is a test message from the seed",
+                        DateOfMessage = DateTime.Now,
+                        From = "System",
+                        IsDeleted = false, 
+                        UserId = admin.Id
+                    },
+                    new Message
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Content = "Don't forget to encourage Anna to do her best!",
+                        DateOfMessage = DateTime.Now,
+                        From = "System",
+                        IsDeleted = false,
+                        UserId = admin.Id
+                    }
+                };
+
+                context.Users.Update(admin);
+                await context.SaveChangesAsync();
             }
         } 
     }

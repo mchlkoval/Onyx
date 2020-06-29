@@ -67,6 +67,14 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost]
+        [Route("message/all")]
+        public async Task<ActionResult<Unit>> MessageAllAthletes(MessageAllAthletesCommand.Command command, CancellationToken ct)
+        {
+            return await Mediator.Send(command, ct);
+        }
+
+        [Authorize]
+        [HttpPost]
         [Route("create")]
         public async Task<ActionResult<Unit>> CreateEditAthlete(CreateEditAthleteCommand.Command command, CancellationToken ct)
         {
