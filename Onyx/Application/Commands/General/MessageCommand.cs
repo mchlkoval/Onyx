@@ -7,13 +7,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Commands.Athletes
+namespace Application.Commands.General
 {
-    public class MessageAllAthletesCommand
+    public class MessageCommand
     {
         public class Command : IRequest
         {
-            public string[] Ids { get; set; }
+            public string Id { get; set; }
             public string Message { get; set; }
 
             public Command()
@@ -33,24 +33,17 @@ namespace Application.Commands.Athletes
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var messages = new List<Message>();
-
-                foreach(var id in request.Ids)
+                var message = new Message
                 {
-                    messages.Add(
-                        new Message
-                        {
-                            DateOfMessage = DateTime.Now,
-                            Content = request.Message,
-                            UserId = id,
-                            IsDeleted = false,
-                            From = "TODO: Change this",
-                            Id = Guid.NewGuid().ToString()
-                        }      
-                    );
-                }
+                    DateOfMessage = DateTime.Now,
+                    Content = request.Message,
+                    UserId = request.Id,
+                    IsDeleted = false,
+                    From = "TODO: Change this",
+                    Id = Guid.NewGuid().ToString()
+                };
 
-                context.Messages.AddRange(messages);
+                await context.Messages.AddAsync(message);
                 var result = await context.SaveChangesAsync();
 
                 if(result > 0)
@@ -58,7 +51,7 @@ namespace Application.Commands.Athletes
                     return Unit.Value;
                 }
 
-                throw new Exception("Failed to send messages");
+                throw new Exception("Failed to send message");
             }
         }
     }

@@ -3,7 +3,7 @@ import { action, observable, runInAction, computed } from "mobx";
 import Agent from "../API/Agent";
 import { Athletes } from "../Models/Athlete/Athletes";
 import { toast } from "react-toastify";
-import { MessageAthlete, IMessageAllAthletes } from "../Models/Athlete/MessageAthlete";
+import { IMessageAthlete, IMessageAll } from "../Models/Athlete/MessageAthlete";
 import { IDetailedAthlete, IAssignedCoach } from "../Models/Athlete/IDetailedAthlete";
 import { history } from "../..";
 
@@ -40,7 +40,7 @@ export class AthleteStore {
         }
     }
 
-    @action messageAthlete = async (values : MessageAthlete) => {
+    @action messageAthlete = async (values : IMessageAthlete) => {
         try {
             await Agent.Athlete.messageAthlete(values);
             toast("Message sent");
@@ -49,7 +49,7 @@ export class AthleteStore {
         }
     }
 
-    @action messageAllAthletes = async (values: IMessageAllAthletes) => {
+    @action messageAllAthletes = async (values: IMessageAll) => {
         try {
             await Agent.Athlete.messageAllAthletes(values);
             toast("Messages sent");

@@ -7,8 +7,7 @@ import { Segment } from 'semantic-ui-react'
 import { RootStoreContext } from '../../Stores/RootStore'
 import { Athletes } from '../../Models/Athlete/Athletes'
 import { ICoaches } from '../../Models/Coaches/ICoaches'
-import AthleteMessageTable from './AthleteMessageTable'
-import CoachMessageTable from './CoachMessageTable'
+import MessageTable from './MessageTable'
 
 const MessageCenter = () => {
 
@@ -58,10 +57,10 @@ const MessageCenter = () => {
                 setKey(k);
             }}>
                 <Tab eventKey="athletes" title="Athletes">
-                    <AthleteMessageTable athletes={athletes} />
+                    <MessageTable athletes={athletes} />
                 </Tab>
                 <Tab eventKey="coaches" title="Coaches">
-                    <CoachMessageTable coaches={coaches} />
+                    <MessageTable coaches={coaches} />
                 </Tab>
             </Tabs>
         </Segment>

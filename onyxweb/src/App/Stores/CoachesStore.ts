@@ -6,6 +6,7 @@ import { IMessageCoach } from "../Models/Coaches/IMessageCoach";
 import { toast } from "react-toastify";
 import { IDetailedCoach, IAssignedAthletes } from "../Models/Coaches/IDetailedCoach";
 import { history } from "../..";
+import { IMessageAll } from "../Models/Athlete/MessageAthlete";
 
 export class CoachesStore {
 
@@ -52,6 +53,15 @@ export class CoachesStore {
             return data;
 
         } catch(error) {
+            console.log(error);
+        }
+    }
+
+    @action messageAllCoaches = async (values: IMessageAll) => {
+        try {
+            await Agent.Coaches.messageAll(values);
+            toast("Message sent");
+        } catch (error) {
             console.log(error);
         }
     }

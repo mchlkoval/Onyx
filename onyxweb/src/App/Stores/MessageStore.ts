@@ -16,9 +16,9 @@ export class MessageStore {
     }
 
     //TODO: Add some sort of observable to track if we are loading something or submitting.
-    @action loadMessages = async () => {
+    @action loadMessages = async (userId: string) => {
         try {
-            const apiResult = await Agent.Messages.list();
+            const apiResult = await Agent.Messages.list(userId);
 
             runInAction("Setting messages map", () => {
                 this.messages = apiResult;

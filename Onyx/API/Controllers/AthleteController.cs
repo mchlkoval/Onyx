@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Commands.Athletes;
+using Application.Commands.General;
 using Application.Queries.Athlete;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ViewModels.Athlete;
 
@@ -60,7 +60,7 @@ namespace API.Controllers
         [Authorize]
         [HttpPost]
         [Route("message")]
-        public async Task<ActionResult<Unit>> MessageAthlete(MessageAthleteCommand.Command command, CancellationToken ct)
+        public async Task<ActionResult<Unit>> MessageAthlete(MessageCommand.Command command, CancellationToken ct)
         {
             return await Mediator.Send(command, ct);
         }
@@ -68,7 +68,7 @@ namespace API.Controllers
         [Authorize]
         [HttpPost]
         [Route("message/all")]
-        public async Task<ActionResult<Unit>> MessageAllAthletes(MessageAllAthletesCommand.Command command, CancellationToken ct)
+        public async Task<ActionResult<Unit>> MessageAllAthletes(MessageAllCommand.Command command, CancellationToken ct)
         {
             return await Mediator.Send(command, ct);
         }

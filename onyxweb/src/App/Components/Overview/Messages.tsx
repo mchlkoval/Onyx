@@ -13,17 +13,20 @@ const Messages : React.FC = () => {
     const rootStore = useContext(RootStoreContext);
     const {loadMessages} = rootStore.messageStore;
     const {openModal} = rootStore.modalStore;
+    const {user} = rootStore.userStore;
 
     const [messages, setMessages] = useState<Array<Message>>([])
     const [loading, setLoading] = useState(true);
     
     useEffect(() => {
-        loadMessages().then((data) => {
-            if(data !== undefined) {
-                setMessages(data);
-            }
-        }).finally(() => setLoading(false));
-    }, [loadMessages])
+        if(user !== undefined || user !== null) {
+            loadMessages(user!.id).then((data) => {
+                if(data !== undefined) {
+                    setMessages(data);
+                }
+            }).finally(() => setLoading(false));
+        }
+    }, [loadMessages, user])
 
     if(loading) {
         return <Spinner animation="border" role="status">
@@ -35,7 +38,7 @@ const Messages : React.FC = () => {
         <Container>
             <Segment clearing>
                 <div className="tableDescription">
-                    <Header as="h3" floated="left">Messaging Center</Header>
+                    <Header as="h3" floated="left">Message Center</Header>
                     <Button floated="right" content="Manage" positive 
                         onClick={() => openModal(<MessageCenter />)}
                     />

@@ -7,9 +7,11 @@ import { RootStoreContext } from '../../Stores/RootStore';
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col';
 import { GenderType } from '../../Models/Enums/Gender';
+import { ICoaches } from '../../Models/Coaches/ICoaches';
 
 interface IProps {
-    athletes : Athletes[]
+    athletes? : Athletes[],
+    coaches? : ICoaches[]
 }
 
 interface IMappedAthlete {
@@ -25,35 +27,53 @@ interface IBulkMessage {
     allChecked: boolean
 }
 
-const AthleteMessageTable : React.FC<IProps> = ({athletes}) => {
+const MessageTable : React.FC<IProps> = ({athletes, coaches}) => {
 
     const rootStore = useContext(RootStoreContext);
     const {messageAthlete, messageAllAthletes} = rootStore.athleteStore;
+    const {messageCoach, messageAllCoaches} = rootStore.coachStore;
+
     const [data, setData] = useState<Array<IMappedAthlete>>([]);
     const [bulkMessage, setBulkMessage] = useState<IBulkMessage>({message: "", allChecked: false});
 
     useEffect(() => {
-        var mapped = athletes.map((athlete) => ({
-            id: athlete.id,
-            name: athlete.name,
-            gender: athlete.gender,
-            displayTextbox: false,
-            message: ""
-            }
-        ))
-
-        setData(mapped);
-    }, [athletes])
+        if(athletes !== undefined) {
+            var mapped = athletes.map((athlete) => ({
+                id: athlete.id,
+                name: athlete.name,
+                gender: athlete.gender,
+                displayTextbox: false,
+                message: ""
+                }
+            ))
     
-    const bulkMessageAthletes = (m: string) => {
+            setData(mapped);
+        }
+        if(coaches !== undefined) {
+            var coachesMapped = coaches.map((athlete) => ({
+                id: athlete.id,
+                name: athlete.name,
+                gender: GenderType.Female,
+                displayTextbox: false,
+                message: ""
+                }
+            ))
+    
+            setData(coachesMapped);
+        }
+    }, [athletes, coaches])
+    
+    const messageAll = (m: string) => {
         var ids = data.map(x => x.id);
-        messageAllAthletes({ids: ids, message: m});
-
+        if(athletes !== undefined)
+            messageAllAthletes({ids: ids, message: m});
+        else
+            messageAllCoaches({ids: ids, message: m});
         //reset message back to blank
         setBulkMessage({...bulkMessage, message: ""});
     }
 
-    const handleCheckAllAthletes = () => {
+    const handleCheckAll = () => {
         setBulkMessage({message: bulkMessage.message, allChecked: !bulkMessage.allChecked});
 
     }
@@ -63,20 +83,23 @@ const AthleteMessageTable : React.FC<IProps> = ({athletes}) => {
         setBulkMessage({...bulkMessage, message: value});
     }
 
-    const messageSingleAthlete = (id: string) => {
-        var athlete = data.filter(x => x.id === id)[0];
-        messageAthlete({id: athlete.id, message: athlete.message});
+    const messageSingle = (id: string) => {
 
+        var person = data.filter(x => x.id === id)[0];
+        if(athletes !== undefined) 
+            messageAthlete({id: person.id, message: person.message});
+        else 
+            messageCoach({id: person.id, message: person.message});
         //reset message back to blank
         setData(
-            data.map(x => (x.id === athlete.id ? {...x, message: ""} : x))
+            data.map(x => (x.id === person.id ? {...x, message: ""} : x))
         )
     }    
 
-    const handleCheckSingleAthlete = (athlete: IMappedAthlete) => {
-        var displayTextbox = !athlete.displayTextbox;
+    const handleCheckSingle = (person: IMappedAthlete) => {
+        var displayTextbox = !person.displayTextbox;
         setData(
-            data.map(x => (x.id === athlete.id ? {...x, displayTextbox} : x))
+            data.map(x => (x.id === person.id ? {...x, displayTextbox} : x))
         )
     }
 
@@ -97,7 +120,7 @@ const AthleteMessageTable : React.FC<IProps> = ({athletes}) => {
                         <Form.Check 
                             type="checkbox"
                             id="captureAll"
-                            onClick={() => handleCheckAllAthletes()}                
+                            onClick={() => handleCheckAll()}                
                         />
                         </th>
                         <th>Name</th>
@@ -113,7 +136,7 @@ const AthleteMessageTable : React.FC<IProps> = ({athletes}) => {
                                     <Form.Check 
                                         type="checkbox"
                                         id={athlete.id} 
-                                        onClick={() => { handleCheckSingleAthlete(athlete) }}                
+                                        onClick={() => { handleCheckSingle(athlete) }}                
                                     />
                                 </td>
                                 <td>{athlete.name}</td>
@@ -132,7 +155,7 @@ const AthleteMessageTable : React.FC<IProps> = ({athletes}) => {
                                                 rows={3} 
                                                 value={athlete.message} 
                                                 onChange={(e) => handleSingleMessageInput(e, athlete)}/>
-                                            <Button content="Send" floated="right" positive type="button" onClick={() => messageSingleAthlete(athlete.id)}/>
+                                            <Button content="Send" floated="right" positive type="button" onClick={() => messageSingle(athlete.id)}/>
                                         </Form.Group>
                                     </Form.Row>
                                 </td>
@@ -149,11 +172,11 @@ const AthleteMessageTable : React.FC<IProps> = ({athletes}) => {
                         value={bulkMessage.message} 
                         onChange={(e) => handleAllMessageInput(e)}
                         />
-                    <Button content="Send" floated="right" positive type="button" onClick={() => bulkMessageAthletes(bulkMessage.message)}/>
+                    <Button content="Send" floated="right" positive type="button" onClick={() => messageAll(bulkMessage.message)}/>
                 </Form.Group>
             </Form.Row>
         </Fragment>
     )
 }
 
-export default AthleteMessageTable
+export default MessageTable

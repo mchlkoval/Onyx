@@ -17,10 +17,10 @@ namespace API.Controllers.Messages
     {
         [Authorize]
         [HttpGet]
-        [Route("messages")]
-        public async Task<ActionResult<List<Message>>> ListMessages(CancellationToken ct)
+        [Route("messages/{userId}")]
+        public async Task<ActionResult<List<Message>>> ListMessages(string userId, CancellationToken ct)
         {
-            return await Mediator.Send(new MessageQuery.Query(), ct);
+            return await Mediator.Send(new MessageQuery.Query(userId), ct);
         }
     }
 }
