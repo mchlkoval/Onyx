@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
-import { Container, Segment, Search, Header, Divider } from 'semantic-ui-react'
+import { Container, Segment, Search, Header, Divider, Button } from 'semantic-ui-react'
 import { RootStoreContext } from '../../Stores/RootStore';
 import AthleteTable from './AthleteTable'
 import { Athletes } from '../../Models/Athlete/Athletes'
@@ -10,6 +10,7 @@ import ArchiveAthleteModal from './Modals/ArchiveAthleteModal'
 import ReactivateAthleteModal from './Modals/ReactivateAthleteModal'
 import MessageAthleteModal from './Modals/MessageAthleteModal'
 import { handleGender } from '../../Utility/UtilityFunctions'
+import { Link } from 'react-router-dom'
 
 const AthletesList = () => {
     
@@ -67,7 +68,9 @@ const AthletesList = () => {
             </Segment>
             <Divider />
             <Segment>
-                
+                <Segment clearing>
+                    <Button as={Link} to="/athletes/create" positive floated="right">Create</Button>
+                </Segment>
                 <Tabs fill defaultActiveKey="active" id="controlled-tab" activeKey={key} onSelect={(k : string) => {
                     setKey(k);
                     setFilter(k === "active" ? true : false);
