@@ -25,17 +25,19 @@ const AthleteForm : React.FC<RouteComponentProps<IProps>>= ({match, history}) =>
     const { openModal } = root.modalStore;
 
     const [athlete, setAthlete] = useState(new DetailedAthlete());
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         if(match.params.id !== undefined) {
             loadAthlete(match.params.id).then((data) => {
                 setAthlete(new DetailedAthlete(data));
             }).finally(() => {
                 setLoading(false);
             });
+        } else {
+            setLoading(false);
         }
-        setLoading(false);
 
     }, [loadAthlete, match.params])
 
