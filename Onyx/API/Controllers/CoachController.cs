@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Commands.Coach;
+using Application.Commands.General;
 using Application.Queries.Coach;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -47,6 +48,22 @@ namespace API.Controllers
         public async Task<ActionResult<Unit>> ActivateCoach(string id, CancellationToken ct)
         {
             return await Mediator.Send(new UpdateCoachStatusCommand.Command(id, true), ct);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("message")]
+        public async Task<ActionResult<Unit>> MessageCoach(MessageCommand.Command command, CancellationToken ct)
+        {
+            return await Mediator.Send(command, ct);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("message/all")]
+        public async Task<ActionResult<Unit>> MessageAllCoaches(MessageAllCommand.Command command, CancellationToken ct)
+        {
+            return await Mediator.Send(command, ct);
         }
 
         [Authorize]

@@ -11,7 +11,6 @@ import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table'
 import { GenderType } from '../../Models/Enums/Gender'
 import { handleGender } from '../../Utility/UtilityFunctions'
-import AvailableAthletesModal from '../Coaches/Modals/AvailableAthletesModal'
 import AvailableCoachesModal from './Modals/AvailableCoachesModal'
 
 interface IProps {
@@ -36,6 +35,8 @@ const AthleteForm : React.FC<RouteComponentProps<IProps>>= ({match, history}) =>
             }).finally(() => {
                 setLoading(false);
             });
+        } else {
+            setLoading(false);
         }
 
     }, [loadAthlete, match.params])

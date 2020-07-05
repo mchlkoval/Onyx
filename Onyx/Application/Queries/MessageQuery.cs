@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
-using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
@@ -14,7 +14,12 @@ namespace Application.Queries
     {
         public class Query : IRequest<List<Message>>
         {
+            public string UserId { get; set; }
 
+            public Query(string userId)
+            {
+                this.UserId = userId;
+            }
         }
 
         public class Handler : IRequestHandler<Query, List<Message>>
@@ -28,7 +33,7 @@ namespace Application.Queries
 
             public async Task<List<Message>> Handle(Query request, CancellationToken token)
             {
-                var messages = await context.Messages.ToListAsync(token);
+                var messages = await context.Messages.Where(x => x.UserId == request.UserId).ToListAsync(token);
                 return messages;
             }
         }

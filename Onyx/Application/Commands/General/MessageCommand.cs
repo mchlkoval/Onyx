@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Commands.Athletes
+namespace Application.Commands.General
 {
-    public class MessageAthleteCommand
+    public class MessageCommand
     {
         public class Command : IRequest
         {
@@ -37,15 +37,14 @@ namespace Application.Commands.Athletes
                 {
                     DateOfMessage = DateTime.Now,
                     Content = request.Message,
+                    UserId = request.Id,
                     IsDeleted = false,
-                    From = request.Id,
+                    From = "TODO: Change this",
                     Id = Guid.NewGuid().ToString()
                 };
 
                 await context.Messages.AddAsync(message);
                 var result = await context.SaveChangesAsync();
-
-                Console.WriteLine("Result: ", result);
 
                 if(result > 0)
                 {

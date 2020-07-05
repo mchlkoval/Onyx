@@ -1,46 +1,75 @@
-import React, { useContext, Fragment } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
-import { MessageStoreContext } from '../../Stores/MessageStore';
-import { Segment, Message, Header, Container, Table, Label, Icon } from 'semantic-ui-react';
+import Table from 'react-bootstrap/Table'
+import { Button, Icon, Container, Segment, Header } from 'semantic-ui-react';
+import { handleDate } from '../../Utility/UtilityFunctions';
+import { Message } from '../../Models/Message';
+import Spinner from 'react-bootstrap/Spinner'
+import { RootStoreContext } from '../../Stores/RootStore';
+import MessageCenter from '../MessagingCenter/MessageCenter';
 
 const Messages : React.FC = () => {
 
-    const messageStore = useContext(MessageStoreContext);
-    const {messages} = messageStore;
+    const rootStore = useContext(RootStoreContext);
+    const {loadMessages} = rootStore.messageStore;
+    const {openModal} = rootStore.modalStore;
+    const {user} = rootStore.userStore;
+
+    const [messages, setMessages] = useState<Array<Message>>([])
+    const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+        if(user !== undefined || user !== null) {
+            loadMessages(user!.id).then((data) => {
+                if(data !== undefined) {
+                    setMessages(data);
+                }
+            }).finally(() => setLoading(false));
+        }
+    }, [loadMessages, user])
+
+    if(loading) {
+        return <Spinner animation="border" role="status">
+            <span className="sr-only">Loading Messages...</span>
+        </Spinner>
+    }
 
     return (
-        <Fragment>
-            <Container>
-                <Segment>
-                    <Header>Messages</Header>
-                    <Table striped>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell>From</Table.HeaderCell>
-                                <Table.HeaderCell>Date</Table.HeaderCell>
-                                <Table.HeaderCell>Content</Table.HeaderCell>
-                                <Table.HeaderCell>Actions</Table.HeaderCell>
-                            </Table.Row>
-                            {messages.map(m => (
-                                <Table.Row key={m.id}>
-                                    <Table.Cell>{m.from}</Table.Cell>
-                                    <Table.Cell>{new Date(m.dateOfMessage).toISOString().split('T')[0]}</Table.Cell>
-                                    <Table.Cell>{m.content}</Table.Cell>
-                                    <Table.Cell>
-                                    <Label>
-                                        <Icon name='pencil'/>
-                                    </Label>
-                                    <Label>
-                                        <Icon name='trash'/>
-                                    </Label>
-                                    </Table.Cell>
-                                </Table.Row>
-                            ))}
-                        </Table.Header>
-                    </Table>
-                </Segment>
-            </Container>
-        </Fragment>
+        <Container>
+            <Segment clearing>
+                <div className="tableDescription">
+                    <Header as="h3" floated="left">Message Center</Header>
+                    <Button floated="right" content="Manage" positive 
+                        onClick={() => openModal(<MessageCenter />)}
+                    />
+                </div>
+                <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th>From</th>
+                            <th>Date</th>
+                            <th>Content</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {messages.map((message) => (
+                            <tr key={message.id}>
+                                <td>{message.from}</td>
+                                <td>{handleDate(message.dateOfMessage)}</td>
+                                <td>{message.content}</td>
+                                <td>
+                                    <Button floated="right" type="button">
+                                        <Icon name='trash' />
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                    
+                </Table>
+            </Segment>
+        </Container>
     )
 }
 

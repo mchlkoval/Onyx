@@ -9,7 +9,6 @@ import ScrollToTop from './App/Components/General/ScrollToTop';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'semantic-ui-css/semantic.min.css'
 import './App/Styles/general.css'
-import ModalContainer from './App/Components/General/Modals/ModalContainer';
 import Root from './App/Components/Root/Root';
 
 //To be used within our store

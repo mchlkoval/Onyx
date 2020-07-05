@@ -48,37 +48,6 @@ namespace Persistence.Context
                 .HasMany(x => x.ExerciseLogs)
                 .WithOne(y => y.Exercise);
 
-            builder.Entity<Message>()
-                .HasData(
-                    new Message
-                    {
-                        Id = "3a0a646e-2fa8-4ab9-b2dc-3aa2518d4e78",
-                        Content = "Test Message 1",
-                        IsDeleted = false,
-                        From = "Anna Runner",
-                        DateOfMessage = DateTime.Now.AddDays(-1)
-                        //UserId = "d8564df2-1464-4547-b418-d1c4c75fe1fc"
-                    },
-                    new Message
-                    {
-                        Id = "d1940fcc-f86a-4b48-ad97-3f7ff1321647",
-                        Content = "Test Message 2",
-                        IsDeleted = false,
-                        From = "Michael Kovalsky",
-                        DateOfMessage = DateTime.Now
-                        //UserId = "d8564df2-1464-4547-b418-d1c4c75fe1fc"
-                    },
-                    new Message
-                    {
-                        Id = "b92e0a10-33e1-4108-be76-c1ec87677330",
-                        Content = "Test Message 3",
-                        IsDeleted = false,
-                        From = "Aaron Runner",
-                        DateOfMessage = DateTime.Now.AddDays(-2)
-                        //UserId = "d8564df2-1464-4547-b418-d1c4c75fe1fc"
-                    }
-                );
-
             builder.Entity<Membership>()
                 .HasData(
                     new Membership

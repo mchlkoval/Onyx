@@ -1,6 +1,7 @@
 ﻿using Domain.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Domain
@@ -11,6 +12,9 @@ namespace Domain
         //User uses default value for id, which is a string. 
         //public AppUser User { get; set; }
         //public string UserId { get; set; }
+        public string UserId { get; set; }
+        [ForeignKey("UserId")]
+        public AppUser User { get; set; }
         public string Content { get; set; }
         public string From { get; set; }
         public DateTime DateOfMessage { get; set; }

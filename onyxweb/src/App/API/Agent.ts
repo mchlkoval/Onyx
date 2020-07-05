@@ -7,7 +7,7 @@ import { Membership } from '../Models/Memberships/Membership';
 import { Exercise, Workout } from '../Models/Workout';
 import { IDetailedMembership } from '../Models/Memberships/IDetailedMembership';
 import { Athletes } from '../Models/Athlete/Athletes';
-import { MessageAthlete } from '../Models/Athlete/MessageAthlete';
+import { IMessageAthlete, IMessageAll } from '../Models/Athlete/MessageAthlete';
 import { IDetailedAthlete, IAssignedCoach } from '../Models/Athlete/IDetailedAthlete';
 import { ICoaches } from '../Models/Coaches/ICoaches';
 import { IDetailedCoach, IAssignedAthletes } from '../Models/Coaches/IDetailedCoach';
@@ -67,7 +67,7 @@ const User = {
 }
 
 const Messages = {
-    list: () : Promise<Message[]> => requests.get("/message/messages")
+    list: (userId: string) : Promise<Message[]> => requests.get(`/message/messages/${userId}`)
 }
 
 const Athlete = {
@@ -76,7 +76,8 @@ const Athlete = {
     create : (athlete: IDetailedAthlete) : Promise<any> => requests.post("/athlete/create", athlete),
     archive : (id: string) : Promise<any> => requests.put(`/athlete/archive/${id}`, {}),
     activate: (id: string) : Promise<any> => requests.put(`/athlete/reactivate/${id}`, {}),
-    messageAthlete : (message: MessageAthlete) : Promise<any> => requests.post(`/athlete/message`, message),
+    messageAthlete : (message: IMessageAthlete) : Promise<any> => requests.post(`/athlete/message`, message),
+    messageAllAthletes : (messages: IMessageAll) : Promise<any> => requests.post(`/athlete/message/all`, messages),
     loadAthlete : (id: string) : Promise<IDetailedAthlete> => requests.get(`/athlete/${id}`),
     listAvailableCoaches : (id: string) : Promise<IAssignedCoach[]> => requests.get(`/athlete/availableCoaches/${id}`)
 }
@@ -87,6 +88,7 @@ const Coaches = {
     archive: (id: string) : Promise<any> => requests.put(`coach/archive/${id}`, {}),
     activate: (id: string) : Promise<any> => requests.put(`coach/activate/${id}`, {}),
     messageCoach: (message : IMessageCoach) : Promise<any> => requests.post("/coach/message", message),
+    messageAll: (message: IMessageAll) : Promise<any> => requests.post("/coach/message/all", message),
     create: (values: IDetailedCoach) : Promise<any> => requests.post("/coach/create", values),
     edit: (values: IDetailedCoach) : Promise<any> => requests.put("/coach/edit", values),
     availableAthletes: (id: string) : Promise<IAssignedAthletes[]> => requests.get(`/coach/availableStudents/${id}`)
