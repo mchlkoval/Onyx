@@ -4,7 +4,7 @@ import Agent from "../API/Agent";
 import { Athletes } from "../Models/Athlete/Athletes";
 import { toast } from "react-toastify";
 import { IMessageAthlete, IMessageAll } from "../Models/Athlete/MessageAthlete";
-import { IDetailedAthlete, IAssignedCoach } from "../Models/Athlete/IDetailedAthlete";
+import { IDetailedAthlete, IAssignedCoach, DetailedAthlete } from "../Models/Athlete/IDetailedAthlete";
 import { history } from "../..";
 
 export class AthleteStore {
@@ -12,7 +12,7 @@ export class AthleteStore {
     rootStore : RootStore;
 
     @observable athletes : Athletes[] = [];
-    @observable athlete : IDetailedAthlete | null = null;
+    @observable athlete : DetailedAthlete = new DetailedAthlete();
     @observable availableCoaches : IAssignedCoach[] = [];
 
     @computed get activeAthletes() {
@@ -123,9 +123,11 @@ export class AthleteStore {
     @action handleAddingAvailableCoach = async (coach : IAssignedCoach) => {
         var indexToRemove = this.availableCoaches.indexOf(coach);
         
-        runInAction("Removing element", () => {  
-            this.availableCoaches.splice(indexToRemove, 0);
-        })
+        if(indexToRemove !== -1) {
+            runInAction("Removing element", () => {  
+                this.availableCoaches.splice(indexToRemove, 0);
+            })
+        }
         
         runInAction("Pushing athletes", () => {
             this.athlete?.assignedCoaches?.push(coach);

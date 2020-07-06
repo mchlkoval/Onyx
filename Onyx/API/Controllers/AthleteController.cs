@@ -84,6 +84,7 @@ namespace API.Controllers
         [Authorize]
         [HttpGet]
         [Route("availableCoaches/{athleteId}")]
+        [Route("availableCoaches")]
         public async Task<ActionResult<List<AssignedCoachViewModel>>> ListAvailableCoaches(string athleteId, CancellationToken ct)
         {
             return await Mediator.Send(new ListAvailableCoachesQuery.Query(athleteId), ct);

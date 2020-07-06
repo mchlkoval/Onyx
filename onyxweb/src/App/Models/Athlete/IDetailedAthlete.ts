@@ -13,7 +13,7 @@ export interface IDetailedAthlete {
     weight: number,
     age: number,
     dateOfBirth: Date,
-    assignedCoaches: IAssignedCoach[] | null
+    assignedCoaches: IAssignedCoach[]
 }
 
 export interface IAssignedCoach {
@@ -34,7 +34,7 @@ export class DetailedAthlete implements IDetailedAthlete {
     weight: number = 150;
     age: number = 18;
     dateOfBirth: Date = new Date();
-    assignedCoaches: IAssignedCoach[] | null = null;
+    assignedCoaches: IAssignedCoach[] = new Array<IAssignedCoach>();
 
     constructor(init? : IDetailedAthlete) {
         Object.assign(this, init);

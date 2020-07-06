@@ -35,7 +35,10 @@ namespace Application.Queries.Athlete
 
             public async Task<List<AssignedCoachViewModel>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var data = await context.Users
+                var data = new List<AssignedCoachViewModel>();
+                if(!string.IsNullOrEmpty(request.Id))
+                {
+                    data = await context.Users
                     .Include(x => x.AssignedAthletes)
                     .Where(x => x.IsActive)
                     .Where(x => x.UserType == UserType.Coach)
@@ -44,7 +47,20 @@ namespace Application.Queries.Athlete
                         Id = x.Id,
                         Name = x.Name,
                         Gender = x.Gender
-                     }).ToListAsync();                  
+                     }).ToListAsync();           
+                } else
+                {
+                    data = await context.Users
+                        .Include(x => x.AssignedAthletes)
+                        .Where(x => x.IsActive)
+                        .Where(x => x.UserType == UserType.Coach)
+                        .Select(x => new AssignedCoachViewModel { 
+                            Id = x.Id,
+                            Name = x.Name,
+                            Gender = x.Gender
+                         }).ToListAsync(); 
+                }
+                       
 
                 return data;
             }

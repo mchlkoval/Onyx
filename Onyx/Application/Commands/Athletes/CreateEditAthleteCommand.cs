@@ -1,7 +1,11 @@
 ﻿using Domain.Identity;
 using Domain.JoinTables;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using Persistence.Context;
 using Shared.Enumerations;
 using System;
@@ -35,10 +39,12 @@ namespace Application.Commands.Athletes
         public class Handler : IRequestHandler<Command>
         {
             private DataContext context;
+            private UserManager<AppUser> manager;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, UserManager<AppUser> manager)
             {
                 this.context = context;
+                this.manager = manager;
             }
 
             private async Task EditAthlete(Command request)
@@ -46,6 +52,7 @@ namespace Application.Commands.Athletes
                 var athlete = await context.Users
                     .Include(x => x.AssignedCoaches)
                     .SingleAsync(x => x.Id == request.Id);
+                
                 athlete.Name = request.Name;
                 athlete.Gender = request.Gender;
                 athlete.City = request.City;
@@ -82,10 +89,68 @@ namespace Application.Commands.Athletes
 
             private async Task CreateAthlete(Command request)
             {
+                var athleteId = Guid.NewGuid().ToString();
+                var numberOfAthletes = await context.Users.CountAsync();
                 var athlete = new AppUser
                 {
-                    Id = Guid.NewGuid().ToString()
+                    Id = athleteId,
+                    Gender = request.Gender,
+                    UserName = $"temporary_{numberOfAthletes}",
+                    UserType = UserType.Athlete,
+                    DateJoined = DateTime.Now,
+                    Name = request.Name,
+                    IsActive = true,
+                    //temp for now
+                    OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67",
+                    City = request.City,
+                    State = request.State,
+                    Country = request.Country,
+                    Address = request.Address,
+                    Address2 = request.Address2,
+                    Weight = request.Weight,
+                    Age = (int) DateTime.Now.Subtract(request.DateOfBirth).TotalDays/365,
+                    DateOfBirth = request.DateOfBirth,
+                    ExerciseLogs = new List<Domain.Workouts.ExerciseLog>(),
+                    AssignedCoaches = request.AssignedCoaches.Select(x => new CoachAthlete {
+                        AthleteId = athleteId,
+                        CoachId = x.Id
+                    }).ToList(),
+                    Messages = new List<Domain.Message>(),
+
                 };
+
+                var result = await manager.CreateAsync(athlete, "Pa$$w0rd");
+                if (!result.Succeeded)
+                {
+                    throw new Exception("Failed to create athlete");
+                }
+
+                await SendEmail(athlete.Name, athlete.UserName);
+            }
+
+            private async Task SendEmail(string athleteName, string userName)
+            {
+                var messageToSend = new MimeMessage
+                {
+                    Sender = new MailboxAddress("Onyx Test Message", "mchlkovalsky@outlook.com"),
+                    Subject = "User Created",
+                    Body = new TextPart(MimeKit.Text.TextFormat.Plain)
+                    {
+                        Text = $"We've successfully created a new athlete with the username of {userName} and a name of {athleteName} \n" +
+                        $"The temporary password is: Pa$$w0rd. Please make sure they change their password as soon as possible"
+                    }
+                };
+
+                messageToSend.From.Add(new MailboxAddress("Michael Kovalsky", "mchlkovalsky@outlook.com"));
+                messageToSend.To.Add(new MailboxAddress("Michael Kovalsky", "mchlkovalsky@gmail.com"));
+
+                using (var smtp = new SmtpClient())
+                {
+                    smtp.Connect("smtp.live.com", 587, SecureSocketOptions.StartTls);
+                    smtp.Authenticate("mchlkovalsky@outlook.com", "Jaljap2732!");
+                    await smtp.SendAsync(messageToSend);
+                    await smtp.DisconnectAsync(true);
+                }
             }
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)

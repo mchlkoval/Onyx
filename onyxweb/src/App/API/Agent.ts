@@ -79,7 +79,14 @@ const Athlete = {
     messageAthlete : (message: IMessageAthlete) : Promise<any> => requests.post(`/athlete/message`, message),
     messageAllAthletes : (messages: IMessageAll) : Promise<any> => requests.post(`/athlete/message/all`, messages),
     loadAthlete : (id: string) : Promise<IDetailedAthlete> => requests.get(`/athlete/${id}`),
-    listAvailableCoaches : (id: string) : Promise<IAssignedCoach[]> => requests.get(`/athlete/availableCoaches/${id}`)
+    listAvailableCoaches : (id: string) : Promise<IAssignedCoach[]> =>  {
+        if(id !== undefined || id !== "") {
+            return requests.get(`/athlete/availableCoaches/${id}`);
+        } 
+
+        return requests.get(`/athlete/availableCoaches`);
+    }
+
 }
 
 const Coaches = {

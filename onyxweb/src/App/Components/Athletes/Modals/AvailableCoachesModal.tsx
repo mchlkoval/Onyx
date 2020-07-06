@@ -20,16 +20,15 @@ const AvailableCoachesModal : React.FC<IProps> = ({athleteId, handleSelectCoach}
     const [displayCoaches, setDisplayedCoaches] = useState<Array<IAssignedCoach>>([]);
 
     useEffect(() => {
-        if(athleteId !== undefined) {
-            listAvailableCoaches(athleteId)
-            .then((data) => {
-                if(data !== undefined) {
-                    setDisplayedCoaches(data);
-                }
-            }).finally(() => {
-                setLoading(false)
-            });
-        }
+        listAvailableCoaches(athleteId)
+        .then((data) => {
+            if(data !== undefined) {
+                setDisplayedCoaches(data);
+            }
+        }).finally(() => {
+            setLoading(false)
+        });
+
     }, [listAvailableCoaches, athleteId])
 
     const handleAddCoachClicked = async (coach : IAssignedCoach) => {
