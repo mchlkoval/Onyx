@@ -28,6 +28,7 @@ namespace Domain.Identity
         public List<ExerciseLog> ExerciseLogs { get; set; }
         public List<CoachAthlete> AssignedAthletes { get; set; }
         public List<CoachAthlete> AssignedCoaches { get; set; }
+        public List<UserTeam> AssignedTeams { get; set; }
         public List<Message> Messages { get; set; }
     }
 }

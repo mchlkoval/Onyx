@@ -249,6 +249,7 @@ namespace Persistence.Seed
                 context.Organization.Add(organization);
                 await context.SaveChangesAsync();
                 
+                await AddTeams(context);
                 foreach(var user in users)
                 {
                     await userManager.AddPasswordAsync(user, "Pa$$w0rd");
@@ -297,9 +298,94 @@ namespace Persistence.Seed
                     }
                 };
 
+                
                 context.Users.Update(admin);
                 await context.SaveChangesAsync();
+
+                var active = context.Users.Where(x => x.IsActive)
+                    .ToList();
+                var activeTeam = context.Teams.Where(x => x.IsActive).ToList();
+
+                foreach(var user in active)
+                {
+                    user.AssignedTeams = new List<UserTeam>()
+                    {
+                        new UserTeam
+                        {
+                            UserId = user.Id,
+                            TeamId = activeTeam[0].Id
+                        },
+                        new UserTeam
+                        {
+                            UserId = user.Id,
+                            TeamId = activeTeam[1].Id
+                        }
+                    };
+
+                    context.Users.Update(user);
+                    await context.SaveChangesAsync();
+                }
+
+                var inactiveUsers = context.Users.Where(x => !x.IsActive)
+                    .ToList();
+                var inactiveTeam = context.Teams.Where(x => !x.IsActive).First();
+
+                foreach(var user in inactiveUsers)
+                {
+                    user.AssignedTeams = new List<UserTeam>()
+                    {
+                        new UserTeam
+                        {
+                            UserId = user.Id,
+                            TeamId = inactiveTeam.Id
+                        },
+                    };
+
+                    context.Users.Update(user);
+                    await context.SaveChangesAsync();
+                }
+
             }
         } 
+
+        private static async Task AddTeams(DataContext context)
+        {
+            var team1 = new Team
+            {
+                Id = Guid.NewGuid().ToString(),
+                CreationDate = DateTime.UtcNow,
+                IsActive = true,
+                Name = "Mobile Team",
+                OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67",
+            };
+
+            var team2 = new Team
+            {
+                Id = Guid.NewGuid().ToString(),
+                CreationDate = DateTime.UtcNow,
+                IsActive = true,
+                Name = "Barrier Team",
+                OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67",
+            };
+
+            var archived = new Team
+            {
+                Id = Guid.NewGuid().ToString(),
+                CreationDate = DateTime.UtcNow.AddDays(-5),
+                ArchiveDate = DateTime.UtcNow,
+                IsActive = false,
+                Name = "Archived Team",
+                OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67",
+            };
+
+            context.Teams.AddRange(new Team[]{team1, team2, archived});
+            var result = await context.SaveChangesAsync();
+
+            if(result < 0)
+            {
+                throw new Exception("Failed to send message");
+            }
+
+        }
     }
 }

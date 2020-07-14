@@ -27,6 +27,8 @@ namespace Persistence.Context
         public DbSet<Exercise> Exercise { get; set; }
         public DbSet<ExerciseLog> ExerciseLog { get; set; }
         public DbSet<CoachAthlete> AssignedAthletes { get; set; }
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<UserTeam> AssignedTeams { get; set; }
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -141,6 +143,19 @@ namespace Persistence.Context
                .HasOne(x => x.Athlete)
                .WithMany(s => s.AssignedCoaches)
                .HasForeignKey(z => z.AthleteId);
+
+            builder.Entity<UserTeam>()
+                .HasKey(x => new { x.TeamId, x.UserId});
+            
+            builder.Entity<UserTeam>()
+                .HasOne(x => x.User)
+                .WithMany(y => y.AssignedTeams)
+                .HasForeignKey(z => z.UserId);
+
+            builder.Entity<UserTeam>()
+                .HasOne(x => x.Team)
+                .WithMany(y => y.TeamMembers)
+                .HasForeignKey(z => z.TeamId);
         }
     }
 }

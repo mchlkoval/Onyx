@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Button, Icon } from 'semantic-ui-react'
 import { ICoaches } from '../../Models/Coaches/ICoaches'
 import Table from 'react-bootstrap/Table'
+import { handleDate } from '../../Utility/UtilityFunctions'
 
 interface IProps {
     state : string
@@ -33,8 +34,8 @@ const CoachesTable : React.FC<IProps> = ({state, coaches, messageCoach, archiveC
                 {coaches.map(coach => (
                     <tr key={coach.id}>
                         <td>{coach.name}</td>
-                        <td>{new Date(coach.dateHired).toISOString().split('T')[0]}</td>
-                        {state === "archived" ? <td>{new Date(coach.dateArchived!).toISOString().split('T')[0]}</td> : null}
+                        <td>{handleDate(coach.dateHired)}</td>
+                        {state === "archived" ? <td>{handleDate(coach.dateArchived!)}</td> : null}
                         <td>
                             <Button floated="right" as={Link} to={`/coaches/edit/${coach.id}`}>
                                 <Icon name="pencil" />

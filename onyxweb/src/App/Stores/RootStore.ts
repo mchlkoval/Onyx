@@ -8,6 +8,7 @@ import { MembershipStore } from './MembershipStore';
 import { AthleteStore } from './AthleteStore';
 import { CoachesStore } from './CoachesStore';
 import { MessageStore } from './MessageStore';
+import { TeamStore } from './TeamStore';
 
 
 configure({enforceActions: 'always'});
@@ -21,6 +22,7 @@ export class RootStore {
     athleteStore: AthleteStore;
     coachStore: CoachesStore;
     messageStore: MessageStore;
+    teamStore: TeamStore;
 
     constructor() {
         this.userStore = new UserStore(this);
@@ -31,6 +33,7 @@ export class RootStore {
         this.athleteStore = new AthleteStore(this);
         this.coachStore = new CoachesStore(this);
         this.messageStore = new MessageStore(this);
+        this.teamStore = new TeamStore(this);
     }
 }
 

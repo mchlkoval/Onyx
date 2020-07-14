@@ -17,6 +17,8 @@ import AthletesList from '../Athletes/AthletesList';
 import AthleteForm from '../Athletes/AthleteForm';
 import CoachesList from '../Coaches/CoachesList';
 import CoachForm from '../Coaches/CoachForm';
+import TeamsList from '../Teams/TeamsList';
+import TeamForm from '../Teams/TeamForm';
 
 const Root : React.FC<RouteComponentProps> = ({location}) => {
 
@@ -60,6 +62,8 @@ const Root : React.FC<RouteComponentProps> = ({location}) => {
                             <Route path={["/athletes/create", '/athletes/edit/:id']} component={AthleteForm}/>
                             <Route exact path="/coaches" component={CoachesList} />
                             <Route path={["/coaches/create", "/coaches/edit/:id"]} component={CoachForm} />
+                            <Route exact path="/teams" component={TeamsList} />
+                            <Route path={["/teams/create", "/teams/edit/:id"]} component={TeamForm}/>
                     </Switch>
                     </Grid.Column>
                 </Grid>
