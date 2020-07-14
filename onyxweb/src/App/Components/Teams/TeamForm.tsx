@@ -11,6 +11,8 @@ import { observer } from 'mobx-react-lite';
 import { Formik, FormikProps, FieldArray } from 'formik';
 import { values } from 'mobx';
 import { handleDate, handleGender } from '../../Utility/UtilityFunctions';
+import MessageAthleteModal from '../Athletes/Modals/MessageAthleteModal';
+import MessageCoachModal from '../Coaches/Modals/MessageCoachModal';
 
 interface IProps {
     id: string;
@@ -21,7 +23,7 @@ const TeamForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
 
     const root = useContext(RootStoreContext);
     const {createTeam, editTeam, loadTeam} = root.teamStore;
-    const {openModal,} = root.modalStore;
+    const {openModal} = root.modalStore;
 
     const [team, setTeam] = useState(new DetailedTeam());
     const [loading, setLoading] = useState(false);
@@ -90,8 +92,8 @@ const TeamForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
                                                     <Button floated="right" type="button" onClick={() => athleteHelpers.remove(index)}>
                                                         <Icon name="user times"/>
                                                     </Button>
-                                                    <Button floated="right" type="button">
-                                                        <Icon name="envelope"/>
+                                                    <Button floated="right" type="button" onClick={() => openModal(<MessageAthleteModal id={athlete.id} name={athlete.name}/>)}>
+                                                        <Icon key={`${index}_${athlete.id}`} name="envelope" />
                                                     </Button>
                                                 </td>
                                             </tr>
@@ -127,7 +129,7 @@ const TeamForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
                                             <Button floated="right" type="button" onClick={() => arrayHelpers.remove(index)}>
                                                 <Icon name="user times"/>
                                             </Button>
-                                            <Button floated="right" type="button">
+                                            <Button floated="right" type="button" onClick={() => openModal(<MessageCoachModal id={coach.id} name={coach.name}/>)}>
                                                 <Icon name="envelope"/>
                                             </Button>
                                         </td>
