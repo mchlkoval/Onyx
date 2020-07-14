@@ -85,7 +85,8 @@ namespace Application.Commands.Teams
                 {
                     await CreateTeam(request);
                 }
-                throw new NotImplementedException();
+
+                return Unit.Value;
             }
         }
     }

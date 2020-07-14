@@ -3,6 +3,8 @@ import { observable, action, runInAction, computed } from "mobx";
 import { ITeams } from "../Models/Teams/ITeams";
 import Agent from "../API/Agent";
 import { IDetailedTeam } from "../Models/Teams/IDetailedTeam";
+import { toast } from "react-toastify";
+import { history } from "../..";
 
 export class TeamStore {
 
@@ -38,11 +40,23 @@ export class TeamStore {
     }
 
     @action createTeam = async (values : IDetailedTeam) => {
-
+        try {
+            await Agent.Teams.create(values);
+            toast("Successfully created team");
+            history.push("/teams");
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     @action editTeam = async (values : IDetailedTeam) => {
-
+        try {
+            await Agent.Teams.create(values);
+            toast("Successfully edited team");
+            history.push("/teams");
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     @action loadTeam = async (id: string) => {
