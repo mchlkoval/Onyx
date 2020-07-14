@@ -35,8 +35,8 @@ const TeamForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
                 setLoading(false);
             })
         }
-        setLoading(false);
-    }, [loadTeam, match.params.id])
+   
+    }, [loadTeam, match.params])
 
     if(loading) {
         return <LoadingComponent content="Loading ..."/>
@@ -46,22 +46,23 @@ const TeamForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
         <Container>
             <Segment clearing>
                 <Header>Manage Team</Header>
-                <Formik onSubmit={(values) => console.log(values)} initialValues={team}>
-                    {(props: FormikProps<any>) => (
-                        <Form onSubmit={props.handleSubmit}>
+                <Formik onSubmit={(values) => console.log(values)} initialValues={team} 
+                render = {
+                    ({values, handleChange, handleSubmit}) => (
+                        <Form onSubmit={handleSubmit}>
                             <Form.Row>
                                 <Form.Group as={Col}>
                                     <Form.Label>Name</Form.Label>
-                                    <Form.Control type="text" name="name" value={props.values.name} onChange={props.handleChange}/>
+                                    <Form.Control type='text' name="name" value={values.name} onChange={handleChange}/>
                                 </Form.Group>
                                 <Form.Group as={Col}>
                                     <Form.Label>Date Created</Form.Label>
-                                    <Form.Control type="date" name="creationDate" value={handleDate(team.creationDate)} onChange={props.handleChange}/>
+                                    <Form.Control type="date" name="creationDate" value={handleDate(values.creationDate)} onChange={handleChange}/>
                                 </Form.Group>
                                 {team.archiveDate !== null ? 
                                     <Form.Group as={Col}>
                                     <Form.Label>Date Created</Form.Label>
-                                    <Form.Control type="date" name="archiveDate" value={handleDate(team.archiveDate)} onChange={props.handleChange}/>
+                                    <Form.Control type="date" name="archiveDate" value={handleDate(values.archiveDate!)} onChange={handleChange}/>
                                 </Form.Group> : null}
                             </Form.Row>
                         <Divider />
@@ -69,7 +70,7 @@ const TeamForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
                             <Header floated="left">Athletes</Header>
                             <Button positive content="Add Athlete" floated="right" type="button"/>
                         
-                            {team.athletes !== null ? 
+                            {values.athletes !== null ? 
                             
                                 <Table striped bordered hover>
                                     <thead>
@@ -80,7 +81,7 @@ const TeamForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <FieldArray name="athletes" render={athleteHelpers => (team.athletes!.map((athlete, index) => 
+                                        <FieldArray name="athletes" render={athleteHelpers => (values.athletes!.map((athlete, index) => 
                                         (
                                             <tr key={athlete.id}>
                                                 <td>{athlete.name}</td>
@@ -106,7 +107,7 @@ const TeamForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
                             <Header floated="left">Coaches</Header>
                             <Button positive content="Add Coach" floated="right" type="button"/>
                         
-                            {team.coaches !== null ? 
+                            {values.coaches !== null ? 
                             
                             <Table striped bordered hover>
                             <thead>
@@ -117,7 +118,7 @@ const TeamForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <FieldArray name="athletes" render={arrayHelpers => (team.coaches!.map((coach, index) => 
+                                <FieldArray name="athletes" render={arrayHelpers => (values.coaches!.map((coach, index) => 
                                 (
                                     <tr key={coach.id}>
                                         <td>{coach.name}</td>
@@ -146,8 +147,8 @@ const TeamForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
                                 </Form.Group>
                             </Form.Row>
                         </Form>
-                    )}
-                </Formik>
+                    )
+                }/>
             </Segment>
         </Container>
     )
