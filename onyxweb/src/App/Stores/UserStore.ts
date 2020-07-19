@@ -21,6 +21,7 @@ export default class UserStore {
     @action login = async (values: IUserFormValues) => {
         try {
             const user = await Agent.User.login(values);
+            console.log("User values: ", user);
             runInAction('Setting user login', () => { 
                 this.user = user; 
             });  

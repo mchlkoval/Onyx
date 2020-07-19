@@ -34,6 +34,22 @@ namespace API.Controllers
         }
 
         [Authorize]
+        [HttpGet]
+        [Route("availableAthletes/{teamId}/{orgId}")]
+        public async Task<ActionResult<List<TeamMembersViewModel>>> GetAvailableAthletesForTeam(string teamId, string orgId, CancellationToken ct)
+        {
+            return await Mediator.Send(new AvailableTeamMembersQuery.Query(teamId, orgId, false), ct);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("availableCoaches/{teamId}/{orgId}")]
+        public async Task<ActionResult<List<TeamMembersViewModel>>> GetAvailableCoachesForTeam(string teamId, string orgId, CancellationToken ct)
+        {
+            return await Mediator.Send(new AvailableTeamMembersQuery.Query(teamId, orgId, true), ct);
+        }
+
+        [Authorize]
         [HttpPost]
         [Route("create")]
         public async Task<ActionResult<Unit>> CreateTeam(CreateEditTeamCommand.Command command, CancellationToken ct)

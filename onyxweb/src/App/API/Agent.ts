@@ -12,7 +12,7 @@ import { IDetailedAthlete, IAssignedCoach } from '../Models/Athlete/IDetailedAth
 import { ICoaches } from '../Models/Coaches/ICoaches';
 import { IDetailedCoach, IAssignedAthletes } from '../Models/Coaches/IDetailedCoach';
 import { IMessageCoach } from '../Models/Coaches/IMessageCoach';
-import { ITeams } from '../Models/Teams/ITeams';
+import { ITeams, ITeamMembers } from '../Models/Teams/ITeams';
 import { IDetailedTeam } from '../Models/Teams/IDetailedTeam';
 
 axios.defaults.baseURL = "http://localhost:5000/api"
@@ -122,7 +122,14 @@ const Teams = {
     detailed: (id: string) : Promise<IDetailedTeam> => requests.get(`/team/detailed/${id}`),
     create: (team : IDetailedTeam) => requests.post("/team/create" , team),
     activate: (id: string) => requests.put(`/team/activate/${id}`, {}),
-    deactivate:  (id: string) => requests.put(`/team/deactivate/${id}`, {})
+    deactivate:  (id: string) => requests.put(`/team/deactivate/${id}`, {}),
+    availableMembers : (teamId: string, orgId: string, isCoach: boolean) : Promise<ITeamMembers[]> => {
+        if(isCoach) {
+            return requests.get(`/team/availableCoaches/${teamId}/${orgId}`);
+        } else {
+            return requests.get(`/team/availableAthletes/${teamId}/${orgId}`)
+        }
+    }
 }
 
 export default {

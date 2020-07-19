@@ -60,6 +60,7 @@ namespace Application.Queries
                     return new UserViewModel
                     {
                         Id = user.Id,
+                        OrgId = user.OrganizationId,
                         Token = generator.CreateToken(user),
                         Username = user.UserName,
                         Email = user.Email,

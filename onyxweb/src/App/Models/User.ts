@@ -2,6 +2,7 @@ import { UserType } from "./Enums/UserType";
 
 export interface IUser {
     id: string,
+    orgId: string,
     userName: string,
     token: string,
     userType: UserType,

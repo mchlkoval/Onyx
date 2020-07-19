@@ -13,6 +13,8 @@ import { handleDate, handleGender } from '../../Utility/UtilityFunctions';
 import MessageAthleteModal from '../Athletes/Modals/MessageAthleteModal';
 import MessageCoachModal from '../Coaches/Modals/MessageCoachModal';
 import TeamMembers from './TeamMembers';
+import AvailableTeamMembers from './Modals/AvailableTeamMembers';
+import { ITeamMembers } from '../../Models/Teams/ITeams';
 
 interface IProps {
     id: string;
@@ -24,6 +26,7 @@ const TeamForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
     const root = useContext(RootStoreContext);
     const {createTeam, editTeam, loadTeam} = root.teamStore;
     const {openModal} = root.modalStore;
+    const {user} = root.userStore;
 
     const [team, setTeam] = useState(new DetailedTeam());
     const [loading, setLoading] = useState(false);
@@ -56,6 +59,16 @@ const TeamForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
         }
     }
 
+    const handleAddingMember = (member: ITeamMembers, isCoach : boolean) => {
+        
+        if(isCoach)
+            team?.coaches.push(member) 
+        else 
+            team?.athletes.push(member);
+        
+        setTeam(new DetailedTeam(team));
+    }
+
     if(loading) {
         return <LoadingComponent content="Loading ..."/>
     }
@@ -86,13 +99,13 @@ const TeamForm : React.FC<RouteComponentProps<IProps>> = ({match, history}) => {
                         <Divider />
                         <Segment clearing>
                             <Header floated="left">Athletes</Header>
-                            <Button positive content="Add Athlete" floated="right" type="button"/>
+                            <Button positive content="Add Athlete" floated="right" type="button" onClick={() => openModal(<AvailableTeamMembers handleSelectMember={handleAddingMember} teamId={match.params.id} orgId={user!.orgId} isCoach={false}/>)}/>
                             {values.athletes !== null ? <TeamMembers fieldArrayName="athletes" teamMembers={values.athletes} openModal={messageAthlete} /> : null}
                         </Segment>
                         <Divider />
                         <Segment clearing>
                             <Header floated="left">Coaches</Header>
-                            <Button positive content="Add Coach" floated="right" type="button"/>
+                            <Button positive content="Add Coach" floated="right" type="button" onClick={() => openModal(<AvailableTeamMembers handleSelectMember={handleAddingMember} teamId={match.params.id} orgId={user!.orgId} isCoach={true}/>)}/>
                             {values.coaches !== null ?  <TeamMembers fieldArrayName="coaches" teamMembers={values.coaches} openModal={messageCoach} /> : null}
                         </Segment>
 

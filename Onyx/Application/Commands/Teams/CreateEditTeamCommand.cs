@@ -38,11 +38,13 @@ namespace Application.Commands.Teams
                 team.IsActive = request.IsActive;
                 team.CreationDate = request.CreationDate;
                 team.ArchiveDate = request.ArchiveDate;
-                team.TeamMembers = request.Athletes.Select(x => new UserTeam
+                team.TeamMembers = request.Athletes.Union(request.Coaches).Select(x => new UserTeam
                 {
                     TeamId = team.Id,
                     UserId = x.Id
                 }).ToList();
+
+                
 
                 context.Teams.Update(team);
                 var result = await context.SaveChangesAsync();
@@ -56,11 +58,24 @@ namespace Application.Commands.Teams
             private async Task CreateTeam(Command request)
             {
                 var team = new Team();
+                team.Id = Guid.NewGuid().ToString();
+                team.OrganizationId = "3c084a85-e680-40c1-9c2c-d5839286ec67";
                 team.Name = request.Name;
                 team.IsActive = request.IsActive;
                 team.CreationDate = request.CreationDate;
                 team.ArchiveDate = request.ArchiveDate;
-                team.TeamMembers = request.Athletes.Select(x => new UserTeam
+
+                if(request.Athletes == null)
+                {
+                    request.Athletes = new List<TeamMembersViewModel>();
+                }
+
+                if(request.Coaches == null)
+                {
+                    request.Coaches = new List<TeamMembersViewModel>();
+                }
+
+                team.TeamMembers = request.Athletes.Union(request.Coaches).Select(x => new UserTeam
                 {
                     TeamId = team.Id,
                     UserId = x.Id

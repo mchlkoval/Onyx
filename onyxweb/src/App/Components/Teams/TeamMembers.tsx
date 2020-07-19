@@ -7,7 +7,6 @@ import Table from 'react-bootstrap/Table'
 import { FieldArray } from 'formik';
 import {Button, Icon } from 'semantic-ui-react';
 import { handleGender } from '../../Utility/UtilityFunctions';
-import MessageAthleteModal from '../Athletes/Modals/MessageAthleteModal';
 
 interface IProps {
     teamMembers : ITeamMembers[],
