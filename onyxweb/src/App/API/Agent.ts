@@ -124,10 +124,18 @@ const Teams = {
     activate: (id: string) => requests.put(`/team/activate/${id}`, {}),
     deactivate:  (id: string) => requests.put(`/team/deactivate/${id}`, {}),
     availableMembers : (teamId: string, orgId: string, isCoach: boolean) : Promise<ITeamMembers[]> => {
-        if(isCoach) {
-            return requests.get(`/team/availableCoaches/${teamId}/${orgId}`);
+        if(teamId !== undefined) {
+            if(isCoach) {
+                return requests.get(`/team/availableCoaches/${teamId}/${orgId}`);
+            } else {
+                return requests.get(`/team/availableAthletes/${teamId}/${orgId}`)
+            }
         } else {
-            return requests.get(`/team/availableAthletes/${teamId}/${orgId}`)
+            if(isCoach) {
+                return requests.get(`/team/availableCoaches/${orgId}`);
+            } else {
+                return requests.get(`/team/availableAthletes/${orgId}`)
+            }
         }
     }
 }

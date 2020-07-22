@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.JWT;
 using Domain.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,10 +12,27 @@ namespace Infrastructure.InterfaceImplementor.Security.JWT
 {
     public class JWTGenerator : IJWTGenerator
     {
+        private string TypeOfUser(UserType type)
+        {
+            switch(type)
+            {
+                case UserType.Athlete:
+                    return "Athlete";
+                case UserType.Coach:
+                    return "Coach";
+                case UserType.Manager:
+                    return "Admin";
+                default:
+                    return "Athlete";
+            }
+        }
+
         public string CreateToken(AppUser user)
         {
             var claims = new List<Claim> {
-                new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
+                new Claim(JwtRegisteredClaimNames.NameId, user.UserName),
+                new Claim("OrgId", user.OrganizationId),
+                new Claim("UserType", TypeOfUser(user.UserType))
             };
 
             // Generate signing credentials

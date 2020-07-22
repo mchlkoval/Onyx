@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Domain.Identity;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
 using Shared.Enumerations;
@@ -39,17 +40,22 @@ namespace Application.Queries.Teams
 
             private async Task<List<TeamMembersViewModel>> AvailableMembers(string teamId, string orgId, UserType type)
             {
-                var currentCoaches = context.AssignedTeams
-                    .Include(x => x.User)
-                    .Where(x => x.TeamId == teamId)
-                    .Where(x => x.User.UserType == type)
-                    .Where(x => x.User.IsActive)
-                    .Select(x => x.UserId);
-
-                var users = await context.Users
+                IQueryable<string> currentCoaches = null;
+                IQueryable<AppUser> query = context.Users
                     .Where(x => x.OrganizationId == orgId)
                     .Where(x => x.IsActive)
-                    .Where(x => x.UserType == type)
+                    .Where(x => x.UserType == type);
+                
+                if(!string.IsNullOrEmpty(teamId))
+                {
+                    currentCoaches = context.AssignedTeams
+                        .Include(x => x.User)
+                        .Where(x => x.TeamId == teamId)
+                        .Where(x => x.User.UserType == type)
+                        .Where(x => x.User.IsActive)
+                        .Select(x => x.UserId);
+                    
+                    return  await query
                     .Where(x => !currentCoaches.Contains(x.Id))
                     .Select(x => new TeamMembersViewModel
                     {
@@ -58,8 +64,16 @@ namespace Application.Queries.Teams
                         Name = x.Name
                     })
                     .ToListAsync();
+                }
 
-                return users;
+                return await query
+                    .Select(x => new TeamMembersViewModel
+                    {
+                        Gender = x.Gender,
+                        Id = x.Id,
+                        Name = x.Name
+                    })
+                    .ToListAsync();
             }
 
             public async Task<List<TeamMembersViewModel>> Handle(Query request, CancellationToken cancellationToken)

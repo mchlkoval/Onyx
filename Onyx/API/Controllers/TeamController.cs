@@ -36,6 +36,7 @@ namespace API.Controllers
         [Authorize]
         [HttpGet]
         [Route("availableAthletes/{teamId}/{orgId}")]
+        [Route("availableAthletes/{orgId}")]
         public async Task<ActionResult<List<TeamMembersViewModel>>> GetAvailableAthletesForTeam(string teamId, string orgId, CancellationToken ct)
         {
             return await Mediator.Send(new AvailableTeamMembersQuery.Query(teamId, orgId, false), ct);
@@ -44,6 +45,7 @@ namespace API.Controllers
         [Authorize]
         [HttpGet]
         [Route("availableCoaches/{teamId}/{orgId}")]
+        [Route("availableCoaches/{orgId}")]
         public async Task<ActionResult<List<TeamMembersViewModel>>> GetAvailableCoachesForTeam(string teamId, string orgId, CancellationToken ct)
         {
             return await Mediator.Send(new AvailableTeamMembersQuery.Query(teamId, orgId, true), ct);
