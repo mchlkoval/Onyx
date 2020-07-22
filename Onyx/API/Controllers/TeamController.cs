@@ -59,6 +59,15 @@ namespace API.Controllers
             return await Mediator.Send(command, ct);
         }
 
+
+        [Authorize]
+        [HttpPost]
+        [Route("message")]
+        public async Task<ActionResult<Unit>> MessageTeamMembers(MessageTeamMembersCommand.Command command, CancellationToken ct)
+        {
+            return await Mediator.Send(command, ct);
+        }
+
         [Authorize]
         [HttpPut]
         [Route("activate/{id}")]
